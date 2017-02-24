@@ -1,0 +1,27 @@
+buildscript {
+    ext.kotlin_version = '1.0.6'
+
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
+        classpath 'com.google.gms:google-services:3.0.0'
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.5.5'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

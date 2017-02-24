@@ -1,0 +1,114 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.github.ben-manes.versions'
+
+def CompatVer = '25.2.0'
+def Firebase = '10.2.0'
+def Moxy = '1.4.5'
+def Retrofit = '2.2.0'
+def OkHttp = '3.6.0'
+def Dagger = '2.8'
+
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
+
+    defaultConfig {
+        applicationId 'ru.cherryperry.amiami'
+        minSdkVersion 14
+        targetSdkVersion 25
+        versionCode 20000
+        versionName '2.0.0'
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+        }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            signingConfig signingConfigs.release
+            versionNameSuffix ".debug"
+        }
+
+        debugMinify {
+            debuggable true
+            signingConfig signingConfigs.release
+            versionNameSuffix ".debug"
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+kapt {
+    generateStubs = true
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    testCompile "org.robolectric:robolectric:3.2.2"
+
+    compile "com.android.support:appcompat-v7:$CompatVer"
+    compile "com.android.support:preference-v14:$CompatVer"
+    compile "com.android.support:recyclerview-v7:$CompatVer"
+    compile "com.android.support:design:$CompatVer"
+    compile "com.android.support:customtabs:$CompatVer"
+    compile "com.android.support:cardview-v7:$CompatVer"
+
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.2.6'
+
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
+    compile "com.google.firebase:firebase-crash:$Firebase"
+    compile "com.google.firebase:firebase-core:$Firebase"
+    compile "com.google.firebase:firebase-messaging:$Firebase"
+    compile "com.google.firebase:firebase-config:$Firebase"
+
+    compile "com.squareup.retrofit2:retrofit:$Retrofit"
+    compile "com.squareup.retrofit2:converter-gson:$Retrofit"
+    compile "com.squareup.retrofit2:converter-scalars:$Retrofit"
+    compile "com.squareup.retrofit2:adapter-rxjava:$Retrofit"
+
+    compile "com.squareup.okhttp3:okhttp:$OkHttp"
+    compile "com.squareup.okhttp3:logging-interceptor:$OkHttp"
+
+    compile 'com.jakewharton.rxbinding:rxbinding:1.0.0'
+
+    compile "com.arello-mobile:moxy:$Moxy"
+    compile "com.arello-mobile:moxy-android:$Moxy"
+    compile "com.arello-mobile:moxy-app-compat:$Moxy"
+    kapt "com.arello-mobile:moxy-compiler:$Moxy"
+
+    compile "com.google.dagger:dagger:$Dagger"
+    kapt "com.google.dagger:dagger-compiler:$Dagger"
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
+
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.getkeepsafe.dexcount'

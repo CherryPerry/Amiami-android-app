@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Amiami</string>
+    <string name="error_network">Failed to download data</string>
+    <string name="error_internal">Internal error occurred</string>
+    <string name="error_invalid_uri">Invalid url</string>
+    <string name="item_updated">Updated: %s</string>
+    <string name="item_created">Created: %s</string>
+    <string name="settings_chrome_tabs">Chrome Custom Tabs</string>
+    <string name="settings_gridview">Grid view</string>
+    <string name="setting_push">Push notifications</string>
+    <string name="setting_highlight_only">Show highlight items only</string>
+    <string name="settings">Settings</string>
+    <string name="close">Close</string>
+    <string name="open">Open</string>
+    <string name="feedback">Feedback</string>
+    <string name="highlight">Highlight</string>
+    <string name="add">Add</string>
+    <string name="highlight_hint">Add character or anime title to highlight items, that\'s name contains added string (regex supported).
+        For example, \"illya\" would highlight all items with \"illya\" in it, and \"((bake)|(nise))monogatari\" would highlight all items with \"bakemonogatari\" and \"nisemonogatari\".
+        Swipe item to remove string from list.</string>
+    <string name="notification_counter">%d new items in store</string>
+    <string name="developer_email" translatable="false">cherry.perry.boy@gmail.com</string>
+    <string name="send_feedback">Send feedback</string>
+    <string name="feedback_text">You can write me about any bugs or improvements you want in the app.</string>
+    <string name="error_no_email_app">Can\'t find email app, just write me cherry.perry.boy@gmail.com</string>
+    <string name="filter_applied">Filter applied</string>
+    <string name="minimum_price">Minimum price</string>
+    <string name="maximum_price">Maximum price</string>
+    <string name="search_by_name">Search by name</string>
+    <string name="filters">Filters</string>
+    <string name="back_button_alert">Press back button again for exit</string>
+    <string name="yen_price_format">%d ¥</string>
+    <string name="no_limit">No limit</string>
+</resources>

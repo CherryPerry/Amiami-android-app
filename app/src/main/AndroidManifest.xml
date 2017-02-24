@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="ru.cherryperry.amiami">
+
+    <uses-sdk tools:overrideLibrary="android.support.customtabs" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name="ru.cherryperry.amiami.AmiamiApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:resizeableActivity="true"
+        android:supportsRtl="false"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".screen.main.MainActivity"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".screen.settings.SettingsActivity"
+            android:parentActivityName="ru.cherryperry.amiami.screen.main.MainActivity"
+            android:theme="@style/AppTheme.Settings">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".screen.main.MainActivity" />
+        </activity>
+
+        <activity
+            android:name="ru.cherryperry.amiami.screen.highlight.HighlightActivity"
+            android:parentActivityName="ru.cherryperry.amiami.screen.main.MainActivity"
+            android:theme="@style/AppTheme.Settings">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".screen.main.MainActivity" />
+        </activity>
+
+        <service android:name="ru.cherryperry.amiami.chrome.KeepAliveService" />
+
+        <service android:name="ru.cherryperry.amiami.push.MessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service android:name="ru.cherryperry.amiami.push.InstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>

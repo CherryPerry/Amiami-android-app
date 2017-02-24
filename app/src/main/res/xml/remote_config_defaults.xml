@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>server_base_url</key>
+        <value>http://91.107.104.160:8080/</value>
+    </entry>
+</defaultsMap>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/key_chromeCustomTabs"
+        android:summaryOff="Links will be opened in popup"
+        android:summaryOn="Links will be opened by Google Chrome with application defined style"
+        android:title="@string/settings_chrome_tabs" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/key_gridView"
+        android:summaryOff="Items are listed in list"
+        android:summaryOn="Items are listed in grid"
+        android:title="@string/settings_gridview" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="@string/key_push"
+        android:summaryOff="You won't be notified when new items appear"
+        android:summaryOn="You will be notified when new items appear"
+        android:title="@string/setting_push" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="@string/key_favorites_only"
+        android:summaryOff="All items will be displayed"
+        android:summaryOn="Only items from highlight list will be displayed"
+        android:title="@string/setting_highlight_only" />
+
+    <ListPreference
+        android:defaultValue="Loading..."
+        android:dialogTitle="Exchange currency"
+        android:key="@string/key_exchange_currency"
+        android:summary="JPY prices will be converted to selected currency"
+        android:title="Exchange currency" />
+
+</PreferenceScreen>
