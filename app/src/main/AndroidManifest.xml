@@ -16,6 +16,10 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_notification_icon" />
+
         <activity
             android:name=".screen.main.MainActivity"
             android:launchMode="singleTop">
