@@ -21,6 +21,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.PresenterType
 import com.google.firebase.messaging.FirebaseMessaging
 import ru.cherryperry.amiami.AmiamiApplication
 import ru.cherryperry.amiami.AppPrefs
@@ -33,11 +34,14 @@ import ru.cherryperry.amiami.push.MessagingService
 import ru.cherryperry.amiami.push.NotificationController
 import ru.cherryperry.amiami.screen.highlight.HighlightActivity
 import ru.cherryperry.amiami.screen.settings.SettingsActivity
+import ru.cherryperry.amiami.screen.update.UpdateDialogFragment
+import ru.cherryperry.amiami.screen.update.UpdatePresenter
+import ru.cherryperry.amiami.screen.update.UpdateView
 import ru.cherryperry.amiami.util.FirebaseAnalyticsHelper
 import ru.cherryperry.amiami.util.ViewDelegate
 import javax.inject.Inject
 
-class MainActivity : MvpAppCompatActivity(), MainView, CustomTabActivityHelper.ConnectionCallback {
+class MainActivity : MvpAppCompatActivity(), MainView, UpdateView, CustomTabActivityHelper.ConnectionCallback {
     companion object {
         private val RC_SETTINGS = 704
         private val RC_HIGHLIGHT = 507
@@ -45,6 +49,9 @@ class MainActivity : MvpAppCompatActivity(), MainView, CustomTabActivityHelper.C
 
     @InjectPresenter
     lateinit var presenter: MainPresenter
+
+    @InjectPresenter(type = PresenterType.GLOBAL)
+    lateinit var updatePresenter: UpdatePresenter
 
     // Views
     private val recyclerView by ViewDelegate<RecyclerView>(R.id.recyclerView)
@@ -278,5 +285,9 @@ class MainActivity : MvpAppCompatActivity(), MainView, CustomTabActivityHelper.C
         if (webViewPreviewDialog != null) webViewPreviewDialog!!.dismiss()
         webViewPreviewDialog = WebViewPreviewDialog.newInstance(url)
         webViewPreviewDialog!!.show(supportFragmentManager, null)
+    }
+
+    override fun showUpdateAvailableDialog(tagName: String, name: String, url: String) {
+        UpdateDialogFragment.newInstance(tagName, name, url).show(supportFragmentManager, "update")
     }
 }

@@ -60,4 +60,10 @@ class ApiProvider @Inject constructor(private val retrofitBuilder: Retrofit.Buil
                     api
                 }
     }
+
+    fun gitHubApi(): Observable<GitHubAPI> = Observable.just(
+            retrofitBuilder
+                    .baseUrl(GitHubAPI.URL)
+                    .build()
+                    .create(GitHubAPI::class.java))
 }

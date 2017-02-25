@@ -31,4 +31,10 @@
     <string name="back_button_alert">Press back button again for exit</string>
     <string name="yen_price_format">%d ¥</string>
     <string name="no_limit">No limit</string>
+
+    <!-- Updates -->
+    <string name="update_dialog_title">Update available</string>
+    <string name="update_dialog_text">New version (%1$s - %2$s) is available on GitHub</string>
+    <string name="update_dialog_download">Download</string>
+    <string name="update_dialog_cancel">Cancel</string>
 </resources>

@@ -9,6 +9,8 @@ import ru.cherryperry.amiami.screen.main.DaggerMainScreenComponent
 import ru.cherryperry.amiami.screen.main.MainScreenComponent
 import ru.cherryperry.amiami.screen.settings.DaggerSettingsScreenComponent
 import ru.cherryperry.amiami.screen.settings.SettingsScreenComponent
+import ru.cherryperry.amiami.screen.update.DaggerUpdateScreenComponent
+import ru.cherryperry.amiami.screen.update.UpdateScreenComponent
 
 class AmiamiApplication : Application() {
     companion object {
@@ -16,6 +18,7 @@ class AmiamiApplication : Application() {
         lateinit var settingsScreenComponent: SettingsScreenComponent
         lateinit var highlightScreenComponent: HighlightScreenComponent
         lateinit var messagingServiceComponent: MessagingServiceComponent
+        lateinit var updateScreenComponent: UpdateScreenComponent
     }
 
     override fun onCreate() {
@@ -36,6 +39,10 @@ class AmiamiApplication : Application() {
                 .build()
 
         messagingServiceComponent = DaggerMessagingServiceComponent.builder()
+                .applicationModule(applicationModule)
+                .build()
+
+        updateScreenComponent = DaggerUpdateScreenComponent.builder()
                 .applicationModule(applicationModule)
                 .build()
     }
