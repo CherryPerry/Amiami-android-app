@@ -14,9 +14,9 @@ import java.util.*
 
 object SAFSettingsProvider {
     val RC_CREATE_DOCUMENT = 100
-    val RC_OPEN_DOCUMENT = 2
-    val MIME_TYPE = "application/json"
+    val RC_OPEN_DOCUMENT = 101
     val FILE_NAME = "amimai.settings.json"
+    val CHARSET = Charset.forName("utf8")
 
     fun isAvailable(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
 
@@ -24,54 +24,62 @@ object SAFSettingsProvider {
     fun requestCreateDocument(activity: Activity) {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = MIME_TYPE
+        intent.type = "application/json"
         intent.putExtra(Intent.EXTRA_TITLE, FILE_NAME)
         activity.startActivityForResult(intent, RC_CREATE_DOCUMENT)
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    fun onReqestCreateDocumentComplete(context: Context, requestCode: Int, resultCode: Int, resultData: Intent?): Boolean {
+    fun onRequestCreateDocumentComplete(context: Context, requestCode: Int, resultCode: Int, resultData: Intent?): Result {
         if (requestCode == RC_CREATE_DOCUMENT && resultCode == Activity.RESULT_OK && resultData != null && resultData.data != null) {
             val uri = resultData.data
             context.contentResolver.openOutputStream(uri).use {
-                val prefs = AppPrefs(context)
-                val settings = ExportedSettings()
-                settings.highlight = ArrayList(prefs.favoriteList)
-                val jsonString = Gson().toJson(settings)
-                it.writer(Charset.forName("utf8")).write(jsonString)
+                try {
+                    val prefs = AppPrefs(context)
+                    val settings = ExportedSettings()
+                    settings.highlight = ArrayList(prefs.favoriteList)
+                    val jsonString = Gson().toJson(settings)
+                    val writer = it.bufferedWriter(CHARSET)
+                    writer.write(jsonString)
+                    writer.flush()
+                } catch (e: Exception) {
+                    return Result.Error
+                }
             }
-            return true
+            return Result.OK
         }
-        return false
+        return Result.Skip
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     fun requestOpenDocument(activity: Activity) {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = MIME_TYPE
-        intent.putExtra(Intent.EXTRA_TITLE, FILE_NAME)
-        activity.startActivityForResult(intent, RC_CREATE_DOCUMENT)
+        intent.type = "*/*"
+        activity.startActivityForResult(intent, RC_OPEN_DOCUMENT)
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    fun onReqestOpenDocumentComplete(context: Context, requestCode: Int, resultCode: Int, resultData: Intent?): Boolean {
+    fun onRequestOpenDocumentComplete(context: Context, requestCode: Int, resultCode: Int, resultData: Intent?): Result {
         if (requestCode == RC_OPEN_DOCUMENT && resultCode == Activity.RESULT_OK && resultData != null && resultData.data != null) {
             val uri = resultData.data
             context.contentResolver.openInputStream(uri).use {
                 try {
-                    val settings = Gson().fromJson(it.reader(Charset.forName("utf8")), ExportedSettings::class.java)
+                    val settings = Gson().fromJson(it.reader(CHARSET), ExportedSettings::class.java)
                     if (settings.highlight != null) {
                         val prefs = AppPrefs(context)
                         prefs.favoriteList = TreeSet(settings.highlight)
                     }
                 } catch (e: Exception) {
-                    // TODO Alert return
-                    return false
+                    return Result.Error
                 }
             }
-            return true
+            return Result.OK
         }
-        return false
+        return Result.Skip
+    }
+
+    enum class Result {
+        OK, Error, Skip
     }
 }

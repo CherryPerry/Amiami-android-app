@@ -1,5 +1,6 @@
 package ru.cherryperry.amiami.screen.highlight
 
+import android.content.SharedPreferences
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import ru.cherryperry.amiami.AmiamiApplication
@@ -14,32 +15,30 @@ class HighlightPresenter(highlightScreenComponent: HighlightScreenComponent) : M
     lateinit var appPrefs: AppPrefs
 
     private val items = ArrayList<String>()
+    private val observer = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key -> updateData() }
 
     init {
         highlightScreenComponent.inject(this)
-        items.addAll(ArrayList(appPrefs.favoriteList))
-        items.sort()
+        updateData()
+        appPrefs.preferences.registerOnSharedPreferenceChangeListener(observer)
     }
 
-    constructor() : this(AmiamiApplication.highlightScreenComponent) {
-    }
-
-    override fun onFirstViewAttach() {
-        super.onFirstViewAttach()
-        viewState.showData(items)
-    }
+    constructor() : this(AmiamiApplication.highlightScreenComponent)
 
     fun deleteItem(index: Int) {
         items.removeAt(index)
-        items.sort()
         appPrefs.favoriteList = TreeSet(items)
-        viewState.showData(items)
     }
 
     fun addItem(item: String) {
         items.add(item)
-        items.sort()
         appPrefs.favoriteList = TreeSet(items)
+    }
+
+    private fun updateData() {
+        items.clear()
+        items.addAll(ArrayList(appPrefs.favoriteList))
+        items.sort()
         viewState.showData(items)
     }
 }

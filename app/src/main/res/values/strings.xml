@@ -31,6 +31,10 @@
     <string name="back_button_alert">Press back button again for exit</string>
     <string name="yen_price_format">%d ¥</string>
     <string name="no_limit">No limit</string>
+    <string name="export_settings">Export settings</string>
+    <string name="import_settings">Import settings</string>
+    <string name="export_error">Failed to export settings</string>
+    <string name="import_error">Failed to import settings</string>
 
     <!-- Updates -->
     <string name="update_dialog_title">Update available</string>
