@@ -5,7 +5,7 @@ apply plugin: 'com.github.ben-manes.versions'
 
 def CompatVer = '25.2.0'
 def Firebase = '10.2.0'
-def Moxy = '1.4.5'
+def Moxy = '1.4.6'
 def Retrofit = '2.2.0'
 def OkHttp = '3.6.0'
 def Dagger = '2.8'
