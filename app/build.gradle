@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.github.ben-manes.versions'
 
 def CompatVer = '25.3.1'
-def Firebase = '10.2.0'
+def Firebase = '10.2.1'
 def Moxy = '1.4.6'
 def Retrofit = '2.2.0'
 def OkHttp = '3.6.0'
