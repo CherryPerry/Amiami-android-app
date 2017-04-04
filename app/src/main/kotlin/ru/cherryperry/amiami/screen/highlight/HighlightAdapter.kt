@@ -10,6 +10,9 @@ import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.util.ViewDelegate
 import java.util.*
 
+/**
+ * Adapter for highlight list items of String type
+ */
 class HighlightAdapter : RecyclerView.Adapter<HighlightAdapter.FavoriteViewHolder>() {
     private val items: MutableList<String>
 
@@ -37,21 +40,18 @@ class HighlightAdapter : RecyclerView.Adapter<HighlightAdapter.FavoriteViewHolde
         calculateDiff.dispatchUpdatesTo(this)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
-        return FavoriteViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_highlight, parent, false))
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder
+            = FavoriteViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_highlight, parent, false))
 
     override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int) {
         holder.bind(items[position])
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount(): Int = items.size
 
-    override fun getItemId(position: Int): Long {
-        return items[position].hashCode().toLong()
-    }
+    override fun getItemId(position: Int): Long = getItem(position).hashCode().toLong()
+
+    fun getItem(position: Int): String = items[position]
 
     class FavoriteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val textView by ViewDelegate<TextView>(R.id.text)

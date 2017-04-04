@@ -48,7 +48,8 @@ class HighlightPresenterTest {
         }
         highlightPresenter.attachView(view)
         val lastCount = count
-        highlightPresenter.deleteItem(index)
+        // TODO
+        // highlightPresenter.deleteItem(index)
         Assert.assertEquals("Item was not removed!", lastCount - 1, count)
     }
 

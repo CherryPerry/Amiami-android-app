@@ -1,44 +1,71 @@
 package ru.cherryperry.amiami.screen.highlight
 
-import android.content.SharedPreferences
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import ru.cherryperry.amiami.AmiamiApplication
-import ru.cherryperry.amiami.AppPrefs
-import java.util.*
+import ru.cherryperry.amiami.domain.highlight.*
+import rx.android.schedulers.AndroidSchedulers
+import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
+/**
+ * Highlight list presenter
+ */
 @InjectViewState
 class HighlightPresenter(highlightScreenComponent: HighlightScreenComponent) : MvpPresenter<HighlightView>() {
 
     @Inject
-    lateinit var appPrefs: AppPrefs
+    lateinit var highlightListUseCase: HighlightListUseCase
 
-    private val items = ArrayList<String>()
-    private val observer = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key -> updateData() }
+    @Inject
+    lateinit var highlightListAddUseCase: HighlightListAddUseCase
 
-    init {
-        highlightScreenComponent.inject(this)
-        updateData()
-        appPrefs.preferences.registerOnSharedPreferenceChangeListener(observer)
-    }
+    @Inject
+    lateinit var highlightListRemoveUseCase: HighlightListRemoveUseCase
+
+    private val compositeSubscription = CompositeSubscription()
 
     constructor() : this(AmiamiApplication.highlightScreenComponent)
 
-    fun deleteItem(index: Int) {
-        items.removeAt(index)
-        appPrefs.favoriteList = TreeSet(items)
+    init {
+        highlightScreenComponent.inject(this)
+        // Subscribe to list and it's future changes
+        compositeSubscription.add(
+                highlightListUseCase.run(HighlightListUseCaseParams())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            viewState.showData(it.list)
+                        }, {
+                            it.printStackTrace()
+                        }))
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeSubscription.clear()
+    }
+
+    /**
+     * Delete item from list
+     */
+    fun deleteItem(item: String) {
+        compositeSubscription.add(
+                highlightListRemoveUseCase.run(HighlightListRemoveUseCaseParams(item))
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({}, {
+                            it.printStackTrace()
+                        }))
+    }
+
+    /**
+     * Add item to list
+     */
     fun addItem(item: String) {
-        items.add(item)
-        appPrefs.favoriteList = TreeSet(items)
-    }
-
-    private fun updateData() {
-        items.clear()
-        items.addAll(ArrayList(appPrefs.favoriteList))
-        items.sort()
-        viewState.showData(items)
+        compositeSubscription.add(
+                highlightListAddUseCase.run(HighlightListAddUseCaseParams(item))
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({}, {
+                            it.printStackTrace()
+                        }))
     }
 }

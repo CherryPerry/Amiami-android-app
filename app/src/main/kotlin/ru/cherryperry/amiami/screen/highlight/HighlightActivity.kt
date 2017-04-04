@@ -20,6 +20,9 @@ import ru.cherryperry.amiami.util.SAFSettingsProvider
 import ru.cherryperry.amiami.util.ViewDelegate
 import rx.subscriptions.CompositeSubscription
 
+/**
+ * Highlight list activity
+ */
 class HighlightActivity : MvpAppCompatActivity(), HighlightView {
 
     @InjectPresenter
@@ -63,7 +66,8 @@ class HighlightActivity : MvpAppCompatActivity(), HighlightView {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                presenter.deleteItem(viewHolder.adapterPosition)
+                val item = adapter.getItem(viewHolder.adapterPosition)
+                presenter.deleteItem(item)
             }
 
             override fun isLongPressDragEnabled(): Boolean {
