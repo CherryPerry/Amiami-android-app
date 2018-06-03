@@ -3,10 +3,11 @@ package ru.cherryperry.amiami.push
 import com.google.firebase.crash.FirebaseCrash
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import ru.cherryperry.amiami.AmiamiApplication
+import dagger.android.AndroidInjection
 import javax.inject.Inject
 
 class MessagingService : FirebaseMessagingService() {
+
     companion object {
         val updateTopic = "updates2"
     }
@@ -16,8 +17,7 @@ class MessagingService : FirebaseMessagingService() {
 
     override fun onCreate() {
         super.onCreate()
-
-        AmiamiApplication.messagingServiceComponent.inject(this)
+        AndroidInjection.inject(this)
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {

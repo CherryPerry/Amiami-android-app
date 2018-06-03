@@ -18,13 +18,13 @@ class WebViewPreviewDialog : DialogFragment() {
     private val webView by ViewDelegate<WebView>(R.id.webView)
     private var url: String? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater!!.inflate(R.layout.fragment_webview, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater.inflate(R.layout.fragment_webview, container, false)
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (arguments != null) {
-            url = arguments.getString(KEY_URL, null)
+        arguments?.apply {
+            url = getString(KEY_URL, null)
             if (url != null) webView.loadUrl(url)
         }
 
@@ -35,7 +35,7 @@ class WebViewPreviewDialog : DialogFragment() {
         findView<View>(R.id.openButton).setOnClickListener {
             if (URLUtil.isNetworkUrl(url)) {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                if (intent.resolveActivity(context.packageManager) != null)
+                if (intent.resolveActivity(context!!.packageManager) != null)
                     startActivity(intent)
             }
         }

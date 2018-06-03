@@ -18,11 +18,11 @@ class ViewDelegate<out T : View>(viewId: Int) {
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
         if (value == null)
-            when (thisRef) {
-                is Activity -> value = thisRef.findViewById(id) as T
-                is Fragment -> value = thisRef.view!!.findViewById(id) as T
-                is View -> value = thisRef.findViewById(id) as T
-                is RecyclerView.ViewHolder -> value = thisRef.itemView.findViewById(id) as T
+            value = when (thisRef) {
+                is Activity -> thisRef.findViewById(id) as T
+                is Fragment -> thisRef.view!!.findViewById(id) as T
+                is View -> thisRef.findViewById(id) as T
+                is RecyclerView.ViewHolder -> thisRef.itemView.findViewById(id) as T
                 else -> throw IllegalStateException("Other thisRefs not implemented")
             }
         return value!!
@@ -35,11 +35,11 @@ class NullableViewDelegate<out T : View?>(viewId: Int) {
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T? {
         if (value == null)
-            when (thisRef) {
-                is Activity -> value = thisRef.findViewById(id) as T?
-                is Fragment -> value = thisRef.view!!.findViewById(id) as T?
-                is View -> value = thisRef.findViewById(id) as T?
-                is RecyclerView.ViewHolder -> value = thisRef.itemView.findViewById(id) as T?
+            value = when (thisRef) {
+                is Activity -> thisRef.findViewById<T>(id)
+                is Fragment -> thisRef.view!!.findViewById<T>(id)
+                is View -> thisRef.findViewById<T>(id)
+                is RecyclerView.ViewHolder -> thisRef.itemView.findViewById<T>(id)
                 else -> throw IllegalStateException("Other thisRefs not implemented")
             }
         return value

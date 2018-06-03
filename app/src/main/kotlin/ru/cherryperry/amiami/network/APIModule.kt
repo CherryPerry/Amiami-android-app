@@ -19,8 +19,8 @@ import javax.inject.Singleton
 @Module
 class APIModule {
 
-    @Provides
     @Singleton
+    @Provides
     fun okHttpClient(context: Context): OkHttpClient {
         val logging = HttpLoggingInterceptor()
         logging.level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.HEADERS else HttpLoggingInterceptor.Level.NONE
@@ -36,6 +36,7 @@ class APIModule {
                 .build()
     }
 
+    @Singleton
     @Provides
     fun retrofitBuilder(client: OkHttpClient): Retrofit.Builder =
             Retrofit.Builder()

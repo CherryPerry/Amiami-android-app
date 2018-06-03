@@ -9,9 +9,7 @@ import ru.cherryperry.amiami.util.IntPreference
 import ru.cherryperry.amiami.util.StringPreference
 import ru.cherryperry.amiami.util.StringSetPreference
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class AppPrefs @Inject constructor(context: Context) {
     val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 

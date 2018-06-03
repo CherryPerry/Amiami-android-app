@@ -1,6 +1,9 @@
 package ru.cherryperry.amiami.screen.highlight
 
 import android.annotation.SuppressLint
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -11,22 +14,24 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.arellomobile.mvp.MvpAppCompatActivity
-import com.arellomobile.mvp.presenter.InjectPresenter
 import com.jakewharton.rxbinding.view.RxView
 import com.jakewharton.rxbinding.widget.RxTextView
+import dagger.android.support.DaggerAppCompatActivity
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.util.SAFSettingsProvider
 import ru.cherryperry.amiami.util.ViewDelegate
 import rx.subscriptions.CompositeSubscription
+import javax.inject.Inject
 
 /**
  * Highlight list activity
  */
-class HighlightActivity : MvpAppCompatActivity(), HighlightView {
+class HighlightActivity : DaggerAppCompatActivity() {
 
-    @InjectPresenter
-    lateinit var presenter: HighlightPresenter
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private lateinit var highlightViewModel: HighlightViewModel
 
     private val recyclerView by ViewDelegate<RecyclerView>(R.id.recyclerView)
     private val addButton by ViewDelegate<Button>(R.id.add)
@@ -37,6 +42,10 @@ class HighlightActivity : MvpAppCompatActivity(), HighlightView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        highlightViewModel = ViewModelProviders.of(this, viewModelFactory)
+                .get(HighlightViewModel::class.java)
+
         setContentView(R.layout.activity_highlight)
 
         // Add button
@@ -44,7 +53,7 @@ class HighlightActivity : MvpAppCompatActivity(), HighlightView {
                 RxTextView.textChanges(editText).subscribe { sequence -> addButton.isEnabled = sequence.length > 3 })
         compositeSubscription.add(
                 RxView.clicks(addButton).subscribe {
-                    presenter.addItem(editText.text.toString())
+                    highlightViewModel.addItem(editText.text.toString())
                     editText.text.clear()
                 }
         )
@@ -67,7 +76,7 @@ class HighlightActivity : MvpAppCompatActivity(), HighlightView {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val item = adapter.getItem(viewHolder.adapterPosition)
-                presenter.deleteItem(item)
+                highlightViewModel.deleteItem(item)
             }
 
             override fun isLongPressDragEnabled(): Boolean {
@@ -79,6 +88,8 @@ class HighlightActivity : MvpAppCompatActivity(), HighlightView {
             }
         })
         helper.attachToRecyclerView(recyclerView)
+
+        highlightViewModel.list.observe(this, Observer { it?.let { showData(it) } })
     }
 
     override fun onDestroy() {
@@ -119,7 +130,7 @@ class HighlightActivity : MvpAppCompatActivity(), HighlightView {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun showData(itemList: List<String>) {
+    private fun showData(itemList: List<String>) {
         adapter.setItems(itemList)
     }
 }

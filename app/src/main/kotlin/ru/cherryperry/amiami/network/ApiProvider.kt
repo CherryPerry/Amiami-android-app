@@ -12,7 +12,6 @@ import rx.Observable
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
 @Singleton
 class ApiProvider @Inject constructor(private val retrofitBuilder: Retrofit.Builder,
                                       private val appPrefs: AppPrefs) {
@@ -28,26 +27,23 @@ class ApiProvider @Inject constructor(private val retrofitBuilder: Retrofit.Buil
                 .build()
         remoteConfig.setConfigSettings(configSettings)
         remoteConfig.setDefaults(R.xml.remote_config_defaults)
-
-        return Observable.fromEmitter<String>(
-                {
-                    val emitter = it
-                    remoteConfig.fetch()
-                            .addOnCompleteListener {
-                                if (it.isSuccessful) {
-                                    remoteConfig.activateFetched()
-                                    val endpoint = remoteConfig.getString("server_base_url")
-                                    appPrefs.lastServer = endpoint
-                                    emitter.onNext(endpoint)
-                                    emitter.onCompleted()
-                                } else {
-                                    emitter.onError(IllegalStateException("isSuccessful = false"))
-                                }
-                            }
-                            .addOnFailureListener {
-                                emitter.onError(it)
-                            }
-                }, Emitter.BackpressureMode.LATEST)
+        return Observable.create<String>({ emitter ->
+            remoteConfig.fetch()
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            remoteConfig.activateFetched()
+                            val endpoint = remoteConfig.getString("server_base_url")
+                            appPrefs.lastServer = endpoint
+                            emitter.onNext(endpoint)
+                            emitter.onCompleted()
+                        } else {
+                            emitter.onError(IllegalStateException("isSuccessful = false"))
+                        }
+                    }
+                    .addOnFailureListener {
+                        emitter.onError(it)
+                    }
+        }, Emitter.BackpressureMode.LATEST)
                 .onErrorReturn {
                     if (TextUtils.isEmpty(appPrefs.lastServer)) throw it
                     appPrefs.lastServer

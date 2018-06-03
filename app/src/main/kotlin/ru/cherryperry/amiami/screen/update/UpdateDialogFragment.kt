@@ -37,9 +37,9 @@ class UpdateDialogFragment : AppCompatDialogFragment() {
             return super.onCreateDialog(savedInstanceState)
         }
 
-        return AlertDialog.Builder(context)
+        return AlertDialog.Builder(context!!)
                 .setTitle(R.string.update_dialog_title)
-                .setMessage(context.getString(R.string.update_dialog_text, version, name))
+                .setMessage(context!!.getString(R.string.update_dialog_text, version, name))
                 .setPositiveButton(R.string.update_dialog_download, { dialogInterface, i ->
                     try {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))

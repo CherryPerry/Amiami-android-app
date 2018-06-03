@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.support.v14.preference.PreferenceFragment
 import android.support.v7.preference.ListPreference
 import com.google.firebase.messaging.FirebaseMessaging
-import ru.cherryperry.amiami.AmiamiApplication
+import dagger.android.AndroidInjection
 import ru.cherryperry.amiami.AppPrefs
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.model.CurrencyRepository
@@ -23,9 +23,12 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
     private var subscription: Subscription? = null
 
-    override fun onCreatePreferences(bundle: Bundle?, rootKey: String?) {
-        AmiamiApplication.settingsScreenComponent.inject(this)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
+        super.onCreate(savedInstanceState)
+    }
 
+    override fun onCreatePreferences(bundle: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.settings)
         val listPreference = findPreference(getString(R.string.key_exchange_currency)) as ListPreference
         listPreference.isEnabled = false
@@ -63,10 +66,12 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        if (key == getString(R.string.key_push))
-            if (appPrefs.push)
+        if (key == getString(R.string.key_push)) {
+            if (appPrefs.push) {
                 FirebaseMessaging.getInstance().subscribeToTopic(MessagingService.updateTopic)
-            else
+            } else {
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(MessagingService.updateTopic)
+            }
+        }
     }
 }

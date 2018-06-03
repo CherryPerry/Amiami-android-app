@@ -1,19 +1,16 @@
-# Retrolambda
--dontwarn java.lang.invoke.*
-
 # Picasso
 -dontwarn com.squareup.okhttp.**
 
 # Retrofit
 -dontnote retrofit2.Platform
--dontnote retrofit2.Platform$IOS$MainThreadExecutor
 -dontwarn retrofit2.Platform$Java8
--dontwarn retrofit2.adapter.rxjava.CompletableHelper$**
 -keepattributes Signature
 -keepattributes Exceptions
 
 # OkHttp
 -dontwarn okhttp3.**
+
+# OkIO
 -dontwarn okio.**
 
 # RxJava
@@ -28,13 +25,6 @@
 -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
     rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
-
-# Moxy
--keep class **$$PresentersBinder
--keep class **$$State
--keep class **$$ParamsHolder
--keep class **$$ViewStateClassNameProvider
--keepnames class * extends com.arellomobile.mvp.*
 
 # Gson
 -keepattributes Signature

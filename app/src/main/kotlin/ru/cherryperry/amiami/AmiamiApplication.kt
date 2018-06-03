@@ -1,49 +1,18 @@
 package ru.cherryperry.amiami
 
-import android.app.Application
-import ru.cherryperry.amiami.push.DaggerMessagingServiceComponent
-import ru.cherryperry.amiami.push.MessagingServiceComponent
-import ru.cherryperry.amiami.screen.highlight.DaggerHighlightScreenComponent
-import ru.cherryperry.amiami.screen.highlight.HighlightScreenComponent
-import ru.cherryperry.amiami.screen.main.DaggerMainScreenComponent
-import ru.cherryperry.amiami.screen.main.MainScreenComponent
-import ru.cherryperry.amiami.screen.settings.DaggerSettingsScreenComponent
-import ru.cherryperry.amiami.screen.settings.SettingsScreenComponent
-import ru.cherryperry.amiami.screen.update.DaggerUpdateScreenComponent
-import ru.cherryperry.amiami.screen.update.UpdateScreenComponent
+import dagger.android.AndroidInjector
+import dagger.android.support.DaggerApplication
 
-class AmiamiApplication : Application() {
-    companion object {
-        lateinit var mainScreenComponent: MainScreenComponent
-        lateinit var settingsScreenComponent: SettingsScreenComponent
-        lateinit var highlightScreenComponent: HighlightScreenComponent
-        lateinit var messagingServiceComponent: MessagingServiceComponent
-        lateinit var updateScreenComponent: UpdateScreenComponent
-    }
+class AmiamiApplication : DaggerApplication() {
 
     override fun onCreate() {
         super.onCreate()
+    }
 
-        val applicationModule = ApplicationModule(this)
-
-        mainScreenComponent = DaggerMainScreenComponent.builder()
-                .applicationModule(applicationModule)
-                .build()
-
-        settingsScreenComponent = DaggerSettingsScreenComponent.builder()
-                .applicationModule(applicationModule)
-                .build()
-
-        highlightScreenComponent = DaggerHighlightScreenComponent.builder()
-                .applicationModule(applicationModule)
-                .build()
-
-        messagingServiceComponent = DaggerMessagingServiceComponent.builder()
-                .applicationModule(applicationModule)
-                .build()
-
-        updateScreenComponent = DaggerUpdateScreenComponent.builder()
-                .applicationModule(applicationModule)
-                .build()
+    override fun applicationInjector(): AndroidInjector<DaggerApplication> {
+        return DaggerApplicationComponent
+                .builder()
+                .applicationModule(ApplicationModule(this))
+                .build() as AndroidInjector<DaggerApplication>
     }
 }

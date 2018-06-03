@@ -1,5 +1,8 @@
 package ru.cherryperry.amiami.screen.main
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -19,11 +22,8 @@ import android.view.View
 import android.webkit.URLUtil
 import android.widget.TextView
 import android.widget.Toast
-import com.arellomobile.mvp.MvpAppCompatActivity
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.PresenterType
 import com.google.firebase.messaging.FirebaseMessaging
-import ru.cherryperry.amiami.AmiamiApplication
+import dagger.android.support.DaggerAppCompatActivity
 import ru.cherryperry.amiami.AppPrefs
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.chrome.CustomTabActivityHelper
@@ -35,23 +35,23 @@ import ru.cherryperry.amiami.push.NotificationController
 import ru.cherryperry.amiami.screen.highlight.HighlightActivity
 import ru.cherryperry.amiami.screen.settings.SettingsActivity
 import ru.cherryperry.amiami.screen.update.UpdateDialogFragment
-import ru.cherryperry.amiami.screen.update.UpdatePresenter
-import ru.cherryperry.amiami.screen.update.UpdateView
+import ru.cherryperry.amiami.screen.update.UpdateDialogViewModel
 import ru.cherryperry.amiami.util.FirebaseAnalyticsHelper
 import ru.cherryperry.amiami.util.ViewDelegate
 import javax.inject.Inject
 
-class MainActivity : MvpAppCompatActivity(), MainView, UpdateView, CustomTabActivityHelper.ConnectionCallback {
+class MainActivity : DaggerAppCompatActivity(), CustomTabActivityHelper.ConnectionCallback {
+
     companion object {
-        private val RC_SETTINGS = 704
-        private val RC_HIGHLIGHT = 507
+        private const val RC_SETTINGS = 704
+        private const val RC_HIGHLIGHT = 507
     }
 
-    @InjectPresenter
-    lateinit var presenter: MainPresenter
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    @InjectPresenter(type = PresenterType.GLOBAL)
-    lateinit var updatePresenter: UpdatePresenter
+    private lateinit var mainViewModel: MainViewModel
+    private lateinit var updateDialogViewModel: UpdateDialogViewModel
 
     // Views
     private val recyclerView by ViewDelegate<RecyclerView>(R.id.recyclerView)
@@ -79,9 +79,13 @@ class MainActivity : MvpAppCompatActivity(), MainView, UpdateView, CustomTabActi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        AmiamiApplication.mainScreenComponent.inject(this)
+        mainViewModel = ViewModelProviders.of(this, viewModelFactory)
+                .get(MainViewModel::class.java)
+        updateDialogViewModel = ViewModelProviders.of(this, viewModelFactory)
+                .get(UpdateDialogViewModel::class.java)
+
+        setContentView(R.layout.activity_main)
 
         FirebaseMessaging.getInstance().unsubscribeFromTopic("updates")
         if (prefs.push)
@@ -96,16 +100,16 @@ class MainActivity : MvpAppCompatActivity(), MainView, UpdateView, CustomTabActi
 
         setAdapter()
 
-        swipeRefreshLayout.setOnRefreshListener { presenter.load() }
+        swipeRefreshLayout.setOnRefreshListener { mainViewModel.load() }
 
         // Filter view
         filterView.onSearchTextChange = { s ->
             firebaseAnalytics.logSearch(filterView.getMinValue(), filterView.getMaxValue(), s)
-            presenter.reapplyFilter()
+            mainViewModel.reapplyFilter()
         }
         filterView.onSeekBarChange = { min, max ->
             firebaseAnalytics.logSearch(min, max, filterView.getSearchTerm())
-            presenter.reapplyFilter()
+            mainViewModel.reapplyFilter()
         }
         filterView.onRequestShowSheet = {
             val params = filterView.layoutParams as CoordinatorLayout.LayoutParams
@@ -114,6 +118,13 @@ class MainActivity : MvpAppCompatActivity(), MainView, UpdateView, CustomTabActi
 
         // Toolbar touch = scroll to top
         toolbar.setOnClickListener { recyclerView.scrollToPosition(0) }
+
+        mainViewModel.screenState.observe(this,
+                Observer { it?.let { showData(it.state, it.itemList) } })
+        mainViewModel.filterEnabled.observe(this,
+                Observer { it?.let { showFilterEnabled(it) } })
+        updateDialogViewModel.showDialogEvent.observe(this,
+                Observer { it?.let { showUpdateAvailableDialog(it.tagName, it.name, it.url) } })
     }
 
     override fun onDestroy() {
@@ -188,7 +199,7 @@ class MainActivity : MvpAppCompatActivity(), MainView, UpdateView, CustomTabActi
             RC_HIGHLIGHT -> itemAdapter.setHighlights(prefs.favoriteList)
             RC_SETTINGS -> {
                 setAdapter()
-                presenter.load()
+                mainViewModel.load()
             }
         }
     }
@@ -238,18 +249,16 @@ class MainActivity : MvpAppCompatActivity(), MainView, UpdateView, CustomTabActi
         recyclerView.adapter = itemAdapter
     }
 
-    override fun showData(@MainView.MainViewState state: Long, itemList: Items?) {
-        swipeRefreshLayout.isRefreshing = state == MainView.STATE_LOADING
-        if (state == MainView.STATE_DONE) {
-            itemAdapter.setItems(itemList)
-        } else if (state == MainView.STATE_ERROR_INTERNAL) {
-            Toast.makeText(this, R.string.error_internal, Toast.LENGTH_SHORT).show()
-        } else if (state == MainView.STATE_ERROR_NETWORK) {
-            Toast.makeText(this, R.string.error_network, Toast.LENGTH_SHORT).show()
+    private fun showData(@ScreenState.MainViewState state: Int, itemList: Items?) {
+        swipeRefreshLayout.isRefreshing = state == ScreenState.STATE_LOADING
+        when (state) {
+            ScreenState.STATE_DONE -> itemAdapter.setItems(itemList)
+            ScreenState.STATE_ERROR_INTERNAL -> Toast.makeText(this, R.string.error_internal, Toast.LENGTH_SHORT).show()
+            ScreenState.STATE_ERROR_NETWORK -> Toast.makeText(this, R.string.error_network, Toast.LENGTH_SHORT).show()
         }
     }
 
-    override fun showFilterEnabled(filterEnabled: Boolean) {
+    private fun showFilterEnabled(filterEnabled: Boolean) {
         filterHintView.visibility = if (filterEnabled) View.VISIBLE else View.GONE
     }
 
@@ -287,7 +296,7 @@ class MainActivity : MvpAppCompatActivity(), MainView, UpdateView, CustomTabActi
         webViewPreviewDialog!!.show(supportFragmentManager, null)
     }
 
-    override fun showUpdateAvailableDialog(tagName: String, name: String, url: String) {
+    private fun showUpdateAvailableDialog(tagName: String, name: String, url: String) {
         UpdateDialogFragment.newInstance(tagName, name, url).show(supportFragmentManager, "update")
     }
 }
