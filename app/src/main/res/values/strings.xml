@@ -41,4 +41,8 @@
     <string name="update_dialog_text">New version (%1$s - %2$s) is available on GitHub</string>
     <string name="update_dialog_download">Download</string>
     <string name="update_dialog_cancel">Cancel</string>
+
+    <!-- Notification channel -->
+    <string name="notification_channel_title">Updates</string>
+    <string name="notification_channel_description">You will be notified every time new items appear</string>
 </resources>
