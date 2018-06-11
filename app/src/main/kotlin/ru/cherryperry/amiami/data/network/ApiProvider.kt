@@ -1,4 +1,4 @@
-package ru.cherryperry.amiami.network
+package ru.cherryperry.amiami.data.network
 
 import android.text.TextUtils
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -7,6 +7,8 @@ import retrofit2.Retrofit
 import ru.cherryperry.amiami.AppPrefs
 import ru.cherryperry.amiami.BuildConfig
 import ru.cherryperry.amiami.R
+import ru.cherryperry.amiami.data.network.github.GitHubApi
+import ru.cherryperry.amiami.data.network.server.ServerApi
 import rx.Emitter
 import rx.Observable
 import javax.inject.Inject
@@ -16,9 +18,9 @@ import javax.inject.Singleton
 class ApiProvider @Inject constructor(private val retrofitBuilder: Retrofit.Builder,
                                       private val appPrefs: AppPrefs) {
 
-    private var api: API? = null
+    private var api: ServerApi? = null
 
-    fun api(): Observable<API> {
+    fun api(): Observable<ServerApi> {
         if (api != null) return Observable.just(api)
 
         val remoteConfig = FirebaseRemoteConfig.getInstance()
@@ -52,14 +54,14 @@ class ApiProvider @Inject constructor(private val retrofitBuilder: Retrofit.Buil
                     api = retrofitBuilder
                             .baseUrl(it)
                             .build()
-                            .create(API::class.java)
+                            .create(ServerApi::class.java)
                     api
                 }
     }
 
-    fun gitHubApi(): Observable<GitHubAPI> = Observable.just(
+    fun gitHubApi(): Observable<GitHubApi> = Observable.just(
             retrofitBuilder
-                    .baseUrl(GitHubAPI.URL)
+                    .baseUrl(GitHubApi.URL)
                     .build()
-                    .create(GitHubAPI::class.java))
+                    .create(GitHubApi::class.java))
 }

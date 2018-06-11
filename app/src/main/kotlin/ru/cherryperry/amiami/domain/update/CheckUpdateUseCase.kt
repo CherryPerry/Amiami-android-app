@@ -1,11 +1,10 @@
 package ru.cherryperry.amiami.domain.update
 
 import ru.cherryperry.amiami.BuildConfig
+import ru.cherryperry.amiami.data.network.ApiProvider
 import ru.cherryperry.amiami.domain.SingleUseCase
 import ru.cherryperry.amiami.domain.UseCaseParam
 import ru.cherryperry.amiami.domain.UseCaseResult
-import ru.cherryperry.amiami.domain.data.UpdateInfo
-import ru.cherryperry.amiami.network.ApiProvider
 import rx.Single
 import javax.inject.Inject
 

@@ -1,8 +1,9 @@
 package ru.cherryperry.amiami.model
 
 import ru.cherryperry.amiami.AppPrefs
-import ru.cherryperry.amiami.network.API
-import ru.cherryperry.amiami.network.ApiProvider
+import ru.cherryperry.amiami.data.network.ApiProvider
+import ru.cherryperry.amiami.data.network.server.ExchangeRate
+import ru.cherryperry.amiami.data.network.server.ServerApi
 import rx.Observable
 import rx.schedulers.Schedulers
 import java.util.*
@@ -21,7 +22,7 @@ class ItemRepository @Inject constructor(private val api: ApiProvider,
 
         if (forceNetwork || cache.isEmpty())
             return api.api()
-                    .flatMap(API::items)
+                    .flatMap(ServerApi::items)
                     .map { it.map(::Item) }
                     .doOnNext {
                         cache.clear()

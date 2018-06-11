@@ -1,6 +1,7 @@
-package ru.cherryperry.amiami.network
+package ru.cherryperry.amiami.data.network
 
 import android.content.Context
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -11,13 +12,15 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import ru.cherryperry.amiami.BuildConfig
+import ru.cherryperry.amiami.data.network.server.ExchangeRate
+import ru.cherryperry.amiami.data.network.server.ExchangeRateGsonTypeAdapter
 import rx.schedulers.Schedulers
 import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
-class APIModule {
+class NetworkModule {
 
     @Singleton
     @Provides
@@ -38,11 +41,15 @@ class APIModule {
 
     @Singleton
     @Provides
-    fun retrofitBuilder(client: OkHttpClient): Retrofit.Builder =
-            Retrofit.Builder()
-                    .client(client)
-                    .addConverterFactory(ScalarsConverterFactory.create())
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
-                    .validateEagerly(true)
+    fun retrofitBuilder(client: OkHttpClient): Retrofit.Builder {
+        val gson = GsonBuilder()
+                .registerTypeAdapter(ExchangeRate::class.java, ExchangeRateGsonTypeAdapter())
+                .create()
+        return Retrofit.Builder()
+                .client(client)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
+                .validateEagerly(true)
+    }
 }

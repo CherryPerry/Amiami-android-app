@@ -1,6 +1,6 @@
 package ru.cherryperry.amiami.model
 
-import ru.cherryperry.amiami.network.RemoteItem
+import ru.cherryperry.amiami.data.network.server.RemoteItem
 import java.util.regex.Pattern
 import kotlin.properties.Delegates
 

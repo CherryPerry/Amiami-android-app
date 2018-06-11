@@ -1,77 +1,71 @@
 package ru.cherryperry.amiami.screen.settings
 
-import android.content.SharedPreferences
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.LifecycleRegistry
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v14.preference.PreferenceFragment
+import android.support.v4.app.FragmentActivity
 import android.support.v7.preference.ListPreference
-import com.google.firebase.messaging.FirebaseMessaging
 import dagger.android.AndroidInjection
-import ru.cherryperry.amiami.AppPrefs
 import ru.cherryperry.amiami.R
-import ru.cherryperry.amiami.model.CurrencyRepository
-import ru.cherryperry.amiami.push.MessagingService
-import rx.Subscription
-import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
-class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
+
+class SettingsFragment : PreferenceFragment(), LifecycleOwner {
 
     @Inject
-    lateinit var appPrefs: AppPrefs
-    @Inject
-    lateinit var currencyRepository: CurrencyRepository
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private var subscription: Subscription? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
-        super.onCreate(savedInstanceState)
-    }
+    private var lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
+    private lateinit var viewModel: SettingsViewModel
 
     override fun onCreatePreferences(bundle: Bundle?, rootKey: String?) {
+        AndroidInjection.inject(this)
+        // PreferenceFragment is not support fragment!
+        viewModel = ViewModelProviders.of(activity as FragmentActivity, viewModelFactory)
+                .get(SettingsViewModel::class.java)
         addPreferencesFromResource(R.xml.settings)
         val listPreference = findPreference(getString(R.string.key_exchange_currency)) as ListPreference
-        listPreference.isEnabled = false
-        listPreference.entries = arrayOf()
-        listPreference.entryValues = arrayOf()
-
-        subscription = currencyRepository.exchangeRate(false)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        {
-                            if (it != null) {
-                                listPreference.isEnabled = true
-                                listPreference.entries = it.rates.keys.toTypedArray()
-                                listPreference.entryValues = it.rates.keys.toTypedArray()
-                            }
-                        },
-                        {
-                            it.printStackTrace()
-                        })
+        viewModel.currencySetting.observe(this, Observer {
+            it?.apply {
+                listPreference.isEnabled = enabled
+                listPreference.entries = entries
+                listPreference.entryValues = values
+            }
+        })
+        lifecycle.addObserver(viewModel)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        subscription?.unsubscribe()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        lifecycleRegistry.markState(Lifecycle.State.CREATED)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        lifecycleRegistry.markState(Lifecycle.State.DESTROYED)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        lifecycleRegistry.markState(Lifecycle.State.STARTED)
     }
 
     override fun onResume() {
         super.onResume()
-        appPrefs.preferences.registerOnSharedPreferenceChangeListener(this)
+        lifecycleRegistry.markState(Lifecycle.State.RESUMED)
     }
 
     override fun onPause() {
         super.onPause()
-        appPrefs.preferences.unregisterOnSharedPreferenceChangeListener(this)
+        lifecycleRegistry.markState(Lifecycle.State.STARTED)
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        if (key == getString(R.string.key_push)) {
-            if (appPrefs.push) {
-                FirebaseMessaging.getInstance().subscribeToTopic(MessagingService.updateTopic)
-            } else {
-                FirebaseMessaging.getInstance().unsubscribeFromTopic(MessagingService.updateTopic)
-            }
-        }
+    override fun getLifecycle(): Lifecycle {
+        return lifecycleRegistry
     }
 }

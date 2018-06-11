@@ -5,12 +5,12 @@ import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import dagger.android.support.AndroidSupportInjectionModule
-import ru.cherryperry.amiami.network.APIModule
+import ru.cherryperry.amiami.data.network.NetworkModule
 import ru.cherryperry.amiami.push.MessagingServiceModule
 import ru.cherryperry.amiami.screen.base.AppViewModelFactoryModule
 import ru.cherryperry.amiami.screen.highlight.HighlightActivityModule
 import ru.cherryperry.amiami.screen.main.MainActivityModule
-import ru.cherryperry.amiami.screen.main.SettingsFragmentModule
+import ru.cherryperry.amiami.screen.settings.SettingsFragmentModule
 import ru.cherryperry.amiami.screen.update.UpdateDialogModule
 import javax.inject.Singleton
 
@@ -22,7 +22,7 @@ import javax.inject.Singleton
     AppViewModelFactoryModule::class,
     // data
     ApplicationModule::class,
-    APIModule::class,
+    NetworkModule::class,
     // presentation
     MainActivityModule::class,
     HighlightActivityModule::class,

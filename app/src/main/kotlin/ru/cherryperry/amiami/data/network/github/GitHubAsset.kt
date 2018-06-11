@@ -1,4 +1,4 @@
-package ru.cherryperry.amiami.network
+package ru.cherryperry.amiami.data.network.github
 
 import com.google.gson.annotations.SerializedName
 

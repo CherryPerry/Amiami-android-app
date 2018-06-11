@@ -1,9 +1,9 @@
-package ru.cherryperry.amiami.network
+package ru.cherryperry.amiami.data.network.github
 
 import retrofit2.http.GET
 import rx.Observable
 
-interface GitHubAPI {
+interface GitHubApi {
     companion object {
         const val URL = "https://api.github.com/"
     }

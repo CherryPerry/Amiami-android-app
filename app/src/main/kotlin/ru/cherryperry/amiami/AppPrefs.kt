@@ -3,7 +3,7 @@ package ru.cherryperry.amiami
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import ru.cherryperry.amiami.model.ExchangeRate
+import ru.cherryperry.amiami.data.network.server.ExchangeRate
 import ru.cherryperry.amiami.util.BooleanPreference
 import ru.cherryperry.amiami.util.IntPreference
 import ru.cherryperry.amiami.util.StringPreference
@@ -23,6 +23,5 @@ class AppPrefs @Inject constructor(context: Context) {
     var favoriteList by StringSetPreference(context, R.string.key_favorites)
     var favoritesOnly by BooleanPreference(context, R.string.key_favorites_only, false)
     var lastServer by StringPreference(context, R.string.key_last_server, "")
-    var lastExchanges by StringPreference(context, R.string.key_last_exchanges, "")
     var exchangeCurrency by StringPreference(context, R.string.key_exchange_currency, ExchangeRate.DEFAULT)
 }

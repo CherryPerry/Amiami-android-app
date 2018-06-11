@@ -5,7 +5,7 @@ import rx.Completable
 /**
  * Some logic, that produces result for presenter with provided params
  */
-abstract class CompletableUseCase<in Params : UseCaseParam> {
+abstract class CompletableUseCase<in Params> {
 
     abstract fun run(param: Params): Completable
 }

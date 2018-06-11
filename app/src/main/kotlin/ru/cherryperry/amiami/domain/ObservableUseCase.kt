@@ -5,7 +5,7 @@ import rx.Observable
 /**
  * Some logic, that produces result for presenter with provided params
  */
-abstract class ObservalbeUseCase<in Params : UseCaseParam, Result : UseCaseResult> {
+abstract class ObservableUseCase<in Params, Result> {
 
     abstract fun run(param: Params): Observable<Result>
 }

@@ -2,7 +2,7 @@ package ru.cherryperry.amiami.domain.highlight
 
 import android.content.SharedPreferences
 import ru.cherryperry.amiami.AppPrefs
-import ru.cherryperry.amiami.domain.ObservalbeUseCase
+import ru.cherryperry.amiami.domain.ObservableUseCase
 import ru.cherryperry.amiami.domain.UseCaseParam
 import ru.cherryperry.amiami.domain.UseCaseResult
 import rx.Emitter
@@ -14,7 +14,7 @@ import javax.inject.Inject
  * Get list of highlight rules
  */
 class HighlightListUseCase @Inject constructor(private val appPrefs: AppPrefs) :
-        ObservalbeUseCase<HighlightListUseCaseParams, HighlightListUseCaseResult>() {
+        ObservableUseCase<HighlightListUseCaseParams, HighlightListUseCaseResult>() {
 
     override fun run(param: HighlightListUseCaseParams): Observable<HighlightListUseCaseResult> {
         val observerReference = AtomicReference<SharedPreferences.OnSharedPreferenceChangeListener>()

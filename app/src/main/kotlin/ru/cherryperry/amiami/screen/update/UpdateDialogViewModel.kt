@@ -1,8 +1,8 @@
 package ru.cherryperry.amiami.screen.update
 
-import ru.cherryperry.amiami.domain.data.UpdateInfo
 import ru.cherryperry.amiami.domain.update.CheckUpdateUseCase
 import ru.cherryperry.amiami.domain.update.CheckUpdateUseCaseParams
+import ru.cherryperry.amiami.domain.update.UpdateInfo
 import ru.cherryperry.amiami.screen.base.BaseViewModel
 import ru.cherryperry.amiami.screen.base.SingleLiveEvent
 import rx.android.schedulers.AndroidSchedulers

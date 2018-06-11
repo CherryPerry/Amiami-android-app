@@ -1,21 +1,20 @@
-package ru.cherryperry.amiami.model
+package ru.cherryperry.amiami.data.network.server
 
-import org.json.JSONObject
-import java.util.*
+import ru.cherryperry.amiami.model.Item
+import java.util.Locale
+import kotlin.collections.HashMap
 
-class ExchangeRate(json: String) {
+class ExchangeRate(
+        map: MutableMap<String, Double>
+) {
     companion object {
-        val DEFAULT = "JPY"
+        const val DEFAULT = "JPY"
     }
 
-    val rates: MutableMap<String, Double> = TreeMap()
+    val rates: MutableMap<String, Double> = HashMap(map)
 
     init {
-        val ratesJson = JSONObject(json).getJSONObject("rates")
-        ratesJson.keys().forEach {
-            rates.put(it, ratesJson.getDouble(it))
-        }
-        rates.put(DEFAULT, 1.0)
+        rates[DEFAULT] = 1.0
     }
 
     fun changeItemPrice(item: Item, target: String): Item {

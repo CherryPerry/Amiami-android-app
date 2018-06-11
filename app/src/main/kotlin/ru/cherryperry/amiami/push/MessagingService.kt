@@ -9,7 +9,7 @@ import javax.inject.Inject
 class MessagingService : FirebaseMessagingService() {
 
     companion object {
-        val updateTopic = "updates2"
+        const val updateTopic = "updates2"
     }
 
     @Inject

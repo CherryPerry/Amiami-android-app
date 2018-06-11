@@ -1,4 +1,4 @@
-package ru.cherryperry.amiami.domain.data
+package ru.cherryperry.amiami.domain.update
 
 /**
  * Contains information about application update on github.com

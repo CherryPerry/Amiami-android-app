@@ -1,8 +1,7 @@
-package ru.cherryperry.amiami.screen.main
+package ru.cherryperry.amiami.screen.settings
 
 import dagger.Subcomponent
 import dagger.android.AndroidInjector
-import ru.cherryperry.amiami.screen.settings.SettingsFragment
 
 @Subcomponent
 interface SettingsFragmentSubcomponent : AndroidInjector<SettingsFragment> {

@@ -1,8 +1,7 @@
-package ru.cherryperry.amiami.network
+package ru.cherryperry.amiami.data.network.server
 
 import com.google.gson.annotations.SerializedName
 
-// Not data class cause of empty constructor
 class RemoteItem {
     @SerializedName("url")
     var url: String? = null
