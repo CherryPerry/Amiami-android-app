@@ -46,8 +46,8 @@ class SettingsViewModel @Inject constructor(
     private fun loadCurrencySettings() {
         this += getCurrentRatesUseCase.run(Any())
                 .subscribe({
-                    _currencySetting.postValue(CurrencySetting(
-                            true, it.rates.keys.toTypedArray(), it.rates.keys.toTypedArray()))
+                    val array: Array<CharSequence> = it.rates.keys.toTypedArray()
+                    _currencySetting.postValue(CurrencySetting(true, array, array))
                 }, {})
     }
 }
