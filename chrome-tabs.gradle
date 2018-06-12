@@ -1,0 +1,42 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
+
+class CopyChromeTabsSourcesTask extends DefaultTask {
+
+    @OutputDirectory
+    File outputDirectory
+
+    @TaskAction
+    def copySources() {
+        def rootDir = new File(project.parent.projectDir, 'custom-tabs-client')
+        def files = [
+                ['demos', 'src', 'main', 'java', 'org', 'chromium', 'customtabsdemos', 'CustomTabActivityHelper.java'],
+                ['shared', 'src', 'main', 'java', 'org', 'chromium', 'customtabsclient', 'shared', 'CustomTabsHelper.java'],
+                ['shared', 'src', 'main', 'java', 'org', 'chromium', 'customtabsclient', 'shared', 'KeepAliveService.java'],
+                ['shared', 'src', 'main', 'java', 'org', 'chromium', 'customtabsclient', 'shared', 'ServiceConnection.java'],
+                ['shared', 'src', 'main', 'java', 'org', 'chromium', 'customtabsclient', 'shared', 'ServiceConnectionCallback.java']
+        ]
+        files.each { list ->
+            def stringPath = list.inject(rootDir.toString()) {
+                root, item -> root + File.separator + item
+            }
+            def startWith = list.indexOf('org')
+            def targetPath = list[startWith..list.size - 1].inject(outputDirectory.toString()) {
+                root, item -> root + File.separator + item
+            }
+            def sourcePath = Paths.get(stringPath)
+            def destinationPath = Paths.get(targetPath)
+            Files.createDirectories(destinationPath.getParent())
+            Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES)
+        }
+    }
+}
+
+project.android.applicationVariants.all { variant ->
+    def outputDir = new File(project.buildDir, "generated/source/chromeTabs/${variant.dirName}")
+    def task = project.tasks.create(name: "chromeTabs${variant.name.capitalize()}", type: CopyChromeTabsSourcesTask) {
+        outputDirectory = outputDir
+    }
+    variant.registerJavaGeneratingTask task, outputDir
+}

@@ -24,10 +24,10 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.android.support.DaggerAppCompatActivity
+import org.chromium.customtabsclient.shared.CustomTabsHelper
+import org.chromium.customtabsdemos.CustomTabActivityHelper
 import ru.cherryperry.amiami.AppPrefs
 import ru.cherryperry.amiami.R
-import ru.cherryperry.amiami.chrome.CustomTabActivityHelper
-import ru.cherryperry.amiami.chrome.CustomTabsHelper
 import ru.cherryperry.amiami.model.Item
 import ru.cherryperry.amiami.model.Items
 import ru.cherryperry.amiami.push.MessagingService
