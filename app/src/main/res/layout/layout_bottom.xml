@@ -7,7 +7,7 @@
     android:clickable="true"
     android:orientation="vertical"
     android:paddingBottom="16dp"
-    tools:context=".screen.main.MainActivity">
+    tools:context=".screen.main.MainFragment">
 
     <View
         android:layout_width="match_parent"

@@ -14,48 +14,24 @@ import javax.inject.Singleton
 class ItemRepository @Inject constructor(private val api: ApiProvider,
                                          private val appPrefs: AppPrefs,
                                          private val currencyRepository: CurrencyRepository) {
-    private val cache = ArrayList<Item>()
 
     fun items(forceNetwork: Boolean): Observable<Items> {
-        // val items = Items()
-        // items.setFilter(appPrefs.priceMin, appPrefs.priceMax, appPrefs.searchTerm)
+        return api.api()
+                .flatMap(ServerApi::items)
+                .map { it.map(::Item) }
+                .compose { applyFilter(it) }
+                .flatMap({ currencyRepository.exchangeRate(forceNetwork) }, ::ItemsWithExchange)
+                .compose { applyExchangeRate(it) }
+                .map {
+                    val items = Items()
+                    it.forEach { items.add(it) }
 
-        if (forceNetwork || cache.isEmpty())
-            return api.api()
-                    .flatMap(ServerApi::items)
-                    .map { it.map(::Item) }
-                    .doOnNext {
-                        cache.clear()
-                        cache.addAll(it)
-                    }
-                    .compose { applyFilter(it) }
-                    .flatMap({ currencyRepository.exchangeRate(forceNetwork) }, ::ItemsWithExchange)
-                    .compose { applyExchangeRate(it) }
-                    .map {
-                        val items = Items()
-                        it.forEach { items.add(it) }
+                    // setFilter для отображения в UI фильтров
+                    items.setFilter(appPrefs.priceMin, appPrefs.priceMax, appPrefs.searchTerm)
 
-                        // setFilter для отображения в UI фильтров
-                        items.setFilter(appPrefs.priceMin, appPrefs.priceMax, appPrefs.searchTerm)
-
-                        items.calculate()
-                        items
-                    }
-        else
-            return Observable.just(cache as List<Item>)
-                    .compose { applyFilter(it) }
-                    .flatMap({ currencyRepository.exchangeRate(forceNetwork) }, ::ItemsWithExchange)
-                    .compose { applyExchangeRate(it) }
-                    .map {
-                        val items = Items()
-                        it.forEach { items.add(it) }
-
-                        // setFilter для отображения в UI фильтров
-                        items.setFilter(appPrefs.priceMin, appPrefs.priceMax, appPrefs.searchTerm)
-
-                        items.calculate()
-                        items
-                    }
+                    items.calculate()
+                    items
+                }
     }
 
     /**

@@ -1,32 +1,32 @@
 package ru.cherryperry.amiami.screen.settings
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LifecycleRegistry
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v14.preference.PreferenceFragment
-import android.support.v4.app.FragmentActivity
 import android.support.v7.preference.ListPreference
-import dagger.android.AndroidInjection
+import android.support.v7.preference.PreferenceFragmentCompat
+import android.support.v7.widget.Toolbar
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import dagger.android.support.AndroidSupportInjection
 import ru.cherryperry.amiami.R
+import ru.cherryperry.amiami.screen.activity.Navigator
 import javax.inject.Inject
 
-
-class SettingsFragment : PreferenceFragment(), LifecycleOwner {
+class SettingsFragment : PreferenceFragmentCompat() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var navigator: Navigator
 
-    private var lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
     private lateinit var viewModel: SettingsViewModel
 
     override fun onCreatePreferences(bundle: Bundle?, rootKey: String?) {
-        AndroidInjection.inject(this)
-        // PreferenceFragment is not support fragment!
-        viewModel = ViewModelProviders.of(activity as FragmentActivity, viewModelFactory)
+        AndroidSupportInjection.inject(this)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(SettingsViewModel::class.java)
         addPreferencesFromResource(R.xml.settings)
         val listPreference = findPreference(getString(R.string.key_exchange_currency)) as ListPreference
@@ -40,32 +40,12 @@ class SettingsFragment : PreferenceFragment(), LifecycleOwner {
         lifecycle.addObserver(viewModel)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        lifecycleRegistry.markState(Lifecycle.State.CREATED)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        lifecycleRegistry.markState(Lifecycle.State.DESTROYED)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        lifecycleRegistry.markState(Lifecycle.State.STARTED)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        lifecycleRegistry.markState(Lifecycle.State.RESUMED)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        lifecycleRegistry.markState(Lifecycle.State.STARTED)
-    }
-
-    override fun getLifecycle(): Lifecycle {
-        return lifecycleRegistry
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val appBarLayout = LayoutInflater.from(view.context).inflate(
+                R.layout.settings_toolbar, view as ViewGroup, false)
+        val toolbar = appBarLayout.findViewById<Toolbar>(R.id.toolbar)
+        navigator.configureToolbar(toolbar)
+        view.addView(appBarLayout, 0)
     }
 }

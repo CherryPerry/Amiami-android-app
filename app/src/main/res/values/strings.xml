@@ -18,7 +18,14 @@
     <string name="highlight_hint">Add character or anime title to highlight items, that\'s name contains added string (regex supported).
         For example, \"illya\" would highlight all items with \"illya\" in it, and \"((bake)|(nise))monogatari\" would highlight all items with \"bakemonogatari\" and \"nisemonogatari\".
         Swipe item to remove string from list.</string>
-    <string name="notification_counter">%d new items in store</string>
+    <plurals name="notification_counter">
+        <item quantity="zero">%d new items in store</item>
+        <item quantity="one">%d new item in store</item>
+        <item quantity="two">%d new items in store</item>
+        <item quantity="few">%d new items in store</item>
+        <item quantity="many">%d new items in store</item>
+        <item quantity="other">%d new items in store</item>
+    </plurals>
     <string name="developer_email" translatable="false">cherry.perry.boy@gmail.com</string>
     <string name="send_feedback">Send feedback</string>
     <string name="feedback_text">You can write me about any bugs or improvements you want in the app.</string>
@@ -43,6 +50,7 @@
     <string name="update_dialog_cancel">Cancel</string>
 
     <!-- Notification channel -->
+    <string name="notification_channel_id">channel.updates</string>
     <string name="notification_channel_title">Updates</string>
     <string name="notification_channel_description">You will be notified every time new items appear</string>
 </resources>

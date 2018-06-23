@@ -16,7 +16,6 @@ import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.model.Item
 import ru.cherryperry.amiami.model.Items
 import ru.cherryperry.amiami.util.HighlightFilter
-import ru.cherryperry.amiami.util.NullableViewDelegate
 import ru.cherryperry.amiami.util.ViewDelegate
 import java.text.DateFormat
 import java.util.*
@@ -98,10 +97,10 @@ class ItemAdapter(context: Context, @LayoutRes private val layout: Int) : Recycl
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        private val image by NullableViewDelegate<ImageView?>(R.id.image)
-        private val name by NullableViewDelegate<TextView?>(R.id.name)
-        private val discount by NullableViewDelegate<TextView?>(R.id.discount)
-        private val price by NullableViewDelegate<TextView?>(R.id.price)
+        private val image by ViewDelegate<ImageView?>(R.id.image)
+        private val name by ViewDelegate<TextView?>(R.id.name)
+        private val discount by ViewDelegate<TextView?>(R.id.discount)
+        private val price by ViewDelegate<TextView?>(R.id.price)
 
         init {
             itemView.setOnClickListener(this)

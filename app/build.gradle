@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android'
 apply from: '../chrome-tabs.gradle'
+apply plugin: "org.jmailen.kotlinter"
 
 def CompatVer = '27.1.1'
 def Retrofit = '2.4.0'
@@ -73,8 +74,8 @@ dependencies {
 
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
-    implementation "com.google.firebase:firebase-crash:16.0.0"
-    implementation "com.google.firebase:firebase-core:16.0.0"
+    implementation "com.google.firebase:firebase-crash:16.0.1"
+    implementation "com.google.firebase:firebase-core:16.0.1"
     implementation "com.google.firebase:firebase-messaging:17.0.0"
     implementation "com.google.firebase:firebase-config:16.0.0"
 
@@ -92,6 +93,7 @@ dependencies {
     implementation "com.google.dagger:dagger-android:$Dagger"
     implementation "com.google.dagger:dagger-android-support:$Dagger"
     kapt "com.google.dagger:dagger-compiler:$Dagger"
+    kapt "com.google.dagger:dagger-android-processor:$Dagger"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 

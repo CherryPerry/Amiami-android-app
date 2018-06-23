@@ -16,14 +16,15 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.DisplayMetrics
-import android.view.Menu
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.webkit.URLUtil
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.messaging.FirebaseMessaging
-import dagger.android.support.DaggerAppCompatActivity
+import dagger.android.support.DaggerFragment
 import org.chromium.customtabsclient.shared.CustomTabsHelper
 import org.chromium.customtabsdemos.CustomTabActivityHelper
 import ru.cherryperry.amiami.AppPrefs
@@ -32,15 +33,15 @@ import ru.cherryperry.amiami.model.Item
 import ru.cherryperry.amiami.model.Items
 import ru.cherryperry.amiami.push.MessagingService
 import ru.cherryperry.amiami.push.NotificationController
-import ru.cherryperry.amiami.screen.highlight.HighlightActivity
-import ru.cherryperry.amiami.screen.settings.SettingsActivity
-import ru.cherryperry.amiami.screen.update.UpdateDialogFragment
+import ru.cherryperry.amiami.screen.activity.Navigator
+import ru.cherryperry.amiami.screen.activity.OnBackKeyPressedListener
 import ru.cherryperry.amiami.screen.update.UpdateDialogViewModel
 import ru.cherryperry.amiami.util.FirebaseAnalyticsHelper
 import ru.cherryperry.amiami.util.ViewDelegate
+import ru.cherryperry.amiami.util.ViewDelegateReset
 import javax.inject.Inject
 
-class MainActivity : DaggerAppCompatActivity(), CustomTabActivityHelper.ConnectionCallback {
+class MainFragment : DaggerFragment(), CustomTabActivityHelper.ConnectionCallback, OnBackKeyPressedListener {
 
     companion object {
         private const val RC_SETTINGS = 704
@@ -49,16 +50,19 @@ class MainActivity : DaggerAppCompatActivity(), CustomTabActivityHelper.Connecti
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var navigator: Navigator
 
     private lateinit var mainViewModel: MainViewModel
     private lateinit var updateDialogViewModel: UpdateDialogViewModel
 
     // Views
-    private val recyclerView by ViewDelegate<RecyclerView>(R.id.recyclerView)
-    private val toolbar by ViewDelegate<Toolbar>(R.id.toolbar)
-    private val swipeRefreshLayout by ViewDelegate<SwipeRefreshLayout>(R.id.swipeRefreshLayout)
-    private val filterHintView by ViewDelegate<TextView>(R.id.filter)
-    private val filterView by ViewDelegate<FilterView>(R.id.filterView)
+    private val viewDelegateReset = ViewDelegateReset()
+    private val recyclerView by ViewDelegate<RecyclerView>(R.id.recyclerView, viewDelegateReset)
+    private val toolbar by ViewDelegate<Toolbar>(R.id.toolbar, viewDelegateReset)
+    private val swipeRefreshLayout by ViewDelegate<SwipeRefreshLayout>(R.id.swipeRefreshLayout, viewDelegateReset)
+    private val filterHintView by ViewDelegate<TextView>(R.id.filter, viewDelegateReset)
+    private val filterView by ViewDelegate<FilterView>(R.id.filterView, viewDelegateReset)
 
     // Late init controllers
     private lateinit var itemAdapter: ItemAdapter
@@ -75,25 +79,24 @@ class MainActivity : DaggerAppCompatActivity(), CustomTabActivityHelper.Connecti
     private var customTabAvailable = false
     private var isPaused = true
     private var webViewPreviewDialog: WebViewPreviewDialog? = null
-    private var backButtonWasPressed = false
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.main, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         mainViewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(MainViewModel::class.java)
         updateDialogViewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(UpdateDialogViewModel::class.java)
 
-        setContentView(R.layout.activity_main)
-
         FirebaseMessaging.getInstance().unsubscribeFromTopic("updates")
         if (prefs.push)
             FirebaseMessaging.getInstance().subscribeToTopic(MessagingService.updateTopic)
         else
             FirebaseMessaging.getInstance().unsubscribeFromTopic(MessagingService.updateTopic)
-
-        setSupportActionBar(toolbar)
 
         customTabActivityHelper = CustomTabActivityHelper()
         customTabActivityHelper.setConnectionCallback(this)
@@ -116,15 +119,22 @@ class MainActivity : DaggerAppCompatActivity(), CustomTabActivityHelper.Connecti
             (params.behavior as BottomSheetBehavior<*>).state = BottomSheetBehavior.STATE_EXPANDED
         }
 
-        // Toolbar touch = scroll to top
+        // Toolbar
         toolbar.setOnClickListener { recyclerView.scrollToPosition(0) }
+        toolbar.inflateMenu(R.menu.main_menu)
+        toolbar.setOnMenuItemClickListener { onOptionsItemSelected2(it) }
 
         mainViewModel.screenState.observe(this,
                 Observer { it?.let { showData(it.state, it.itemList) } })
         mainViewModel.filterEnabled.observe(this,
                 Observer { it?.let { showFilterEnabled(it) } })
         updateDialogViewModel.showDialogEvent.observe(this,
-                Observer { it?.let { showUpdateAvailableDialog(it.tagName, it.name, it.url) } })
+                Observer { it?.let { navigator.openUpdateDialog(it) } })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewDelegateReset.onDestroyView()
     }
 
     override fun onDestroy() {
@@ -134,7 +144,7 @@ class MainActivity : DaggerAppCompatActivity(), CustomTabActivityHelper.Connecti
 
     override fun onStart() {
         super.onStart()
-        customTabActivityHelper.bindCustomTabsService(this)
+        customTabActivityHelper.bindCustomTabsService(activity!!)
 
         firebaseAnalytics.setUserPropertyChromeTabs(prefs.chromeCustomTabs)
         firebaseAnalytics.setUserPropertyGridView(prefs.gridView)
@@ -146,7 +156,7 @@ class MainActivity : DaggerAppCompatActivity(), CustomTabActivityHelper.Connecti
 
     override fun onStop() {
         super.onStop()
-        customTabActivityHelper.unbindCustomTabsService(this)
+        customTabActivityHelper.unbindCustomTabsService(activity!!)
     }
 
     override fun onResume() {
@@ -161,19 +171,14 @@ class MainActivity : DaggerAppCompatActivity(), CustomTabActivityHelper.Connecti
         isPaused = true
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    private fun onOptionsItemSelected2(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_settings -> {
-                startActivityForResult(Intent(this, SettingsActivity::class.java), RC_SETTINGS)
+                navigator.openSettings()
                 return true
             }
             R.id.action_highlight -> {
-                startActivityForResult(Intent(this, HighlightActivity::class.java), RC_HIGHLIGHT)
+                navigator.openHighlight()
                 return true
             }
             R.id.action_feedback -> {
@@ -183,10 +188,10 @@ class MainActivity : DaggerAppCompatActivity(), CustomTabActivityHelper.Connecti
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, getString(R.string.developer_email))
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback))
                 emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.feedback_text))
-                if (emailIntent.resolveActivity(packageManager) != null) {
+                if (emailIntent.resolveActivity(activity!!.packageManager) != null) {
                     startActivity(Intent.createChooser(emailIntent, getString(R.string.send_feedback)))
                 } else
-                    Toast.makeText(this, R.string.error_no_email_app, Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity!!, R.string.error_no_email_app, Toast.LENGTH_LONG).show()
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -204,21 +209,14 @@ class MainActivity : DaggerAppCompatActivity(), CustomTabActivityHelper.Connecti
         }
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed(): Boolean {
         val params = filterView.layoutParams as CoordinatorLayout.LayoutParams
         val behavior = params.behavior as BottomSheetBehavior<*>
         if (behavior.state == BottomSheetBehavior.STATE_EXPANDED) {
             behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            return
+            return true
         }
-        if (backButtonWasPressed) {
-            backButtonWasPressed = false
-            super.onBackPressed()
-        } else {
-            backButtonWasPressed = true
-            window?.decorView?.postDelayed({ backButtonWasPressed = false }, 2000)
-            Toast.makeText(this, R.string.back_button_alert, Toast.LENGTH_SHORT).show()
-        }
+        return false
     }
 
     private fun setAdapter() {
@@ -227,18 +225,18 @@ class MainActivity : DaggerAppCompatActivity(), CustomTabActivityHelper.Connecti
         val layoutManager: RecyclerView.LayoutManager
         if (prefs.gridView) {
             val metrics = DisplayMetrics()
-            windowManager.defaultDisplay.getMetrics(metrics)
+            activity!!.windowManager.defaultDisplay.getMetrics(metrics)
             columns = Math.max(1,
                     metrics.widthPixels / resources.getDimensionPixelSize(R.dimen.grid_view_item_min_width))
-            layoutManager = GridLayoutManager(this, columns)
+            layoutManager = GridLayoutManager(activity!!, columns)
             gridView = true
         } else
-            layoutManager = LinearLayoutManager(this)
+            layoutManager = LinearLayoutManager(activity!!)
 
         val highlights = prefs.favoriteList
         firebaseAnalytics.setUserPropertyHighlightItemsSize(highlights.size)
 
-        itemAdapter = ItemAdapter(this, if (gridView) R.layout.item_grid_item else R.layout.item_item)
+        itemAdapter = ItemAdapter(activity!!, if (gridView) R.layout.item_grid_item else R.layout.item_item)
         itemAdapter.itemClick = { onItemClick(it) }
         itemAdapter.setHighlights(highlights)
 
@@ -253,8 +251,8 @@ class MainActivity : DaggerAppCompatActivity(), CustomTabActivityHelper.Connecti
         swipeRefreshLayout.isRefreshing = state == ScreenState.STATE_LOADING
         when (state) {
             ScreenState.STATE_DONE -> itemAdapter.setItems(itemList)
-            ScreenState.STATE_ERROR_INTERNAL -> Toast.makeText(this, R.string.error_internal, Toast.LENGTH_SHORT).show()
-            ScreenState.STATE_ERROR_NETWORK -> Toast.makeText(this, R.string.error_network, Toast.LENGTH_SHORT).show()
+            ScreenState.STATE_ERROR_INTERNAL -> Toast.makeText(activity!!, R.string.error_internal, Toast.LENGTH_SHORT).show()
+            ScreenState.STATE_ERROR_NETWORK -> Toast.makeText(activity!!, R.string.error_network, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -279,24 +277,20 @@ class MainActivity : DaggerAppCompatActivity(), CustomTabActivityHelper.Connecti
 
             if (prefs.chromeCustomTabs && customTabAvailable && customTabActivityHelper.mayLaunchUrl(uri, null, null)) {
                 val builder = CustomTabsIntent.Builder()
-                builder.setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                builder.setToolbarColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
                 val intent = builder.build()
                 intent.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                CustomTabsHelper.addKeepAliveExtra(this, intent.intent)
-                CustomTabActivityHelper.openCustomTab(this, intent, uri) { activity, u -> showUrlAsDialog(u.toString()) }
+                CustomTabsHelper.addKeepAliveExtra(activity!!, intent.intent)
+                CustomTabActivityHelper.openCustomTab(activity!!, intent, uri) { activity, u -> showUrlAsDialog(u.toString()) }
             } else
                 showUrlAsDialog(item.url!!)
         } else
-            Toast.makeText(this, R.string.error_invalid_uri, Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity!!, R.string.error_invalid_uri, Toast.LENGTH_SHORT).show()
     }
 
     private fun showUrlAsDialog(url: String) {
         if (webViewPreviewDialog != null) webViewPreviewDialog!!.dismiss()
         webViewPreviewDialog = WebViewPreviewDialog.newInstance(url)
-        webViewPreviewDialog!!.show(supportFragmentManager, null)
-    }
-
-    private fun showUpdateAvailableDialog(tagName: String, name: String, url: String) {
-        UpdateDialogFragment.newInstance(tagName, name, url).show(supportFragmentManager, "update")
+        webViewPreviewDialog!!.show(childFragmentManager, null)
     }
 }

@@ -1,11 +1,11 @@
 package ru.cherryperry.amiami.screen.settings
 
-import android.app.Fragment
 import android.arch.lifecycle.ViewModel
+import android.support.v4.app.Fragment
 import dagger.Binds
 import dagger.Module
 import dagger.android.AndroidInjector
-import dagger.android.FragmentKey
+import dagger.android.support.FragmentKey
 import dagger.multibindings.IntoMap
 import ru.cherryperry.amiami.screen.base.ViewModelKey
 

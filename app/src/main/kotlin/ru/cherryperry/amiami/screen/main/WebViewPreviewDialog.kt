@@ -12,7 +12,7 @@ import android.webkit.URLUtil
 import android.webkit.WebView
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.util.ViewDelegate
-import ru.cherryperry.amiami.util.findView
+import ru.cherryperry.amiami.util.findViewById
 
 class WebViewPreviewDialog : DialogFragment() {
     private val webView by ViewDelegate<WebView>(R.id.webView)
@@ -32,7 +32,7 @@ class WebViewPreviewDialog : DialogFragment() {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
 
         // Open button
-        findView<View>(R.id.openButton).setOnClickListener {
+        findViewById<View>(R.id.openButton).setOnClickListener {
             if (URLUtil.isNetworkUrl(url)) {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 if (intent.resolveActivity(context!!.packageManager) != null)
@@ -41,7 +41,7 @@ class WebViewPreviewDialog : DialogFragment() {
         }
 
         // Close button
-        findView<View>(R.id.closeButton).setOnClickListener {
+        findViewById<View>(R.id.closeButton).setOnClickListener {
             dismiss()
         }
     }

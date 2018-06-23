@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.support.v4.app.Fragment
 import com.google.gson.Gson
 import ru.cherryperry.amiami.AppPrefs
 import ru.cherryperry.amiami.model.ExportedSettings
@@ -27,6 +28,15 @@ object SAFSettingsProvider {
         intent.type = "application/json"
         intent.putExtra(Intent.EXTRA_TITLE, FILE_NAME)
         activity.startActivityForResult(intent, RC_CREATE_DOCUMENT)
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    fun requestCreateDocument(fragment: Fragment) {
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = "application/json"
+        intent.putExtra(Intent.EXTRA_TITLE, FILE_NAME)
+        fragment.startActivityForResult(intent, RC_CREATE_DOCUMENT)
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -57,6 +67,14 @@ object SAFSettingsProvider {
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = "*/*"
         activity.startActivityForResult(intent, RC_OPEN_DOCUMENT)
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    fun requestOpenDocument(fragment: Fragment) {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = "*/*"
+        fragment.startActivityForResult(intent, RC_OPEN_DOCUMENT)
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)

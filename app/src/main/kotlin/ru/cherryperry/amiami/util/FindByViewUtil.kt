@@ -6,42 +6,46 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import kotlin.reflect.KProperty
 
-fun <T : View> Fragment.findView(id: Int): T = this.view?.findViewById(id) as T
+fun <T : View> Fragment.findViewById(id: Int): T = this.view?.findViewById(id) as T
 
-fun <T : View> Activity.findView(id: Int): T = this.findViewById(id) as T
+class ViewDelegateReset {
 
-fun <T : View> View.findView(id: Int): T = this.findViewById(id) as T
+    private val list = ArrayList<ViewDelegate<*>>()
 
-class ViewDelegate<out T : View>(viewId: Int) {
-    private var value: T? = null
-    private val id = viewId
+    internal fun register(viewDelegate: ViewDelegate<*>) {
+        list.add(viewDelegate)
+    }
 
-    operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        if (value == null)
-            value = when (thisRef) {
-                is Activity -> thisRef.findViewById(id) as T
-                is Fragment -> thisRef.view!!.findViewById(id) as T
-                is View -> thisRef.findViewById(id) as T
-                is RecyclerView.ViewHolder -> thisRef.itemView.findViewById(id) as T
-                else -> throw IllegalStateException("Other thisRefs not implemented")
-            }
-        return value!!
+    fun onDestroyView() {
+        list.forEach { it.onDestroyView() }
     }
 }
 
-class NullableViewDelegate<out T : View?>(viewId: Int) {
+class ViewDelegate<out T : View?>(
+        viewId: Int,
+        viewDelegateReset: ViewDelegateReset? = null
+) {
     private var value: T? = null
     private val id = viewId
 
-    operator fun getValue(thisRef: Any?, property: KProperty<*>): T? {
-        if (value == null)
-            value = when (thisRef) {
-                is Activity -> thisRef.findViewById<T>(id)
-                is Fragment -> thisRef.view!!.findViewById<T>(id)
-                is View -> thisRef.findViewById<T>(id)
-                is RecyclerView.ViewHolder -> thisRef.itemView.findViewById<T>(id)
-                else -> throw IllegalStateException("Other thisRefs not implemented")
-            }
-        return value
+    init {
+        viewDelegateReset?.register(this)
+    }
+
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
+        value?.let { return it }
+        val newValue = when (thisRef) {
+            is Activity -> thisRef.findViewById<T>(id)
+            is Fragment -> thisRef.view!!.findViewById<T>(id)
+            is View -> thisRef.findViewById<T>(id)
+            is RecyclerView.ViewHolder -> thisRef.itemView.findViewById<T>(id)
+            else -> throw IllegalStateException("Other thisRefs not implemented")
+        }
+        value = newValue
+        return newValue
+    }
+
+    internal fun onDestroyView() {
+        value = null
     }
 }

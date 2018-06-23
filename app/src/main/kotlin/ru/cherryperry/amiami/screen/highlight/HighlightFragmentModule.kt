@@ -1,21 +1,21 @@
 package ru.cherryperry.amiami.screen.highlight
 
-import android.app.Activity
 import android.arch.lifecycle.ViewModel
+import android.support.v4.app.Fragment
 import dagger.Binds
 import dagger.Module
-import dagger.android.ActivityKey
 import dagger.android.AndroidInjector
+import dagger.android.support.FragmentKey
 import dagger.multibindings.IntoMap
 import ru.cherryperry.amiami.screen.base.ViewModelKey
 
-@Module(subcomponents = [HighlightActivitySubcomponent::class])
-abstract class HighlightActivityModule {
+@Module(subcomponents = [HighlightFragmentSubcomponent::class])
+abstract class HighlightFragmentModule {
 
     @Binds
     @IntoMap
-    @ActivityKey(HighlightActivity::class)
-    internal abstract fun bindFactory(builder: HighlightActivitySubcomponent.Builder): AndroidInjector.Factory<out Activity>
+    @FragmentKey(HighlightFragment::class)
+    internal abstract fun bindFactory(builder: HighlightFragmentSubcomponent.Builder): AndroidInjector.Factory<out Fragment>
 
     @Binds
     @IntoMap

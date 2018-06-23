@@ -1,21 +1,21 @@
 package ru.cherryperry.amiami.screen.main
 
-import android.app.Activity
 import android.arch.lifecycle.ViewModel
+import android.support.v4.app.Fragment
 import dagger.Binds
 import dagger.Module
-import dagger.android.ActivityKey
 import dagger.android.AndroidInjector
+import dagger.android.support.FragmentKey
 import dagger.multibindings.IntoMap
 import ru.cherryperry.amiami.screen.base.ViewModelKey
 
-@Module(subcomponents = [MainActivitySubcomponent::class])
-abstract class MainActivityModule {
+@Module(subcomponents = [MainFragmentSubcomponent::class])
+abstract class MainFragmentModule {
 
     @Binds
     @IntoMap
-    @ActivityKey(MainActivity::class)
-    internal abstract fun bindFactory(builder: MainActivitySubcomponent.Builder): AndroidInjector.Factory<out Activity>
+    @FragmentKey(MainFragment::class)
+    internal abstract fun bindFactory(builder: MainFragmentSubcomponent.Builder): AndroidInjector.Factory<out Fragment>
 
     @Binds
     @IntoMap

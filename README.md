@@ -1,4 +1,6 @@
 # Amiami pre-owned section browser for Android
+[![Build Status](https://travis-ci.org/CherryPerry/Amiami-android-app.svg?branch=master)](https://travis-ci.org/CherryPerry/Amiami-android-app)
+
 Application for observing pre-owned items of [amiami.com](http://www.amiami.com/)
 
 [Backend](https://github.com/CherryPerry/Amiami-kotlin-backend) is required.
