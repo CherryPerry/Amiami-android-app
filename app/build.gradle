@@ -10,10 +10,6 @@ def Retrofit = '2.4.0'
 def OkHttp = '3.10.0'
 def Dagger = '2.16'
 
-def keystorePropertiesFile = rootProject.file("keystore.properties")
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
 android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
