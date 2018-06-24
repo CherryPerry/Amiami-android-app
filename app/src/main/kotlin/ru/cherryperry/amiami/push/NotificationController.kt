@@ -17,15 +17,15 @@ import javax.inject.Singleton
 @Singleton
 class NotificationController @Inject constructor(
         private val context: Context,
-        private val prefs: AppPrefs,
-        private val notificationChannelId: String = context.getString(R.string.notification_channel_id)
+        private val prefs: AppPrefs
 ) {
     companion object {
         private const val notificationId = 0
     }
 
+    private val notificationChannelId: String = context.getString(R.string.notification_channel_id)
     private val notificationManager: NotificationManager? =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
 
     init {
         createOrUpdateNotificationChannel()
@@ -49,7 +49,7 @@ class NotificationController @Inject constructor(
                 val builder = NotificationCompat.Builder(context, notificationChannelId)
                         .setSmallIcon(R.mipmap.ic_notification_icon)
                         .setContentTitle(context.getString(R.string.app_name))
-                        .setContentText(context.resources.getQuantityString(value, R.string.notification_counter, value))
+                        .setContentText(context.resources.getQuantityString(value, R.plurals.notification_counter, value))
                         .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher))
                         .setContentIntent(pendingIntent).setAutoCancel(true)
                 notify(notificationId, builder.build())

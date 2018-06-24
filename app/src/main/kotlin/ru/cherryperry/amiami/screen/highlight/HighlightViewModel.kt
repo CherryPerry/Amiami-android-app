@@ -3,11 +3,8 @@ package ru.cherryperry.amiami.screen.highlight
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import ru.cherryperry.amiami.domain.highlight.HighlightListAddUseCase
-import ru.cherryperry.amiami.domain.highlight.HighlightListAddUseCaseParams
 import ru.cherryperry.amiami.domain.highlight.HighlightListRemoveUseCase
-import ru.cherryperry.amiami.domain.highlight.HighlightListRemoveUseCaseParams
 import ru.cherryperry.amiami.domain.highlight.HighlightListUseCase
-import ru.cherryperry.amiami.domain.highlight.HighlightListUseCaseParams
 import ru.cherryperry.amiami.screen.base.BaseViewModel
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
@@ -23,21 +20,21 @@ class HighlightViewModel @Inject constructor(
         get() {
             if (!::internalList.isInitialized) {
                 internalList = MutableLiveData()
-                this += highlightListUseCase.run(HighlightListUseCaseParams())
+                this += highlightListUseCase.run(Any())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({ internalList.value = it.list }, { it.printStackTrace() })
+                        .subscribe({ internalList.value = it }, { it.printStackTrace() })
             }
             return internalList
         }
 
     fun deleteItem(item: String) {
-        this += highlightListRemoveUseCase.run(HighlightListRemoveUseCaseParams(item))
+        this += highlightListRemoveUseCase.run(item)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({}, { it.printStackTrace() })
     }
 
     fun addItem(item: String) {
-        this += highlightListAddUseCase.run(HighlightListAddUseCaseParams(item))
+        this += highlightListAddUseCase.run(item)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({}, { it.printStackTrace() })
     }

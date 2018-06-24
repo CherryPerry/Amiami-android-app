@@ -5,14 +5,15 @@ import dagger.android.support.DaggerApplication
 
 class AmiamiApplication : DaggerApplication() {
 
-    override fun onCreate() {
-        super.onCreate()
-    }
-
-    override fun applicationInjector(): AndroidInjector<DaggerApplication> {
-        return DaggerApplicationComponent
+    @Suppress("UNCHECKED_CAST")
+    private val injector by lazy {
+        DaggerApplicationComponent
                 .builder()
                 .applicationModule(ApplicationModule(this))
                 .build() as AndroidInjector<DaggerApplication>
+    }
+
+    override fun applicationInjector(): AndroidInjector<DaggerApplication> {
+        return injector
     }
 }

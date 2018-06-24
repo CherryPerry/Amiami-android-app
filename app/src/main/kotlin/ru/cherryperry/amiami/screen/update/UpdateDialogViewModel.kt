@@ -1,7 +1,6 @@
 package ru.cherryperry.amiami.screen.update
 
 import ru.cherryperry.amiami.domain.update.CheckUpdateUseCase
-import ru.cherryperry.amiami.domain.update.CheckUpdateUseCaseParams
 import ru.cherryperry.amiami.domain.update.UpdateInfo
 import ru.cherryperry.amiami.screen.base.BaseViewModel
 import ru.cherryperry.amiami.screen.base.SingleLiveEvent
@@ -15,8 +14,8 @@ class UpdateDialogViewModel @Inject constructor(
     val showDialogEvent = SingleLiveEvent<UpdateInfo>()
 
     init {
-        this += checkUpdateUseCase.run(CheckUpdateUseCaseParams())
+        this += checkUpdateUseCase.run(Any())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ it.updateInfo?.also { showDialogEvent.value = it } }, { it.printStackTrace() })
+                .subscribe({ it?.also { showDialogEvent.value = it } }, { it.printStackTrace() })
     }
 }
