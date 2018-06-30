@@ -1,40 +1,18 @@
-def jksFilePath
-def jksPassword
-def alias
-def password
-
-def keystorePropertiesFile = rootProject.file("keystore.properties")
-if (keystorePropertiesFile.exists()) {
-    logger.warn('keystore.properties is used for signing config')
-    def keystoreProperties = new Properties()
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-    jksFilePath = keystoreProperties['storeFile']
-    jksPassword = keystoreProperties['storePassword']
-    alias = keystoreProperties['keyAlias']
-    password = keystoreProperties['keyPassword']
-} else {
-    final env = System.env
-    if (env.containsKey('SIGNING_FILE')
-            && env.containsKey('SIGNING_PASSWORD')
-            && env.containsKey('SIGNING_ALIAS')
-            && env.containsKey('SIGNING_ALIAS_PASSWORD')) {
-        logger.warn('System.env is used for signing config')
-        jksFilePath = "$env.SIGNING_FILE"
-        jksPassword = "$env.SIGNING_PASSWORD"
-        alias = "$env.SIGNING_ALIAS"
-        password = "$env.SIGNING_ALIAS_PASSWORD"
-    } else {
-        throw IllegalStateException('Failed to load signing config')
-    }
-}
-
 android {
     signingConfigs {
         release {
-            storeFile file(jksFilePath)
-            storePassword jksPassword
-            keyAlias alias
-            keyPassword password
+            def keystorePropertiesFile = rootProject.file("keystore.properties")
+            if (!keystorePropertiesFile.exists() || !keystorePropertiesFile.canRead()) {
+                logger.error("No keystore.properties file! Have you decrypted it?")
+                return
+            }
+            def keystoreProperties = new Properties()
+            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
         }
     }
 }

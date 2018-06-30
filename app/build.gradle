@@ -3,7 +3,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android'
 apply from: '../chrome-tabs.gradle'
 apply from: '../signing.gradle'
-apply plugin: "org.jmailen.kotlinter"
+apply plugin: 'org.jmailen.kotlinter'
 
 def CompatVer = '27.1.1'
 def Retrofit = '2.4.0'
