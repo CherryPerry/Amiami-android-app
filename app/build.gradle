@@ -22,10 +22,13 @@ android {
         versionName '2.1.0'
 
         def properties = new Properties()
-        file('fabric.properties').withInputStream { stream ->
-            properties.load(stream)
+        def file = file('fabric.properties')
+        if (file.exists()) {
+            file.withInputStream { stream ->
+                properties.load(stream)
+            }
+            manifestPlaceholders = [fabricKey: properties['apiKey']]
         }
-        manifestPlaceholders = [fabricKey: properties['apiKey']]
     }
 
     buildTypes {
