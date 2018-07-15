@@ -1,19 +1,26 @@
 package ru.cherryperry.amiami
 
-import dagger.android.AndroidInjector
+import com.crashlytics.android.Crashlytics
+import com.crashlytics.android.core.CrashlyticsCore
 import dagger.android.support.DaggerApplication
+import io.fabric.sdk.android.Fabric
 
 class AmiamiApplication : DaggerApplication() {
 
-    @Suppress("UNCHECKED_CAST")
     private val injector by lazy {
         DaggerApplicationComponent
-                .builder()
-                .applicationModule(ApplicationModule(this))
-                .build() as AndroidInjector<DaggerApplication>
+            .builder()
+            .applicationModule(ApplicationModule(this))
+            .build()
     }
 
-    override fun applicationInjector(): AndroidInjector<DaggerApplication> {
-        return injector
+    override fun onCreate() {
+        super.onCreate()
+        val crashKit = Crashlytics.Builder()
+            .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+            .build()
+        Fabric.with(this, crashKit)
     }
+
+    override fun applicationInjector() = injector
 }

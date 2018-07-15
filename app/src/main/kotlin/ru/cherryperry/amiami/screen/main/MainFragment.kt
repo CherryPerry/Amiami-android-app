@@ -281,7 +281,7 @@ class MainFragment : DaggerFragment(), CustomTabActivityHelper.ConnectionCallbac
                 val intent = builder.build()
                 intent.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                 CustomTabsHelper.addKeepAliveExtra(activity!!, intent.intent)
-                CustomTabActivityHelper.openCustomTab(activity!!, intent, uri) { activity, u -> showUrlAsDialog(u.toString()) }
+                CustomTabActivityHelper.openCustomTab(activity!!, intent, uri) { _, u -> showUrlAsDialog(u.toString()) }
             } else
                 showUrlAsDialog(item.url!!)
         } else

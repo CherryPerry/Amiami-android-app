@@ -12,5 +12,3 @@ class GitHubRelease {
     @SerializedName("assets")
     val assets: Collection<GitHubAsset>? = null
 }
-
-

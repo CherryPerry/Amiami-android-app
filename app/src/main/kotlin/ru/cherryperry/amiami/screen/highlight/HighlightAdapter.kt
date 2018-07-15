@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.util.ViewDelegate
-import java.util.*
+import java.util.ArrayList
 
 /**
  * Adapter for highlight list items of String type
@@ -17,7 +17,7 @@ class HighlightAdapter : RecyclerView.Adapter<HighlightAdapter.FavoriteViewHolde
     private val items: MutableList<String>
 
     init {
-        items = ArrayList<String>()
+        items = ArrayList()
         setHasStableIds(true)
     }
 
@@ -28,20 +28,16 @@ class HighlightAdapter : RecyclerView.Adapter<HighlightAdapter.FavoriteViewHolde
 
             override fun getNewListSize(): Int = collection.size
 
-            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean
-                    = collection[newItemPosition] == items[oldItemPosition]
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = collection[newItemPosition] == items[oldItemPosition]
 
-            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean
-                    = true
-
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = true
         })
         items.clear()
         items.addAll(collection)
         calculateDiff.dispatchUpdatesTo(this)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder
-            = FavoriteViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_highlight, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder = FavoriteViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_highlight, parent, false))
 
     override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int) {
         holder.bind(items[position])

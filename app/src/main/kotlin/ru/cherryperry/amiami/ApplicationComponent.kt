@@ -3,7 +3,6 @@ package ru.cherryperry.amiami
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
 import dagger.android.support.AndroidSupportInjectionModule
 import ru.cherryperry.amiami.data.network.NetworkModule
 import ru.cherryperry.amiami.screen.activity.SingleActivityModule
@@ -22,7 +21,7 @@ import javax.inject.Singleton
     // presentation
     SingleActivityModule::class
 ])
-interface ApplicationComponent : AndroidInjector<DaggerApplication> {
+interface ApplicationComponent : AndroidInjector<AmiamiApplication> {
 
     @Component.Builder
     interface Builder {

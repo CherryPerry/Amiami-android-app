@@ -2,7 +2,7 @@ package ru.cherryperry.amiami.screen.main
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import com.google.firebase.crash.FirebaseCrash
+import com.crashlytics.android.Crashlytics
 import ru.cherryperry.amiami.AppPrefs
 import ru.cherryperry.amiami.model.ItemRepository
 import ru.cherryperry.amiami.model.Items
@@ -14,8 +14,8 @@ import java.io.IOException
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-        private val itemRepository: ItemRepository,
-        private val appPrefs: AppPrefs
+    private val itemRepository: ItemRepository,
+    private val appPrefs: AppPrefs
 ) : BaseViewModel() {
 
     private lateinit var screenLiveData: MutableLiveData<ScreenState>
@@ -35,21 +35,21 @@ class MainViewModel @Inject constructor(
 
     fun load() {
         itemSubscription.unsubscribe()
-        itemSubscription = itemRepository.items(true)
-                .map { showHighlightOnly(it) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { screenLiveData.value = ScreenState(ScreenState.STATE_LOADING, null) }
-                .subscribe({ showItems(it) }, { showError(it) })
+        itemSubscription = itemRepository.items()
+            .map { showHighlightOnly(it) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { screenLiveData.value = ScreenState(ScreenState.STATE_LOADING, null) }
+            .subscribe({ showItems(it) }, { showError(it) })
         this += itemSubscription
     }
 
     fun reapplyFilter() {
         itemSubscription.unsubscribe()
-        itemSubscription = itemRepository.items(false)
-                .map { showHighlightOnly(it) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { screenLiveData.value = ScreenState(ScreenState.STATE_LOADING, null) }
-                .subscribe({ showItems(it) }, { showError(it) })
+        itemSubscription = itemRepository.items()
+            .map { showHighlightOnly(it) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { screenLiveData.value = ScreenState(ScreenState.STATE_LOADING, null) }
+            .subscribe({ showItems(it) }, { showError(it) })
         this += itemSubscription
     }
 
@@ -60,7 +60,7 @@ class MainViewModel @Inject constructor(
 
     private fun showError(throwable: Throwable) {
         if (throwable !is IOException) {
-            FirebaseCrash.report(throwable)
+            Crashlytics.logException(throwable)
         }
         throwable.printStackTrace()
         val errorState = if (throwable is IOException) ScreenState.STATE_ERROR_NETWORK else ScreenState.STATE_ERROR_INTERNAL

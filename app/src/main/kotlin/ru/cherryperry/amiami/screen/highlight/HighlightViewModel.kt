@@ -10,9 +10,9 @@ import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 class HighlightViewModel @Inject constructor(
-        private val highlightListUseCase: HighlightListUseCase,
-        private val highlightListAddUseCase: HighlightListAddUseCase,
-        private val highlightListRemoveUseCase: HighlightListRemoveUseCase
+    private val highlightListUseCase: HighlightListUseCase,
+    private val highlightListAddUseCase: HighlightListAddUseCase,
+    private val highlightListRemoveUseCase: HighlightListRemoveUseCase
 ) : BaseViewModel() {
 
     private lateinit var internalList: MutableLiveData<List<String>>
@@ -21,21 +21,21 @@ class HighlightViewModel @Inject constructor(
             if (!::internalList.isInitialized) {
                 internalList = MutableLiveData()
                 this += highlightListUseCase.run(Any())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({ internalList.value = it }, { it.printStackTrace() })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ internalList.value = it }, { it.printStackTrace() })
             }
             return internalList
         }
 
     fun deleteItem(item: String) {
         this += highlightListRemoveUseCase.run(item)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({}, { it.printStackTrace() })
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({}, { it.printStackTrace() })
     }
 
     fun addItem(item: String) {
         this += highlightListAddUseCase.run(item)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({}, { it.printStackTrace() })
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({}, { it.printStackTrace() })
     }
 }

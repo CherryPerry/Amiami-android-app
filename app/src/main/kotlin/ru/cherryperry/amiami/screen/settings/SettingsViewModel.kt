@@ -13,9 +13,9 @@ import rx.subscriptions.Subscriptions
 import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor(
-        private val getCurrentRatesUseCase: GetCurrentRatesUseCase,
-        private val observeNotificationsSettingUseCase: ObserveNotificationsSettingUseCase,
-        private val subscribeToNotificationsUseCase: SubscribeToNotificationsUseCase
+    private val getCurrentRatesUseCase: GetCurrentRatesUseCase,
+    private val observeNotificationsSettingUseCase: ObserveNotificationsSettingUseCase,
+    private val subscribeToNotificationsUseCase: SubscribeToNotificationsUseCase
 ) : BaseViewModel(), LifecycleObserver {
 
     private val _currencySetting = MutableLiveData<CurrencySetting>()
@@ -33,8 +33,8 @@ class SettingsViewModel @Inject constructor(
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun startObservePreferenceChanges() {
         notificationSubscription = observeNotificationsSettingUseCase.run(Any())
-                .flatMapCompletable { subscribeToNotificationsUseCase.run(it) }
-                .subscribe()
+            .flatMapCompletable { subscribeToNotificationsUseCase.run(it) }
+            .subscribe()
         this += notificationSubscription
     }
 
@@ -45,9 +45,9 @@ class SettingsViewModel @Inject constructor(
 
     private fun loadCurrencySettings() {
         this += getCurrentRatesUseCase.run(Any())
-                .subscribe({
-                    val array: Array<CharSequence> = it.rates.keys.toTypedArray()
-                    _currencySetting.postValue(CurrencySetting(true, array, array))
-                }, {})
+            .subscribe({
+                val array: Array<CharSequence> = it.rates.keys.toTypedArray()
+                _currencySetting.postValue(CurrencySetting(true, array, array))
+            }, {})
     }
 }

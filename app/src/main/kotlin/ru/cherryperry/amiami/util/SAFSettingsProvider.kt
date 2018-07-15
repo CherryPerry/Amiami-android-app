@@ -10,8 +10,8 @@ import com.google.gson.Gson
 import ru.cherryperry.amiami.AppPrefs
 import ru.cherryperry.amiami.model.ExportedSettings
 import java.nio.charset.Charset
-import java.util.*
-
+import java.util.ArrayList
+import java.util.TreeSet
 
 object SAFSettingsProvider {
     val RC_CREATE_DOCUMENT = 100

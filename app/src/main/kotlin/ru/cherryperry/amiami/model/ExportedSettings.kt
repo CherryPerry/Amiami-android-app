@@ -1,7 +1,7 @@
 package ru.cherryperry.amiami.model
 
 import com.google.gson.annotations.SerializedName
-import java.util.*
+import java.util.ArrayList
 
 class ExportedSettings {
 

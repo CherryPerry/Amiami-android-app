@@ -1,10 +1,11 @@
 package ru.cherryperry.amiami.data.network.server
 
 import ru.cherryperry.amiami.model.Item
-import java.util.*
+import java.util.Locale
+import java.util.TreeMap
 
 class ExchangeRate(
-        map: MutableMap<String, Double>
+    map: MutableMap<String, Double>
 ) {
     companion object {
         const val DEFAULT = "JPY"

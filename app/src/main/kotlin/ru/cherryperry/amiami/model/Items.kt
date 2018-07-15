@@ -1,6 +1,8 @@
 package ru.cherryperry.amiami.model
 
-import java.util.*
+import java.util.ArrayList
+import java.util.Collections
+import java.util.TreeMap
 
 class Items {
     /**
@@ -39,7 +41,7 @@ class Items {
         groups.values.forEach { it.sort() }
 
         var index = 0
-        for ((key, value) in groups)
+        for ((_, value) in groups)
             if (value.items.size > 0) {
                 positions.add(Position(value.time, null, index++))
                 value.items.mapTo(positions) { Position(value.time, it, index++) }

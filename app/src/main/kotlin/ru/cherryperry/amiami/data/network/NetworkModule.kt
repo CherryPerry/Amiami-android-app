@@ -19,7 +19,7 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [ApiModule::class])
 class NetworkModule {
 
     @Singleton
@@ -31,25 +31,25 @@ class NetworkModule {
         cacheDir.mkdirs()
         val cache = Cache(cacheDir, 5 * 1024 * 1024)
         return OkHttpClient.Builder()
-                .addNetworkInterceptor(logging)
-                .cache(cache)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(30, TimeUnit.SECONDS)
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .build()
+            .addNetworkInterceptor(logging)
+            .cache(cache)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .build()
     }
 
     @Singleton
     @Provides
     fun retrofitBuilder(client: OkHttpClient): Retrofit.Builder {
         val gson = GsonBuilder()
-                .registerTypeAdapter(ExchangeRate::class.java, ExchangeRateGsonTypeAdapter())
-                .create()
+            .registerTypeAdapter(ExchangeRate::class.java, ExchangeRateGsonTypeAdapter())
+            .create()
         return Retrofit.Builder()
-                .client(client)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
-                .validateEagerly(true)
+            .client(client)
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
+            .validateEagerly(true)
     }
 }

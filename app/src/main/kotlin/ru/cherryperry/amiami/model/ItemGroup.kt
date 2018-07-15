@@ -1,6 +1,6 @@
 package ru.cherryperry.amiami.model
 
-import java.util.*
+import java.util.ArrayList
 
 class ItemGroup(val time: Long) {
     val items: MutableList<Item>
@@ -9,7 +9,7 @@ class ItemGroup(val time: Long) {
         get() = items.iterator()
 
     init {
-        items = ArrayList<Item>(128)
+        items = ArrayList(128)
     }
 
     fun sort() {

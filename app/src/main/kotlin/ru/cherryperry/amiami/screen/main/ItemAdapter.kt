@@ -1,7 +1,6 @@
 package ru.cherryperry.amiami.screen.main
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.support.annotation.ColorRes
 import android.support.annotation.LayoutRes
 import android.support.v7.widget.GridLayoutManager
@@ -11,14 +10,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.squareup.picasso.Picasso
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.model.Item
 import ru.cherryperry.amiami.model.Items
+import ru.cherryperry.amiami.util.GlideApp
 import ru.cherryperry.amiami.util.HighlightFilter
 import ru.cherryperry.amiami.util.ViewDelegate
 import java.text.DateFormat
-import java.util.*
+import java.util.Date
 
 class ItemAdapter(context: Context, @LayoutRes private val layout: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
@@ -95,7 +94,6 @@ class ItemAdapter(context: Context, @LayoutRes private val layout: Int) : Recycl
         }
     }
 
-
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         private val image by ViewDelegate<ImageView?>(R.id.image)
         private val name by ViewDelegate<TextView?>(R.id.name)
@@ -113,12 +111,12 @@ class ItemAdapter(context: Context, @LayoutRes private val layout: Int) : Recycl
                 setBackgroundAndKeepPadding(itemView, R.color.colorAccent)
             else setBackgroundAndKeepPadding(itemView, R.color.transparent)
 
-            Picasso.with(image?.context)
+            image?.let {
+                GlideApp.with(itemView)
                     .load(item.image)
-                    .fit()
                     .centerCrop()
-                    .config(Bitmap.Config.RGB_565)
-                    .into(image)
+                    .into(it)
+            }
 
             name?.text = item.name
             discount?.text = item.discount

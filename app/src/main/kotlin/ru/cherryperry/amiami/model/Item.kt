@@ -16,7 +16,7 @@ class Item {
     var time: Long = 0
 
     private var priceInt = -1
-    var price by Delegates.observable(null as String?) { prop, old, new ->
+    var price by Delegates.observable(null as String?) { _, _, new ->
         if (new != null && pricePattern.matcher(new).find()) {
             val cost = new.replace("\\D+".toRegex(), "")
             try {

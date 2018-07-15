@@ -1,6 +1,6 @@
 package ru.cherryperry.amiami.push
 
-import com.google.firebase.crash.FirebaseCrash
+import com.crashlytics.android.Crashlytics
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.android.AndroidInjection
@@ -22,14 +22,14 @@ class MessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         super.onMessageReceived(remoteMessage)
-
         val map = remoteMessage!!.data
-        if (map != null && map.containsKey("count"))
+        if (map != null && map.containsKey("count")) {
             try {
                 val count = Integer.parseInt(map["count"])
                 notificationController.show(count, this)
-            } catch (t: Throwable) {
-                FirebaseCrash.report(t)
+            } catch (exception: Exception) {
+                Crashlytics.logException(exception)
             }
+        }
     }
 }

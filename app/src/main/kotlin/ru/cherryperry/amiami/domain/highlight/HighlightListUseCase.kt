@@ -12,7 +12,7 @@ import javax.inject.Inject
  * Get list of highlight rules
  */
 class HighlightListUseCase @Inject constructor(
-        private val appPrefs: AppPrefs
+    private val appPrefs: AppPrefs
 ) : ObservableUseCase<Any, ArrayList<String>>() {
 
     override fun run(param: Any): Observable<ArrayList<String>> {
@@ -25,11 +25,11 @@ class HighlightListUseCase @Inject constructor(
             observerReference.set(observer)
             observer.onSharedPreferenceChanged(null, null)
         }, Emitter.BackpressureMode.LATEST)
-                .doOnUnsubscribe {
-                    observerReference.get()?.let {
-                        appPrefs.preferences.unregisterOnSharedPreferenceChangeListener(it)
-                    }
+            .doOnUnsubscribe {
+                observerReference.get()?.let {
+                    appPrefs.preferences.unregisterOnSharedPreferenceChangeListener(it)
                 }
+            }
     }
 
     private fun getAsSortedList(): ArrayList<String> {

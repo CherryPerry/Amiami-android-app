@@ -8,14 +8,14 @@ import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 class UpdateDialogViewModel @Inject constructor(
-        checkUpdateUseCase: CheckUpdateUseCase
+    checkUpdateUseCase: CheckUpdateUseCase
 ) : BaseViewModel() {
 
     val showDialogEvent = SingleLiveEvent<UpdateInfo>()
 
     init {
         this += checkUpdateUseCase.run(Any())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ it?.also { showDialogEvent.value = it } }, { it.printStackTrace() })
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ it?.also { showDialogEvent.value = it } }, { it.printStackTrace() })
     }
 }

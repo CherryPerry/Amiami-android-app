@@ -1,37 +1,37 @@
 package ru.cherryperry.amiami.model
 
 import ru.cherryperry.amiami.AppPrefs
-import ru.cherryperry.amiami.data.network.ApiProvider
 import ru.cherryperry.amiami.data.network.server.ExchangeRate
 import ru.cherryperry.amiami.data.network.server.ServerApi
 import rx.Observable
 import rx.schedulers.Schedulers
-import java.util.*
+import java.util.ArrayList
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ItemRepository @Inject constructor(private val api: ApiProvider,
-                                         private val appPrefs: AppPrefs,
-                                         private val currencyRepository: CurrencyRepository) {
+class ItemRepository @Inject constructor(
+    private val api: ServerApi,
+    private val appPrefs: AppPrefs
+) {
 
-    fun items(forceNetwork: Boolean): Observable<Items> {
-        return api.api()
-                .flatMap(ServerApi::items)
-                .map { it.map(::Item) }
-                .compose { applyFilter(it) }
-                .flatMap({ currencyRepository.exchangeRate(forceNetwork) }, ::ItemsWithExchange)
-                .compose { applyExchangeRate(it) }
-                .map {
-                    val items = Items()
-                    it.forEach { items.add(it) }
+    fun items(): Observable<Items> {
+        return api.items()
+            .toObservable()
+            .map { it.map(::Item) }
+            .compose { applyFilter(it) }
+            .flatMap({ api.currency().toObservable() }, ::ItemsWithExchange)
+            .compose { applyExchangeRate(it) }
+            .map {
+                val items = Items()
+                it.forEach { items.add(it) }
 
-                    // setFilter для отображения в UI фильтров
-                    items.setFilter(appPrefs.priceMin, appPrefs.priceMax, appPrefs.searchTerm)
+                // setFilter для отображения в UI фильтров
+                items.setFilter(appPrefs.priceMin, appPrefs.priceMax, appPrefs.searchTerm)
 
-                    items.calculate()
-                    items
-                }
+                items.calculate()
+                items
+            }
     }
 
     /**
@@ -41,12 +41,12 @@ class ItemRepository @Inject constructor(private val api: ApiProvider,
         if (it.rates != null) {
             val rates = it.rates
             Observable.from(it.items)
-                    .flatMap {
-                        Observable.just(it)
-                                .subscribeOn(Schedulers.computation())
-                                .map { rates.changeItemPrice(it.copy(), appPrefs.exchangeCurrency) }
-                    }
-                    .toList()
+                .flatMap {
+                    Observable.just(it)
+                        .subscribeOn(Schedulers.computation())
+                        .map { rates.changeItemPrice(it.copy(), appPrefs.exchangeCurrency) }
+                }
+                .toList()
         } else Observable.just(it.items)
     }
 

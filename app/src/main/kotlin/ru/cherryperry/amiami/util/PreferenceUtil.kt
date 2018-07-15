@@ -3,7 +3,7 @@ package ru.cherryperry.amiami.util
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import java.util.*
+import java.util.HashSet
 import kotlin.reflect.KProperty
 
 class StringPreference(context: Context, keyId: Int, default: String) {
@@ -14,7 +14,7 @@ class StringPreference(context: Context, keyId: Int, default: String) {
     operator fun getValue(thisRef: Any?, property: KProperty<*>): String = preferences.getString(key, defaultValue)
 
     operator fun setValue(thisRef: Any?, property: KProperty<*>, value: String) =
-            preferences.edit().putString(key, value).apply()
+        preferences.edit().putString(key, value).apply()
 }
 
 class BooleanPreference(context: Context, keyId: Int, default: Boolean) {
@@ -25,7 +25,7 @@ class BooleanPreference(context: Context, keyId: Int, default: Boolean) {
     operator fun getValue(thisRef: Any?, property: KProperty<*>): Boolean = preferences.getBoolean(key, defaultValue)
 
     operator fun setValue(thisRef: Any?, property: KProperty<*>, value: Boolean) =
-            preferences.edit().putBoolean(key, value).apply()
+        preferences.edit().putBoolean(key, value).apply()
 }
 
 class IntPreference(context: Context, keyId: Int, default: Int) {
@@ -36,7 +36,7 @@ class IntPreference(context: Context, keyId: Int, default: Int) {
     operator fun getValue(thisRef: Any?, property: KProperty<*>): Int = preferences.getInt(key, defaultValue)
 
     operator fun setValue(thisRef: Any?, property: KProperty<*>, value: Int) =
-            preferences.edit().putInt(key, value).apply()
+        preferences.edit().putInt(key, value).apply()
 }
 
 class StringSetPreference(context: Context, keyId: Int) {
@@ -46,5 +46,5 @@ class StringSetPreference(context: Context, keyId: Int) {
     operator fun getValue(thisRef: Any?, property: KProperty<*>): MutableSet<String> = preferences.getStringSet(key, HashSet())
 
     operator fun setValue(thisRef: Any?, property: KProperty<*>, value: MutableSet<String>) =
-            preferences.edit().putStringSet(key, value).apply()
+        preferences.edit().putStringSet(key, value).apply()
 }

@@ -6,6 +6,7 @@
     <uses-sdk tools:overrideLibrary="android.support.customtabs" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name="ru.cherryperry.amiami.AmiamiApplication"
@@ -16,6 +17,10 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:targetApi="n">
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="${fabricKey}" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -42,12 +47,6 @@
         <service android:name="ru.cherryperry.amiami.push.MessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
-        <service android:name="ru.cherryperry.amiami.push.InstanceIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 

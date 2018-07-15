@@ -12,39 +12,39 @@ import ru.cherryperry.amiami.screen.settings.SettingsFragment
 import ru.cherryperry.amiami.screen.update.UpdateDialogFragment
 
 class Navigator(
-        private val fragmentManager: FragmentManager,
-        @IdRes private val rootView: Int
+    private val fragmentManager: FragmentManager,
+    @IdRes private val rootView: Int
 ) {
 
     fun openList() {
         fragmentManager.beginTransaction()
-                .replace(rootView, MainFragment())
-                .commitAllowingStateLoss()
+            .replace(rootView, MainFragment())
+            .commitAllowingStateLoss()
     }
 
     fun openSettings() {
         fragmentManager.beginTransaction()
-                .replace(rootView, SettingsFragment())
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .addToBackStack(null)
-                .commitAllowingStateLoss()
+            .replace(rootView, SettingsFragment())
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .addToBackStack(null)
+            .commitAllowingStateLoss()
     }
 
     fun openHighlight() {
         fragmentManager.beginTransaction()
-                .replace(rootView, HighlightFragment())
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .addToBackStack(null)
-                .commitAllowingStateLoss()
+            .replace(rootView, HighlightFragment())
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .addToBackStack(null)
+            .commitAllowingStateLoss()
     }
 
     fun openItem() {
-
+        // TODO
     }
 
     fun openUpdateDialog(updateInfo: UpdateInfo) {
         UpdateDialogFragment.newInstance(updateInfo)
-                .show(fragmentManager, UpdateDialogFragment::class.java.simpleName)
+            .show(fragmentManager, UpdateDialogFragment::class.java.simpleName)
     }
 
     fun canGoBack() = fragmentManager.backStackEntryCount > 0

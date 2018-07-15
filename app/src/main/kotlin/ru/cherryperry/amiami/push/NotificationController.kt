@@ -16,8 +16,8 @@ import javax.inject.Singleton
 
 @Singleton
 class NotificationController @Inject constructor(
-        private val context: Context,
-        private val prefs: AppPrefs
+    private val context: Context,
+    private val prefs: AppPrefs
 ) {
     companion object {
         private const val notificationId = 0
@@ -25,7 +25,7 @@ class NotificationController @Inject constructor(
 
     private val notificationChannelId: String = context.getString(R.string.notification_channel_id)
     private val notificationManager: NotificationManager? =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
+        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
 
     init {
         createOrUpdateNotificationChannel()
@@ -47,11 +47,11 @@ class NotificationController @Inject constructor(
             val pendingIntent = PendingIntent.getActivity(context, 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT)
             if (hasNotificationChannel()) {
                 val builder = NotificationCompat.Builder(context, notificationChannelId)
-                        .setSmallIcon(R.mipmap.ic_notification_icon)
-                        .setContentTitle(context.getString(R.string.app_name))
-                        .setContentText(context.resources.getQuantityString(value, R.plurals.notification_counter, value))
-                        .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher))
-                        .setContentIntent(pendingIntent).setAutoCancel(true)
+                    .setSmallIcon(R.mipmap.ic_notification_icon)
+                    .setContentTitle(context.getString(R.string.app_name))
+                    .setContentText(context.resources.getQuantityString(value, R.plurals.notification_counter, value))
+                    .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher))
+                    .setContentIntent(pendingIntent).setAutoCancel(true)
                 notify(notificationId, builder.build())
             }
         }
@@ -63,14 +63,14 @@ class NotificationController @Inject constructor(
         }
         notificationManager?.apply {
             val channel = NotificationChannel(notificationChannelId,
-                    context.getString(R.string.notification_channel_title),
-                    NotificationManager.IMPORTANCE_LOW)
+                context.getString(R.string.notification_channel_title),
+                NotificationManager.IMPORTANCE_LOW)
             createNotificationChannel(channel)
         }
     }
 
     private fun hasNotificationChannel(): Boolean {
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.O
-                || notificationManager?.getNotificationChannel(notificationChannelId) != null
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.O ||
+            notificationManager?.getNotificationChannel(notificationChannelId) != null
     }
 }

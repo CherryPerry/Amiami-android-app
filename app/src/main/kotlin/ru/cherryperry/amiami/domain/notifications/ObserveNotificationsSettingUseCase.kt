@@ -10,24 +10,24 @@ import rx.Observable
 import javax.inject.Inject
 
 class ObserveNotificationsSettingUseCase @Inject constructor(
-        private val appPrefs: AppPrefs,
-        private val context: Context
+    private val appPrefs: AppPrefs,
+    private val context: Context
 ) : ObservableUseCase<Any, Boolean>() {
 
     override fun run(param: Any): Observable<Boolean> {
         val listener = Listener(appPrefs, context)
         return Observable
-                .create<Boolean>(
-                        { emitter ->
-                            listener.emitter = emitter
-                            appPrefs.preferences.registerOnSharedPreferenceChangeListener(listener)
-                        }, Emitter.BackpressureMode.LATEST)
-                .doOnUnsubscribe { appPrefs.preferences.unregisterOnSharedPreferenceChangeListener(listener) }
+            .create<Boolean>(
+                { emitter ->
+                    listener.emitter = emitter
+                    appPrefs.preferences.registerOnSharedPreferenceChangeListener(listener)
+                }, Emitter.BackpressureMode.LATEST)
+            .doOnUnsubscribe { appPrefs.preferences.unregisterOnSharedPreferenceChangeListener(listener) }
     }
 
     private class Listener constructor(
-            private val appPrefs: AppPrefs,
-            private val context: Context
+        private val appPrefs: AppPrefs,
+        private val context: Context
     ) : SharedPreferences.OnSharedPreferenceChangeListener {
 
         @Volatile

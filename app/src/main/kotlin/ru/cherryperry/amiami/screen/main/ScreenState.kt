@@ -4,8 +4,8 @@ import android.support.annotation.IntDef
 import ru.cherryperry.amiami.model.Items
 
 data class ScreenState(
-        @MainViewState val state: Int,
-        val itemList: Items?
+    @MainViewState val state: Int,
+    val itemList: Items?
 ) {
     companion object {
         const val STATE_LOADING = 1

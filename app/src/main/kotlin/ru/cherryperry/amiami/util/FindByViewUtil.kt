@@ -22,8 +22,8 @@ class ViewDelegateReset {
 }
 
 class ViewDelegate<out T : View?>(
-        viewId: Int,
-        viewDelegateReset: ViewDelegateReset? = null
+    viewId: Int,
+    viewDelegateReset: ViewDelegateReset? = null
 ) {
     private var value: T? = null
     private val id = viewId

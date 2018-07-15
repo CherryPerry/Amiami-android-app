@@ -40,7 +40,7 @@ class UpdateDialogFragment : AppCompatDialogFragment() {
         }
         return AlertDialog.Builder(context)
                 .setTitle(R.string.update_dialog_title)
-                .setMessage(context!!.getString(R.string.update_dialog_text, version, name))
+            .setMessage(context.getString(R.string.update_dialog_text, version, name))
                 .setPositiveButton(R.string.update_dialog_download) { _, _ ->
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                     if (context.packageManager
