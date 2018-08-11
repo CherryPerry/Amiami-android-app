@@ -45,3 +45,27 @@
 -keepclasseswithmembers class * {
     @retrofit2.http.* <methods>;
 }
+
+# Crashlytics
+-keepattributes *Annotation*
+-keepattributes LineNumberTable
+
+# Log
+-assumenosideeffects class android.util.Log {
+    public static boolean isLoggable(java.lang.String, int);
+    public static int v(...);
+    public static int i(...);
+    public static int w(...);
+    public static int d(...);
+    public static int e(...);
+}
+
+# Obfuscation
+-repackageclasses
+-allowaccessmodification
+-useuniqueclassmembernames
+
+# Kotlin
+-assumenosideeffects class kotlin.jvm.internal.Intrinsics {
+    static void checkParameterIsNotNull(java.lang.Object, java.lang.String);
+}

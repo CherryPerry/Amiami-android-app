@@ -7,7 +7,7 @@ data class HighlightRule(
 ) : Model {
 
     private val regex: Regex? = try {
-        Regex(rule)
+        Regex(rule, RegexOption.IGNORE_CASE)
     } catch (exception: PatternSyntaxException) {
         null
     }

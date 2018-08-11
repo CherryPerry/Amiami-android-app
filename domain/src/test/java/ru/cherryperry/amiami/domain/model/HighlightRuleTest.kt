@@ -14,6 +14,14 @@ class HighlightRuleTest {
     }
 
     @Test
+    fun testIgnoreCaseText() {
+        val rule = HighlightRule("Test")
+        Assert.assertTrue(rule.isItemHighlighted("test Test"))
+        Assert.assertTrue(rule.isItemHighlighted("1Test"))
+        Assert.assertFalse(rule.isItemHighlighted("tes"))
+    }
+
+    @Test
     fun testRegex() {
         val rule = HighlightRule("""\d+\.""")
         Assert.assertTrue(rule.isItemHighlighted("12.test"))
