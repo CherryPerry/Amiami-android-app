@@ -1,0 +1,17 @@
+apply plugin: 'io.gitlab.arturbosch.detekt'
+
+detekt {
+    defaultProfile {
+        config = file('detekt.yml')
+        input = 'domain/src;data/src;presentation/src'
+        filters = 'do-not-use-it'
+    }
+}
+
+subprojects {
+    apply plugin: 'org.jmailen.kotlinter'
+
+    afterEvaluate { project ->
+        check.dependsOn(detektCheck)
+    }
+}

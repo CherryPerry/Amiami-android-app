@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="grid_view_item_min_width">100dp</dimen>
+    <dimen name="filter_sheet_peek_height">42dp</dimen>
+
+    <dimen name="padding_list_item_side">8dp</dimen>
+    <dimen name="padding_list_item_inside">4dp</dimen>
+
+    <dimen name="corner_radius_card">4dp</dimen>
+
+    <dimen name="elevation_card">1dp</dimen>
+</resources>

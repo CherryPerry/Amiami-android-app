@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white">#fff</color>
+    <color name="black">#000</color>
+
+    <color name="colorPrimary">@color/white</color>
+    <color name="colorPrimaryDark">#946D75</color>
+    <color name="colorAccent">#F38029</color>
+
+    <color name="colorAccentLight">#fce2cf</color>
+    <color name="colorAccentAlpha">#33F38029</color>
+
+    <color name="icon_launcher_background">@color/white</color>
+
+</resources>

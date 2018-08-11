@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="grid_view_item_min_width">75dp</dimen>
-    <dimen name="filter_sheet_peek_height">42dp</dimen>
-</resources>
