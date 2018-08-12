@@ -12,3 +12,14 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+before_deploy:
+- ./gradlew assembleRelease
+- mv presentation/build/outputs/apk/release/presentation-release.apk presentation/build/outputs/apk/release/amiami.apk
+deploy:
+  provider: releases
+  api_key: $GITHUB_API_KEY
+  file:
+  - "presentation/build/outputs/apk/release/amiami.apk"
+  skip_cleanup: true
+  on:
+    tags: true
