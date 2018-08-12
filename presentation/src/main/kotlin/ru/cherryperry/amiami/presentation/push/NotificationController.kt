@@ -49,7 +49,7 @@ class NotificationController @Inject constructor(
                 val builder = NotificationCompat.Builder(context, notificationChannelId)
                     .setSmallIcon(R.drawable.icon_notification)
                     .setContentTitle(context.getString(R.string.app_name))
-                    .setContentText(context.resources.getQuantityString(value, R.plurals.notification_counter, value))
+                    .setContentText(context.resources.getQuantityString(R.plurals.notification_counter, value, value))
                     .setContentIntent(pendingIntent).setAutoCancel(true)
                 notify(notificationId, builder.build())
             }
