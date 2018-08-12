@@ -50,7 +50,6 @@ class MainFragment : DaggerFragment(), OnBackKeyPressedListener {
     private val recyclerView by ViewDelegate<RecyclerView>(R.id.recyclerView, viewDelegateReset)
     private val toolbar by ViewDelegate<Toolbar>(R.id.toolbar, viewDelegateReset)
     private val swipeRefreshLayout by ViewDelegate<SwipeRefreshLayout>(R.id.swipeRefreshLayout, viewDelegateReset)
-    private val filterHintView by ViewDelegate<TextView>(R.id.filter, viewDelegateReset)
     private val filterView by ViewDelegate<View>(R.id.filterView, viewDelegateReset)
     private val errorView by ViewDelegate<View>(R.id.errorLayout, viewDelegateReset)
     private val errorText by ViewDelegate<TextView>(R.id.errorText, viewDelegateReset)
@@ -76,7 +75,6 @@ class MainFragment : DaggerFragment(), OnBackKeyPressedListener {
             .get(UpdateDialogViewModel::class.java)
 
         setAdapter()
-
         swipeRefreshLayout.setOnRefreshListener { mainViewModel.load() }
 
         // Toolbar
@@ -119,16 +117,17 @@ class MainFragment : DaggerFragment(), OnBackKeyPressedListener {
                 true
             }
             R.id.action_feedback -> {
-                firebaseAnalytics.logFeedback()
-                val emailIntent = Intent(Intent.ACTION_SENDTO)
-                emailIntent.data = Uri.parse("mailto:" + getString(R.string.developer_email))
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, getString(R.string.developer_email))
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback))
-                emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.feedback_text))
-                if (emailIntent.resolveActivity(activity!!.packageManager) != null) {
-                    startActivity(Intent.createChooser(emailIntent, getString(R.string.send_feedback)))
-                } else
-                    Toast.makeText(activity!!, R.string.error_no_email_app, Toast.LENGTH_LONG).show()
+                openFeedback()
+                true
+            }
+            R.id.action_filter_remove, R.id.action_filter_apply -> {
+                val params = filterView.layoutParams as CoordinatorLayout.LayoutParams
+                val behavior = params.behavior as BottomSheetBehavior
+                behavior.state = if (behavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                    BottomSheetBehavior.STATE_HIDDEN
+                } else {
+                    BottomSheetBehavior.STATE_EXPANDED
+                }
                 true
             }
             else -> false
@@ -136,12 +135,26 @@ class MainFragment : DaggerFragment(), OnBackKeyPressedListener {
 
     override fun onBackPressed(): Boolean {
         val params = filterView.layoutParams as CoordinatorLayout.LayoutParams
-        val behavior = params.behavior as BottomSheetBehavior<*>
+        val behavior = params.behavior as BottomSheetBehavior
         if (behavior.state == BottomSheetBehavior.STATE_EXPANDED) {
             behavior.state = BottomSheetBehavior.STATE_COLLAPSED
             return true
         }
         return false
+    }
+
+    private fun openFeedback() {
+        firebaseAnalytics.logFeedback()
+        val emailIntent = Intent(Intent.ACTION_SENDTO)
+        emailIntent.data = Uri.parse("mailto:" + getString(R.string.developer_email))
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, getString(R.string.developer_email))
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback))
+        emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.feedback_text))
+        if (emailIntent.resolveActivity(activity!!.packageManager) != null) {
+            startActivity(Intent.createChooser(emailIntent, getString(R.string.send_feedback)))
+        } else {
+            Toast.makeText(activity!!, R.string.error_no_email_app, Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun setAdapter() {
@@ -179,7 +192,8 @@ class MainFragment : DaggerFragment(), OnBackKeyPressedListener {
     }
 
     private fun showFilterEnabled(filterEnabled: Boolean) {
-        filterHintView.visibility = if (filterEnabled) View.VISIBLE else View.GONE
+        toolbar.menu.findItem(R.id.action_filter_apply).isVisible = !filterEnabled
+        toolbar.menu.findItem(R.id.action_filter_remove).isVisible = filterEnabled
     }
 
     private fun onItemClick(item: Item) {
