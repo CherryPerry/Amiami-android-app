@@ -6,7 +6,6 @@ import ru.cherryperry.amiami.presentation.base.ActivityScope
 import ru.cherryperry.amiami.presentation.filter.FilterFragmentModule
 import ru.cherryperry.amiami.presentation.highlight.HighlightFragmentModule
 import ru.cherryperry.amiami.presentation.main.MainFragmentModule
-import ru.cherryperry.amiami.presentation.push.MessagingServiceModule
 import ru.cherryperry.amiami.presentation.settings.SettingsFragmentModule
 import ru.cherryperry.amiami.presentation.update.UpdateDialogModule
 
@@ -15,7 +14,6 @@ import ru.cherryperry.amiami.presentation.update.UpdateDialogModule
     NavigatorModule::class,
     MainFragmentModule::class,
     HighlightFragmentModule::class,
-    MessagingServiceModule::class,
     SettingsFragmentModule::class,
     UpdateDialogModule::class,
     FilterFragmentModule::class

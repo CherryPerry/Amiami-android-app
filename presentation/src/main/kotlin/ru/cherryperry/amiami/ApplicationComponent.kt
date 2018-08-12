@@ -7,6 +7,7 @@ import dagger.android.support.AndroidSupportInjectionModule
 import ru.cherryperry.amiami.data.DataModule
 import ru.cherryperry.amiami.presentation.activity.SingleActivityModule
 import ru.cherryperry.amiami.presentation.base.AppViewModelFactoryModule
+import ru.cherryperry.amiami.presentation.push.MessagingServiceModule
 import javax.inject.Singleton
 
 @Singleton
@@ -19,7 +20,8 @@ import javax.inject.Singleton
     ApplicationModule::class,
     DataModule::class,
     // presentation
-    SingleActivityModule::class
+    SingleActivityModule::class,
+    MessagingServiceModule::class
 ])
 interface ApplicationComponent : AndroidInjector<AmiamiApplication> {
 
