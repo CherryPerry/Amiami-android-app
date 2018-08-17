@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v4.view.ViewCompat
 import android.support.v7.preference.ListPreference
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.support.v7.widget.Toolbar
@@ -27,7 +28,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(bundle: Bundle?, rootKey: String?) {
         AndroidSupportInjection.inject(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-                .get(SettingsViewModel::class.java)
+            .get(SettingsViewModel::class.java)
         addPreferencesFromResource(R.xml.settings)
         val listPreference = findPreference(getString(R.string.key_exchange_currency)) as ListPreference
         viewModel.currencySetting.observe(this, Observer {
@@ -42,10 +43,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val appBarLayout = LayoutInflater.from(view.context).inflate(
-                R.layout.settings_toolbar, view as ViewGroup, false)
-        val toolbar = appBarLayout.findViewById<Toolbar>(R.id.toolbar)
+        val parentView = view as ViewGroup
+        val toolbarLayout = LayoutInflater.from(parentView.context).inflate(
+            R.layout.settings_toolbar, parentView, false)
+        val toolbar = toolbarLayout.findViewById<Toolbar>(R.id.toolbar)
         navigator.configureToolbar(toolbar)
-        view.addView(appBarLayout, 0)
+        parentView.addView(toolbarLayout, 0)
+        ViewCompat.requestApplyInsets(toolbar)
     }
 }

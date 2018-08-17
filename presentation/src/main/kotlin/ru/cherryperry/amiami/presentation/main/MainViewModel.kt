@@ -3,6 +3,7 @@ package ru.cherryperry.amiami.presentation.main
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.crashlytics.android.Crashlytics
+import ru.cherryperry.amiami.domain.items.ItemListResult
 import ru.cherryperry.amiami.presentation.base.BaseViewModel
 import rx.android.schedulers.AndroidSchedulers
 import rx.subscriptions.Subscriptions
@@ -37,7 +38,7 @@ class MainViewModel @Inject constructor(
         this += itemSubscription
     }
 
-    private fun showItems(items: ru.cherryperry.amiami.domain.items.ItemListResult) {
+    private fun showItems(items: ItemListResult) {
         screenLiveData.value = ScreenState(ScreenState.STATE_DONE, items.flatList)
         filterEnabledLiveData.value = !items.filter.skipAll
     }

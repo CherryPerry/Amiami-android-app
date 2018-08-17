@@ -4,9 +4,9 @@
     <item
         android:id="@+id/action_export"
         android:title="@string/export_settings"
-        app:showAsAction="never" />
+        app:showAsAction="never"/>
     <item
         android:id="@+id/action_import"
         android:title="@string/import_settings"
-        app:showAsAction="never" />
+        app:showAsAction="never"/>
 </menu>

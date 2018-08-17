@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import ru.cherryperry.amiami.presentation.activity.Navigator
 import ru.cherryperry.amiami.presentation.base.NotNullObserver
 import ru.cherryperry.amiami.presentation.highlight.adapter.HighlightAdapter
 import ru.cherryperry.amiami.presentation.util.ViewDelegate
+import ru.cherryperry.amiami.presentation.util.addPaddingBottomToFitBottomSystemInset
 import javax.inject.Inject
 
 class HighlightFragment : DaggerFragment() {
@@ -62,6 +64,9 @@ class HighlightFragment : DaggerFragment() {
         highlightViewModel.toastError.observe(this, NotNullObserver {
             Toast.makeText(context!!, it, Toast.LENGTH_SHORT).show()
         })
+
+        addPaddingBottomToFitBottomSystemInset(recyclerView)
+        ViewCompat.requestApplyInsets(view)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {

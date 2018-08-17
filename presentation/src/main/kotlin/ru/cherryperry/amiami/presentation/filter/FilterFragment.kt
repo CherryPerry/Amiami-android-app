@@ -21,6 +21,7 @@ import ru.cherryperry.amiami.domain.model.Filter
 import ru.cherryperry.amiami.presentation.base.NotNullObserver
 import ru.cherryperry.amiami.presentation.util.ViewDelegate
 import ru.cherryperry.amiami.presentation.util.ViewDelegateReset
+import ru.cherryperry.amiami.presentation.util.addPaddingBottomToFitBottomSystemInset
 import javax.inject.Inject
 
 class FilterFragment : DaggerFragment(), SeekBar.OnSeekBarChangeListener {
@@ -109,6 +110,8 @@ class FilterFragment : DaggerFragment(), SeekBar.OnSeekBarChangeListener {
                 BottomSheetBehavior.from(view).state = BottomSheetBehavior.STATE_EXPANDED
             }
         }
+
+        addPaddingBottomToFitBottomSystemInset(view)
     }
 
     override fun onDestroyView() {

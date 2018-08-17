@@ -1,5 +1,6 @@
 package ru.cherryperry.amiami
 
+import android.support.v7.app.AppCompatDelegate
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import dagger.android.support.DaggerApplication
@@ -16,6 +17,7 @@ class AmiamiApplication : DaggerApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         val crashKit = Crashlytics.Builder()
             .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
             .build()

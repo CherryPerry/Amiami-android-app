@@ -5,23 +5,25 @@
         android:id="@+id/action_filter_apply"
         android:icon="@drawable/icon_filter_add_24dp_black"
         android:title="@string/filters"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        app:iconTint="@color/black_54"/>
     <item
         android:id="@+id/action_filter_remove"
         android:icon="@drawable/icon_filter_remove_24dp_black"
         android:title="@string/filters"
         android:visible="false"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        app:iconTint="@color/black_54"/>
     <item
         android:id="@+id/action_settings"
         android:title="@string/settings"
-        app:showAsAction="never" />
+        app:showAsAction="never"/>
     <item
         android:id="@+id/action_highlight"
         android:title="@string/highlight"
-        app:showAsAction="never" />
+        app:showAsAction="never"/>
     <item
         android:id="@+id/action_feedback"
         android:title="@string/feedback"
-        app:showAsAction="never" />
+        app:showAsAction="never"/>
 </menu>

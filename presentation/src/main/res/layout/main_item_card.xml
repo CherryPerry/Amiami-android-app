@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -20,7 +21,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="#DDD" />
+        tools:src="#DDD"/>
 
     <TextView
         android:id="@+id/name"
@@ -37,19 +38,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image"
-        tools:text="Fate/Grand Order Mash Kyrielight 1/7 Complete Figure" />
+        tools:text="Fate/Grand Order Mash Kyrielight 1/7 Complete Figure"/>
 
     <TextView
         android:id="@+id/price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/corner_radius_card"
-        android:textColor="@color/colorAccent"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/name"
         app:layout_constraintStart_toStartOf="@+id/name"
         app:layout_constraintTop_toBottomOf="@+id/name"
-        tools:text="1000 JPY" />
+        tools:text="1000 JPY"/>
 
 </android.support.constraint.ConstraintLayout>
