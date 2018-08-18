@@ -43,8 +43,8 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-scalars:$retoriftVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava:$retoriftVersion"
 
-    implementation 'com.google.firebase:firebase-core:16.0.1'
-    implementation 'com.google.firebase:firebase-messaging:17.1.0'
+    implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
+    implementation "com.google.firebase:firebase-messaging:$firebaseMessagingVersion"
     implementation "com.android.support:support-v4:$compatVersion"
 
     testImplementation "junit:junit:$junitVersion"

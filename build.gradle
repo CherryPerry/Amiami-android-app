@@ -13,7 +13,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.20.0'
-        classpath 'com.google.gms:google-services:4.0.2'
+        classpath 'com.google.gms:google-services:4.1.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath 'gradle.plugin.org.jmailen.gradle:kotlinter-gradle:1.15.1'
         classpath 'gradle.plugin.com.cherryperry.gfe:gradle-file-encrypt:1.2.0'
@@ -36,6 +36,8 @@ allprojects {
         daggerVersion = '2.17'
         junitVersion = '4.12'
         rxVersion = '1.3.8'
+        firebaseCoreVersion = '16.0.1'
+        firebaseMessagingVersion = '17.3.0'
         compileSdkVersion = 27
         targetSdkVersion = 27
         minSdkVersion = 14
