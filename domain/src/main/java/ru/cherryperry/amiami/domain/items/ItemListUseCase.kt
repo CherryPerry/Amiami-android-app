@@ -22,13 +22,13 @@ class ItemListUseCase @Inject constructor(
     private val currencyRepository: CurrencyRepository,
     private val filterRepository: FilterRepository,
     private val highlightRepository: HighlightRepository
-) : ObservableUseCase<Any, ItemListResult>() {
+) : ObservableUseCase<Unit, ItemListResult>() {
 
     companion object {
         private const val DEBOUNCE_TIME = 300L
     }
 
-    override fun run(param: Any): Observable<ru.cherryperry.amiami.domain.items.ItemListResult> = Observable
+    override fun run(param: Unit): Observable<ru.cherryperry.amiami.domain.items.ItemListResult> = Observable
         .combineLatest(
             itemRepository.items().toObservable(),
             currencyRepository.currency().toObservable(),

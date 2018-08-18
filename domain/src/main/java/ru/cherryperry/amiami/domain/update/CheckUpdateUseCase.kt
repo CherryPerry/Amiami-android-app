@@ -11,7 +11,7 @@ import javax.inject.Inject
 class CheckUpdateUseCase @Inject constructor(
     private val updateRepository: UpdateRepository,
     @ApplicationVersion currentVersion: String
-) : ObservableUseCase<Any, UpdateInfo>() {
+) : ObservableUseCase<Unit, UpdateInfo>() {
 
     private val version = try {
         Version.fromString(currentVersion)
@@ -19,6 +19,6 @@ class CheckUpdateUseCase @Inject constructor(
         Version(Int.MAX_VALUE)
     }
 
-    override fun run(param: Any): Observable<UpdateInfo> = updateRepository.latestRelease()
+    override fun run(param: Unit): Observable<UpdateInfo> = updateRepository.latestRelease()
         .filter { it.version > version }
 }

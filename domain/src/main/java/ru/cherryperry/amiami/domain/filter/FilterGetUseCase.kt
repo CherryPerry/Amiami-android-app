@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class FilterGetUseCase @Inject constructor(
     private val filterRepository: FilterRepository
-) : ObservableUseCase<Any, Filter>() {
+) : ObservableUseCase<Unit, Filter>() {
 
-    override fun run(param: Any): Observable<Filter> = filterRepository.filter()
+    override fun run(param: Unit): Observable<Filter> = filterRepository.filter()
 }

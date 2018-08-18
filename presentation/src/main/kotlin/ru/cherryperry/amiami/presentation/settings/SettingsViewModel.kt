@@ -5,6 +5,7 @@ import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.OnLifecycleEvent
+import ru.cherryperry.amiami.domain.currency.GetCurrentRatesUseCase
 import ru.cherryperry.amiami.domain.notifications.ObserveNotificationsSettingUseCase
 import ru.cherryperry.amiami.domain.notifications.SubscribeToNotificationsUseCase
 import ru.cherryperry.amiami.presentation.base.BaseViewModel
@@ -13,7 +14,7 @@ import rx.subscriptions.Subscriptions
 import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor(
-    private val getCurrentRatesUseCase: ru.cherryperry.amiami.domain.currency.GetCurrentRatesUseCase,
+    private val getCurrentRatesUseCase: GetCurrentRatesUseCase,
     private val observeNotificationsSettingUseCase: ObserveNotificationsSettingUseCase,
     private val subscribeToNotificationsUseCase: SubscribeToNotificationsUseCase
 ) : BaseViewModel(), LifecycleObserver {
@@ -23,7 +24,7 @@ class SettingsViewModel @Inject constructor(
     val currencySetting: LiveData<CurrencySetting> by lazy {
         val liveData = MutableLiveData<CurrencySetting>()
         liveData.value = CurrencySetting(false, emptyArray(), emptyArray())
-        this += getCurrentRatesUseCase.run(Any())
+        this += getCurrentRatesUseCase.run(Unit)
             .map { it.currencies.toTypedArray<CharSequence>() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ liveData.value = CurrencySetting(true, it, it) }, { it.printStackTrace() })
@@ -32,7 +33,7 @@ class SettingsViewModel @Inject constructor(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun startObservePreferenceChanges() {
-        notificationSubscription = observeNotificationsSettingUseCase.run(Any())
+        notificationSubscription = observeNotificationsSettingUseCase.run(Unit)
             .flatMapCompletable { subscribeToNotificationsUseCase.run(it) }
             .subscribe()
         this += notificationSubscription

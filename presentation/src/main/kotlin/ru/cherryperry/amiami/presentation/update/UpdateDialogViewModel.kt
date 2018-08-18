@@ -14,7 +14,7 @@ class UpdateDialogViewModel @Inject constructor(
     val showDialogEvent = SingleLiveEvent<UpdateInfo>()
 
     init {
-        this += checkUpdateUseCase.run(Any())
+        this += checkUpdateUseCase.run(Unit)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ showDialogEvent.value = it }, { it.printStackTrace() })
     }

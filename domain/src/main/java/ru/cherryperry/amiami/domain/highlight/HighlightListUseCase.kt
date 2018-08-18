@@ -8,8 +8,8 @@ import javax.inject.Inject
 
 class HighlightListUseCase @Inject constructor(
     private val highlightRepository: HighlightRepository
-) : ObservableUseCase<Any, List<HighlightRule>>() {
+) : ObservableUseCase<Unit, List<HighlightRule>>() {
 
-    override fun run(param: Any): Observable<List<HighlightRule>> =
+    override fun run(param: Unit): Observable<List<HighlightRule>> =
         highlightRepository.configuration().map { it.rules }
 }

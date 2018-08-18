@@ -33,7 +33,7 @@ class HighlightViewModel @Inject constructor(
 
     val list: LiveData<List<Model>> by lazy {
         val data = MutableLiveData<List<Model>>()
-        this += highlightListUseCase.run(Any())
+        this += highlightListUseCase.run(Unit)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ result ->
                 data.value = result

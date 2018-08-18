@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class ObserveNotificationsSettingUseCase @Inject constructor(
     private val pushNotificationService: PushNotificationService
-) : ObservableUseCase<Any, Boolean>() {
+) : ObservableUseCase<Unit, Boolean>() {
 
-    override fun run(param: Any) = pushNotificationService.enabled()
+    override fun run(param: Unit) = pushNotificationService.enabled()
 }

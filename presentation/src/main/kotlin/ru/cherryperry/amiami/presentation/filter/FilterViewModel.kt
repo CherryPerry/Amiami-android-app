@@ -30,7 +30,7 @@ class FilterViewModel @Inject constructor(
     }
 
     private fun loadFilter() {
-        this += filterGetUseCase.run(Any())
+        this += filterGetUseCase.run(Unit)
             .onBackpressureLatest()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

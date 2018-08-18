@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class GetCurrentRatesUseCase @Inject constructor(
     private val currencyRepository: CurrencyRepository
-) : SingleUseCase<Any, ExchangeRates>() {
+) : SingleUseCase<Unit, ExchangeRates>() {
 
-    override fun run(param: Any): Single<ExchangeRates> = currencyRepository.currency()
+    override fun run(param: Unit): Single<ExchangeRates> = currencyRepository.currency()
 }
