@@ -24,6 +24,7 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 style="@style/Toolbar.Default"
+                android:layout_height="?actionBarSize"
                 android:paddingLeft="@dimen/padding_list_item_side"
                 app:navigationIcon="@drawable/main_logo"/>
 

@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.CoordinatorLayout
+import android.support.v4.view.ViewCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -33,6 +34,7 @@ import ru.cherryperry.amiami.presentation.update.UpdateDialogViewModel
 import ru.cherryperry.amiami.presentation.util.FirebaseAnalyticsHelper
 import ru.cherryperry.amiami.presentation.util.ViewDelegate
 import ru.cherryperry.amiami.presentation.util.ViewDelegateReset
+import ru.cherryperry.amiami.presentation.util.addPaddingBottomToFitBottomSystemInset
 import javax.inject.Inject
 
 class MainFragment : DaggerFragment(), OnBackKeyPressedListener {
@@ -88,6 +90,11 @@ class MainFragment : DaggerFragment(), OnBackKeyPressedListener {
             NotNullObserver { showFilterEnabled(it) })
         updateDialogViewModel.showDialogEvent.observe(this,
             NotNullObserver { navigator.openUpdateDialog(it) })
+
+        // default behavior - add bottom padding
+        ViewCompat.setOnApplyWindowInsetsListener(swipeRefreshLayout) { _, inset -> inset }
+        addPaddingBottomToFitBottomSystemInset(errorView)
+        addPaddingBottomToFitBottomSystemInset(recyclerView)
     }
 
     override fun onDestroyView() {

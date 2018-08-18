@@ -5,7 +5,7 @@ import ru.cherryperry.amiami.domain.model.Model
 
 data class ScreenState(
     @MainViewState val state: Int,
-    val list: List<Model>
+    val list: List<Model> = emptyList()
 ) {
     companion object {
         const val STATE_LOADING = 1
