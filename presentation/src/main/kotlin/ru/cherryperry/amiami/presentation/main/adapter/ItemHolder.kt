@@ -2,6 +2,7 @@ package ru.cherryperry.amiami.presentation.main.adapter
 
 import android.support.annotation.DrawableRes
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.TooltipCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,13 +16,20 @@ import ru.cherryperry.amiami.presentation.util.ViewDelegate
 
 class ItemHolder(
     viewGroup: ViewGroup,
+    showName: Boolean,
     private val onItemClick: (Int) -> Unit
 ) : RecyclerView.ViewHolder(
-    LayoutInflater.from(viewGroup.context).inflate(R.layout.main_item_card, viewGroup, false)
+    LayoutInflater.from(viewGroup.context).inflate(
+        if (showName) {
+            R.layout.main_item_card_big
+        } else {
+            R.layout.main_item_card_small
+        }, viewGroup,
+        false)
 ), View.OnClickListener {
 
     private val imageView by ViewDelegate<ImageView>(R.id.image)
-    private val nameView by ViewDelegate<TextView>(R.id.name)
+    private val nameView by ViewDelegate<TextView?>(R.id.name)
     private val priceView by ViewDelegate<TextView>(R.id.price)
 
     init {
@@ -36,7 +44,12 @@ class ItemHolder(
             .placeholder(R.drawable.placeholder_image)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(imageView)
-        nameView.text = item.name
+        val nameView = this.nameView
+        if (nameView != null) {
+            nameView.text = item.name
+        } else {
+            TooltipCompat.setTooltipText(itemView, item.name)
+        }
         priceView.text = item.price.toString()
     }
 

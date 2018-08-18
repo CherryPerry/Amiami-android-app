@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.annotation.DimenRes
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.view.ViewCompat
@@ -64,9 +65,8 @@ class MainFragment : DaggerFragment(), OnBackKeyPressedListener {
     @Inject
     lateinit var notificationController: NotificationController
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.main, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+        inflater.inflate(R.layout.main, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -165,13 +165,19 @@ class MainFragment : DaggerFragment(), OnBackKeyPressedListener {
     }
 
     private fun setAdapter() {
+        itemAdapter.showName = prefs.showNames.value
         itemAdapter.onItemClick = this::onItemClick
         recyclerView.adapter = itemAdapter
         recyclerView.addItemDecoration(PaddingItemDecorator(recyclerView.context))
         recyclerView.post {
+            @DimenRes val size = if (itemAdapter.showName) {
+                R.dimen.grid_view_item_min_width
+            } else {
+                R.dimen.grid_view_item_min_width_2
+            }
             val layoutManager = recyclerView.layoutManager as GridLayoutManager
             val columns = Math.max(1, recyclerView.width /
-                resources.getDimensionPixelSize(R.dimen.grid_view_item_min_width))
+                resources.getDimensionPixelSize(size))
             layoutManager.spanCount = columns
             layoutManager.spanSizeLookup = ItemSpanSizeLookup(itemAdapter, layoutManager)
         }

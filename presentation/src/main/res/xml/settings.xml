@@ -29,4 +29,11 @@
         android:summary="JPY prices will be converted to selected currency"
         android:title="Exchange currency"/>
 
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/key_show_names"
+        android:summaryOff="@string/settings_show_names_disabled"
+        android:summaryOn="@string/settings_show_names_enabled"
+        android:title="@string/settings_show_names"/>
+
 </PreferenceScreen>

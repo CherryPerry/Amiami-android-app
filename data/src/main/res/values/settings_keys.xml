@@ -10,4 +10,5 @@
     <string name="key_price_max">PriceMaxFilter</string>
     <string name="key_search_filter">TermSearchFilter</string>
     <string name="key_exchange_currency">ExchangeCurrency</string>
+    <string name="key_show_names">ShowNames</string>
 </resources>

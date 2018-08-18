@@ -48,11 +48,11 @@
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
                 android:paddingBottom="@dimen/padding_list_item_side"
-                android:paddingLeft="@dimen/padding_list_item_inside"
-                android:paddingRight="@dimen/padding_list_item_inside"
+                android:paddingLeft="@dimen/padding_list_side"
+                android:paddingRight="@dimen/padding_list_side"
                 app:layoutManager="android.support.v7.widget.GridLayoutManager"
                 app:spanCount="4"
-                tools:listitem="@layout/main_item_card"/>
+                tools:listitem="@layout/main_item_card_big"/>
 
             <LinearLayout
                 android:id="@+id/errorLayout"

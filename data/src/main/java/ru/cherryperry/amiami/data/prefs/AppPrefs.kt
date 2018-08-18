@@ -24,6 +24,7 @@ class AppPrefs @Inject constructor(
     val favoriteList = StringSetPreference(key(R.string.key_favorites), emptySet(), preferences)
     val favoritesOnly = BooleanPreference(key(R.string.key_favorites_only), false, preferences)
     val exchangeCurrency = StringPreference(key(R.string.key_exchange_currency), ExchangeRates.DEFAULT, preferences)
+    val showNames = BooleanPreference(key(R.string.key_show_names), true, preferences)
 
     private fun key(@StringRes stringRes: Int) = context.getString(stringRes)
 }

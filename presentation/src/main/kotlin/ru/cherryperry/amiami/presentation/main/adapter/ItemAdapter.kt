@@ -17,6 +17,7 @@ class ItemAdapter : ListAdapter<Model, RecyclerView.ViewHolder>(
         const val VH_HEADER = 1
     }
 
+    var showName = true
     var onItemClick: ((item: Item) -> Unit)? = null
 
     override fun getItemId(position: Int) = getItem(position).id
@@ -30,7 +31,7 @@ class ItemAdapter : ListAdapter<Model, RecyclerView.ViewHolder>(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             VH_HEADER -> ItemHeaderHolder(parent)
-            VH_ITEM -> ItemHolder(parent) { position -> onItemClick?.invoke(getItem(position) as Item) }
+            VH_ITEM -> ItemHolder(parent, showName) { position -> onItemClick?.invoke(getItem(position) as Item) }
             else -> throw IllegalArgumentException()
         }
     }
