@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.presentation.highlight.model.HighlightHeaderItem
@@ -19,6 +20,19 @@ class HighlightHeaderViewHolder(
 
     private val addButton by ViewDelegate<View>(R.id.add)
     private val editView by ViewDelegate<EditText>(R.id.edit)
+
+    init {
+        editView.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (addButton.isEnabled) {
+                    addButton.performClick()
+                }
+                true
+            } else {
+                false
+            }
+        }
+    }
 
     fun bind(item: HighlightHeaderItem) {
         addButton.setOnClickListener {
