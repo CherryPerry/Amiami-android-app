@@ -1,10 +1,10 @@
 package ru.cherryperry.amiami.data.repository
 
+import io.reactivex.Single
 import ru.cherryperry.amiami.data.mapping.JsonItemToItemMapping
 import ru.cherryperry.amiami.data.network.server.ServerApi
 import ru.cherryperry.amiami.domain.model.Item
 import ru.cherryperry.amiami.domain.repository.ItemRepository
-import rx.Single
 import javax.inject.Inject
 import javax.inject.Singleton
 

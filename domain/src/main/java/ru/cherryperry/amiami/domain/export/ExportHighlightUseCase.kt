@@ -1,9 +1,9 @@
 package ru.cherryperry.amiami.domain.export
 
+import io.reactivex.Completable
 import ru.cherryperry.amiami.domain.CompletableUseCase
 import ru.cherryperry.amiami.domain.repository.HighlightExportRepository
 import ru.cherryperry.amiami.domain.repository.HighlightRepository
-import rx.Completable
 import java.io.OutputStream
 import javax.inject.Inject
 
@@ -18,7 +18,6 @@ class ExportHighlightUseCase @Inject constructor(
 
     override fun run(param: OutputStream): Completable =
         repository.configuration()
-            .first()
+            .firstElement()
             .flatMapCompletable { exportRepository.export(it.rules, param) }
-            .toCompletable()
 }

@@ -3,20 +3,24 @@ package ru.cherryperry.amiami.domain.model
 import java.util.regex.PatternSyntaxException
 
 data class HighlightRule(
-    val rule: String
+    override val id: Long = 0,
+    val rule: String = "",
+    val regex: Boolean = false
 ) : Model {
 
-    private val regex: Regex? = try {
-        Regex(rule, RegexOption.IGNORE_CASE)
-    } catch (exception: PatternSyntaxException) {
+    private val regexValue: Regex? = if (regex) {
+        try {
+            Regex(rule, RegexOption.IGNORE_CASE)
+        } catch (exception: PatternSyntaxException) {
+            null
+        }
+    } else {
         null
     }
 
-    override val id = rule.hashCode().toLong()
-
     fun isItemHighlighted(item: Item) = isItemHighlighted(item.name)
 
-    fun isItemHighlighted(itemName: String) = regex?.let { itemName.contains(it) }
+    fun isItemHighlighted(itemName: String) = regexValue?.let { itemName.contains(it) }
         ?: itemName.contains(other = rule, ignoreCase = true)
 
     override fun toString() = rule

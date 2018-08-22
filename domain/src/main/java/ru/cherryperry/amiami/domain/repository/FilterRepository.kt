@@ -1,12 +1,12 @@
 package ru.cherryperry.amiami.domain.repository
 
+import io.reactivex.Completable
+import io.reactivex.Flowable
 import ru.cherryperry.amiami.domain.model.Filter
-import rx.Completable
-import rx.Observable
 
 interface FilterRepository {
 
-    fun filter(): Observable<Filter>
+    fun filter(): Flowable<Filter>
 
     fun setMin(value: Int): Completable
 

@@ -1,9 +1,9 @@
 package ru.cherryperry.amiami.domain.export
 
+import io.reactivex.Completable
 import ru.cherryperry.amiami.domain.CompletableUseCase
 import ru.cherryperry.amiami.domain.repository.HighlightExportRepository
 import ru.cherryperry.amiami.domain.repository.HighlightRepository
-import rx.Completable
 import java.io.InputStream
 import javax.inject.Inject
 

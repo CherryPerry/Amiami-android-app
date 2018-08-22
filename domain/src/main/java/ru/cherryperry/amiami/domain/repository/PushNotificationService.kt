@@ -1,11 +1,11 @@
 package ru.cherryperry.amiami.domain.repository
 
-import rx.Completable
-import rx.Observable
+import io.reactivex.Completable
+import io.reactivex.Flowable
 
 interface PushNotificationService {
 
-    fun enabled(): Observable<Boolean>
+    fun enabled(): Flowable<Boolean>
 
     fun enable(): Completable
 
