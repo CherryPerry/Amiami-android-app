@@ -38,6 +38,7 @@ allprojects {
         rxVersion = '2.2.0'
         firebaseCoreVersion = '16.0.1'
         firebaseMessagingVersion = '17.3.0'
+        robolectricVersion = '3.8'
         compileSdkVersion = 27
         targetSdkVersion = 27
         minSdkVersion = 14

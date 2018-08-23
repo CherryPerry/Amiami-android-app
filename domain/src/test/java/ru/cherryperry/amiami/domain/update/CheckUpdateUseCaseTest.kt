@@ -19,7 +19,7 @@ class CheckUpdateUseCaseTest {
             .test()
             .assertResult(update)
             .assertComplete()
-            .awaitTerminalEvent()
+            .await()
     }
 
     @Test
@@ -32,7 +32,7 @@ class CheckUpdateUseCaseTest {
             .test()
             .assertNoValues()
             .assertComplete()
-            .awaitTerminalEvent()
+            .await()
     }
 
     @Test
@@ -44,6 +44,6 @@ class CheckUpdateUseCaseTest {
             .test()
             .assertNoValues()
             .assertComplete()
-            .awaitTerminalEvent()
+            .await()
     }
 }
