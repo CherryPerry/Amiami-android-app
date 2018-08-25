@@ -1,6 +1,7 @@
 package ru.cherryperry.amiami.data.repository
 
 import android.arch.persistence.room.Room
+import io.reactivex.schedulers.Schedulers
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -23,7 +24,7 @@ class HighlightRepositoryImplTest {
     fun before() {
         appPrefs = AppPrefs(RuntimeEnvironment.application)
         appDatabase = Room.inMemoryDatabaseBuilder(RuntimeEnvironment.application, AppDatabase::class.java).build()
-        highlightRepositoryImpl = HighlightRepositoryImpl(appDatabase.highlightRuleDao(), appPrefs)
+        highlightRepositoryImpl = HighlightRepositoryImpl(appDatabase.highlightRuleDao(), appPrefs, Schedulers.single())
     }
 
     @After
@@ -125,5 +126,22 @@ class HighlightRepositoryImplTest {
             .assertNoErrors()
     }
 
-    // TODO TEST REPLACE METHOD
+    @Test
+    fun testReplace() {
+        appPrefs.favoritesOnly.value = false
+        val item1 = HighlightRule(1, "test1", true)
+        highlightRepositoryImpl.add(item1).test().await().assertComplete()
+        val subscriber = highlightRepositoryImpl.configuration()
+            .test()
+            .awaitCount(1)
+        val item2 = HighlightRule(2, "test2", false)
+        highlightRepositoryImpl.replace(listOf(item2)).test().await().assertComplete()
+        subscriber
+            .awaitCount(2)
+            .assertValues(
+                HighlightConfiguration(listOf(item1)),
+                HighlightConfiguration(listOf(item2)))
+            .assertNotComplete()
+            .assertNoErrors()
+    }
 }

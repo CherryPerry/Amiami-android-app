@@ -9,30 +9,30 @@ class HighlightRuleTest {
     fun testSimpleText() {
         val rule = HighlightRule(0, "test", false)
         Assert.assertTrue(rule.isItemHighlighted("test test"))
-        Assert.assertTrue(rule.isItemHighlighted("test"))
+        Assert.assertTrue(rule.isItemHighlighted("Test"))
         Assert.assertFalse(rule.isItemHighlighted("tes"))
     }
 
     @Test
-    fun testSimpleTextIgnoreCase() {
-        val rule = HighlightRule(0, "Test", false)
-        Assert.assertTrue(rule.isItemHighlighted("test Test"))
-        Assert.assertTrue(rule.isItemHighlighted("1Test"))
-        Assert.assertFalse(rule.isItemHighlighted("tes"))
-    }
-
-    @Test
-    fun testSimpleTextNotRegex() {
-        val rule = HighlightRule(0, """\d+\.""", true)
+    fun testSimpleTextLikeRegex() {
+        val rule = HighlightRule(0, """\d+\.""", false)
         Assert.assertTrue(rule.isItemHighlighted("""a\d+\.\."""))
         Assert.assertFalse(rule.isItemHighlighted("12.test"))
     }
 
     @Test
-    fun testRegex() {
+    fun testValidRegex() {
         val rule = HighlightRule(0, """\d+\.""", true)
         Assert.assertTrue(rule.isItemHighlighted("12.test"))
         Assert.assertTrue(rule.isItemHighlighted("12."))
+        Assert.assertFalse(rule.isItemHighlighted("test"))
+    }
+
+    @Test
+    fun testInvalidRegex() {
+        val rule = HighlightRule(0, """(\d+\.""", true)
+        Assert.assertFalse(rule.isItemHighlighted("12.test"))
+        Assert.assertFalse(rule.isItemHighlighted("12."))
         Assert.assertFalse(rule.isItemHighlighted("test"))
     }
 }

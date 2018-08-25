@@ -42,7 +42,8 @@ dependencies {
     implementation "com.google.firebase:firebase-messaging:$firebaseMessagingVersion"
     implementation "com.android.support:support-v4:$compatVersion"
 
-    implementation 'android.arch.persistence.room:runtime:1.1.1'
+    // TODO Why??
+    api 'android.arch.persistence.room:runtime:1.1.1'
     implementation 'android.arch.persistence.room:rxjava2:1.1.1'
     kapt 'android.arch.persistence.room:compiler:1.1.1'
 

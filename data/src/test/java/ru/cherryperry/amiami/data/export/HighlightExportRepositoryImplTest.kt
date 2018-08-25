@@ -21,17 +21,17 @@ class HighlightExportRepositoryImplTest {
             .test()
             .await()
             .assertComplete()
-        Assert.assertEquals("{\"highlight\":[{\"test\"}]}", file.readText())
+        Assert.assertEquals("""{"highlight":[{"value":"test","regex":true}]}""", file.readText())
     }
 
     @Test
     fun testImport() {
         val file = temporaryFolder.newFile()
-        file.writeText("{\"highlight\":[\"test\"]}")
+        file.writeText("""{"highlight":[{"value":"test","regex":true}]}""")
         repository.import(file.inputStream())
             .test()
             .await()
-            .assertValue(listOf(HighlightRule(0, "test", false)))
+            .assertValue(listOf(HighlightRule(0, "test", true)))
     }
 
     @Test

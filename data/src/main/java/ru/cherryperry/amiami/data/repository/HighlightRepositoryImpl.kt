@@ -2,8 +2,9 @@ package ru.cherryperry.amiami.data.repository
 
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Scheduler
 import io.reactivex.functions.BiFunction
-import io.reactivex.schedulers.Schedulers
+import ru.cherryperry.amiami.data.db.DatabaseScheduler
 import ru.cherryperry.amiami.data.db.DbHighlightRule
 import ru.cherryperry.amiami.data.db.HighlightRuleDao
 import ru.cherryperry.amiami.data.mapping.DbRuleToRuleMapping
@@ -18,10 +19,10 @@ import javax.inject.Singleton
 @Singleton
 class HighlightRepositoryImpl @Inject constructor(
     private val highlightRuleDao: HighlightRuleDao,
-    private val appPrefs: AppPrefs
+    private val appPrefs: AppPrefs,
+    @DatabaseScheduler private val scheduler: Scheduler
 ) : HighlightRepository {
 
-    private val scheduler = Schedulers.computation()
     private val dbRuleToRuleMapping = DbRuleToRuleMapping()
     private val ruleToDbRuleMapping = RuleToDbRuleMapping()
 
@@ -45,7 +46,6 @@ class HighlightRepositoryImpl @Inject constructor(
 
     override fun replace(list: List<HighlightRule>): Completable =
         Completable.fromAction {
-            // TODO
-            // appPrefs.favoriteList.value = list.map { it.rule }.toSet()
+            highlightRuleDao.replace(list.map { ruleToDbRuleMapping.map(it).copy(id = null) })
         }.subscribeOn(scheduler)
 }

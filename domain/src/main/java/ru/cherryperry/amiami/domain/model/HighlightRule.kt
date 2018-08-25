@@ -17,11 +17,16 @@ data class HighlightRule(
     } else {
         null
     }
+    private val invalidRegex: Boolean = regexValue == null && regex
 
     fun isItemHighlighted(item: Item) = isItemHighlighted(item.name)
 
-    fun isItemHighlighted(itemName: String) = regexValue?.let { itemName.contains(it) }
-        ?: itemName.contains(other = rule, ignoreCase = true)
+    fun isItemHighlighted(itemName: String): Boolean =
+        when {
+            invalidRegex -> false
+            regexValue != null -> itemName.contains(regexValue)
+            else -> itemName.contains(other = rule, ignoreCase = true)
+        }
 
     override fun toString() = rule
 }
