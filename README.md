@@ -6,18 +6,19 @@ Application for observing pre-owned items of [amiami.com](http://www.amiami.com/
 [Backend](https://github.com/CherryPerry/Amiami-kotlin-backend) is required.
 
 ## Functions
-- Grid view of all items of pre-owned section ordered by it's update
+- Grid view of all items of pre-owned section ordered by it's update time
 - Item's details are shown in Chrome Custom Tabs or another external browser
 - Automatic currency conversion
-- Item highlighting by regexp
+- Item highlighting by simple text search or regexp
 - Filter by price or search by name
 
 ## Screenshots
-![list](https://user-images.githubusercontent.com/9081555/43991306-a55e1c7c-9d72-11e8-9b90-3b414e8f426b.png)
-![filter](https://user-images.githubusercontent.com/9081555/43991304-a527ea1c-9d72-11e8-9105-f152e1e7331f.png)
-![highlight](https://user-images.githubusercontent.com/9081555/43991303-a50bafe6-9d72-11e8-8453-cdf2139b290c.png)
-![settings](https://user-images.githubusercontent.com/9081555/43991302-a4e04126-9d72-11e8-9aea-3678b04b32d6.png)
-![chrome tabs](https://user-images.githubusercontent.com/9081555/43991305-a54310ee-9d72-11e8-8f23-f89d62fbcb7a.png)
+![list](https://user-images.githubusercontent.com/9081555/44621121-5394cc00-a8a9-11e8-8825-136ce0081536.png)
+![compact](https://user-images.githubusercontent.com/9081555/44621176-1d0b8100-a8aa-11e8-9fc5-9127a2820009.png)
+![filter](https://user-images.githubusercontent.com/9081555/44621127-627b7e80-a8a9-11e8-9f30-15a894952e2d.png)
+![highlight](https://user-images.githubusercontent.com/9081555/44621134-71fac780-a8a9-11e8-85ba-e64b03a273a4.png)
+![settings](https://user-images.githubusercontent.com/9081555/44621135-732bf480-a8a9-11e8-8268-92b4966514b6.png)
+![chrome](https://user-images.githubusercontent.com/9081555/44621180-28f74300-a8aa-11e8-9e97-7ab11ca6180a.png)
 
 ## Download
 [Release section](https://github.com/CherryPerry/Amiami-android-app/releases) of this GitHub project.
