@@ -1,5 +1,7 @@
 package ru.cherryperry.amiami
 
+import android.content.Context
+import android.support.multidex.MultiDex
 import android.support.v7.app.AppCompatDelegate
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
@@ -13,6 +15,11 @@ class AmiamiApplication : DaggerApplication() {
             .builder()
             .applicationModule(ApplicationModule(this))
             .build()
+    }
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 
     override fun onCreate() {
