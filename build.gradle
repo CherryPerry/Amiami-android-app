@@ -35,8 +35,8 @@ allprojects {
         okhttpVersion = '3.11.0'
         daggerVersion = '2.17'
         junitVersion = '4.12'
-        rxVersion = '2.2.0'
-        firebaseCoreVersion = '16.0.1'
+        rxVersion = '2.2.1'
+        firebaseCoreVersion = '16.0.3'
         firebaseMessagingVersion = '17.3.0'
         robolectricVersion = '3.8'
         compileSdkVersion = 27
