@@ -5,12 +5,12 @@ import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.OnLifecycleEvent
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposables
 import ru.cherryperry.amiami.domain.currency.GetCurrentRatesUseCase
 import ru.cherryperry.amiami.domain.notifications.ObserveNotificationsSettingUseCase
 import ru.cherryperry.amiami.domain.notifications.SubscribeToNotificationsUseCase
 import ru.cherryperry.amiami.presentation.base.BaseViewModel
-import rx.android.schedulers.AndroidSchedulers
-import rx.subscriptions.Subscriptions
 import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor(
@@ -19,7 +19,7 @@ class SettingsViewModel @Inject constructor(
     private val subscribeToNotificationsUseCase: SubscribeToNotificationsUseCase
 ) : BaseViewModel(), LifecycleObserver {
 
-    private var notificationSubscription = Subscriptions.unsubscribed()
+    private var notificationSubscription = Disposables.disposed()
 
     val currencySetting: LiveData<CurrencySetting> by lazy {
         val liveData = MutableLiveData<CurrencySetting>()
@@ -41,6 +41,6 @@ class SettingsViewModel @Inject constructor(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun stopObservePreferenceChanges() {
-        notificationSubscription.unsubscribe()
+        notificationSubscription.dispose()
     }
 }

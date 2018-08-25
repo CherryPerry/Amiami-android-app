@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class HighlightListRemoveUseCase @Inject constructor(
     private val highlightRepository: HighlightRepository
-) : CompletableUseCase<String>() {
+) : CompletableUseCase<Long>() {
 
-    override fun run(param: String) = highlightRepository.remove(param)
+    override fun run(param: Long) = highlightRepository.remove(param)
 }

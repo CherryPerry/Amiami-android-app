@@ -1,9 +1,9 @@
 package ru.cherryperry.amiami.data.repository
 
 import com.google.firebase.messaging.FirebaseMessaging
+import io.reactivex.Completable
 import ru.cherryperry.amiami.data.prefs.AppPrefs
 import ru.cherryperry.amiami.domain.repository.PushNotificationService
-import rx.Completable
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,12 +18,12 @@ class PushNotificationServiceImpl @Inject constructor(
 
     override fun enabled() = appPrefs.push.observer
 
-    override fun enable(): Completable = call(true)
+    override fun enable() = call(true)
 
-    override fun disable(): Completable = call(false)
+    override fun disable() = call(false)
 
-    private fun call(param: Boolean) = Completable
-        .fromEmitter { emitter ->
+    private fun call(param: Boolean): Completable = Completable
+        .create { emitter ->
             val task = FirebaseMessaging.getInstance().run {
                 if (param) {
                     subscribeToTopic(TOPIC_UPDATES)
@@ -31,7 +31,7 @@ class PushNotificationServiceImpl @Inject constructor(
                     unsubscribeFromTopic(TOPIC_UPDATES)
                 }
             }
-            task.addOnSuccessListener { emitter.onCompleted() }
+            task.addOnSuccessListener { emitter.onComplete() }
             task.addOnFailureListener { emitter.onError(it) }
         }
         .onErrorResumeNext { Completable.fromAction { appPrefs.push.value = !param } }

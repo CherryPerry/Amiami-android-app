@@ -1,6 +1,6 @@
 package ru.cherryperry.amiami.domain.filter
 
-import rx.Completable
+import io.reactivex.Completable
 
 // TODO Make different classes!
 data class FilterUpdateParams(

@@ -4,11 +4,12 @@ import android.content.Context
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
+import io.reactivex.schedulers.Schedulers
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import ru.cherryperry.amiami.data.BuildConfig
@@ -16,7 +17,6 @@ import ru.cherryperry.amiami.data.network.github.GitHubApi
 import ru.cherryperry.amiami.data.network.server.ExchangeRatesGsonTypeAdapter
 import ru.cherryperry.amiami.data.network.server.ServerApi
 import ru.cherryperry.amiami.domain.model.ExchangeRates
-import rx.schedulers.Schedulers
 import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -61,7 +61,7 @@ class NetworkModule {
             .client(client)
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
             .validateEagerly(true)
     }
 

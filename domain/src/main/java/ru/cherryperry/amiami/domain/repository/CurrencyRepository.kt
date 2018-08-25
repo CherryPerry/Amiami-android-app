@@ -1,12 +1,12 @@
 package ru.cherryperry.amiami.domain.repository
 
+import io.reactivex.Flowable
+import io.reactivex.Single
 import ru.cherryperry.amiami.domain.model.ExchangeRates
-import rx.Observable
-import rx.Single
 
 interface CurrencyRepository {
 
     fun currency(): Single<ExchangeRates>
 
-    fun selectedCurrency(): Observable<String>
+    fun selectedCurrency(): Flowable<String>
 }

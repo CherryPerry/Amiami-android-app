@@ -1,8 +1,8 @@
 package ru.cherryperry.amiami.domain.repository
 
+import io.reactivex.Completable
+import io.reactivex.Single
 import ru.cherryperry.amiami.domain.model.HighlightRule
-import rx.Completable
-import rx.Single
 import java.io.InputStream
 import java.io.OutputStream
 

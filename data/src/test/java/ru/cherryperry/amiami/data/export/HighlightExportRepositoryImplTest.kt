@@ -17,23 +17,21 @@ class HighlightExportRepositoryImplTest {
     @Test
     fun testExport() {
         val file = temporaryFolder.newFile()
-        repository.export(listOf(HighlightRule("test")), file.outputStream())
+        repository.export(listOf(HighlightRule(0, "test", true)), file.outputStream())
             .test()
-            .awaitTerminalEvent()
-            .assertNoErrors()
-            .assertCompleted()
-        Assert.assertEquals("{\"highlight\":[\"test\"]}", file.readText())
+            .await()
+            .assertComplete()
+        Assert.assertEquals("""{"highlight":[{"value":"test","regex":true}]}""", file.readText())
     }
 
     @Test
     fun testImport() {
         val file = temporaryFolder.newFile()
-        file.writeText("{\"highlight\":[\"test\"]}")
+        file.writeText("""{"highlight":[{"value":"test","regex":true}]}""")
         repository.import(file.inputStream())
             .test()
-            .awaitTerminalEvent()
-            .assertNoErrors()
-            .assertValue(listOf(HighlightRule("test")))
+            .await()
+            .assertValue(listOf(HighlightRule(0, "test", true)))
     }
 
     @Test
@@ -42,7 +40,7 @@ class HighlightExportRepositoryImplTest {
         val inputStream = file.inputStream()
         repository.import(inputStream)
             .test()
-            .awaitTerminalEvent()
+            .await()
             .assertError(NullPointerException::class.java)
     }
 }

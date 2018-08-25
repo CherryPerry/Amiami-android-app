@@ -1,7 +1,7 @@
 package ru.cherryperry.amiami.domain.repository
 
+import io.reactivex.Single
 import ru.cherryperry.amiami.domain.model.Item
-import rx.Single
 
 interface ItemRepository {
 

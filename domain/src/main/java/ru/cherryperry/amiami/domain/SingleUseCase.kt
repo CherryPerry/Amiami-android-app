@@ -1,6 +1,6 @@
 package ru.cherryperry.amiami.domain
 
-import rx.Single
+import io.reactivex.Single
 
 abstract class SingleUseCase<in Params, Result> {
 

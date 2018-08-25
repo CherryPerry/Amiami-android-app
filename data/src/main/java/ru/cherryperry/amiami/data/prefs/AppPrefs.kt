@@ -21,7 +21,6 @@ class AppPrefs @Inject constructor(
     val priceMin = IntPreference(key(R.string.key_price_min), 0, preferences)
     val priceMax = IntPreference(key(R.string.key_price_max), Int.MAX_VALUE, preferences)
     val searchTerm = StringPreference(key(R.string.key_search_filter), "", preferences)
-    val favoriteList = StringSetPreference(key(R.string.key_favorites), emptySet(), preferences)
     val favoritesOnly = BooleanPreference(key(R.string.key_favorites_only), false, preferences)
     val exchangeCurrency = StringPreference(key(R.string.key_exchange_currency), ExchangeRates.DEFAULT, preferences)
     val showNames = BooleanPreference(key(R.string.key_show_names), true, preferences)

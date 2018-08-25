@@ -2,6 +2,7 @@ package ru.cherryperry.amiami.data
 
 import dagger.Binds
 import dagger.Module
+import ru.cherryperry.amiami.data.db.DatabaseModule
 import ru.cherryperry.amiami.data.export.HighlightExportRepositoryImpl
 import ru.cherryperry.amiami.data.network.NetworkModule
 import ru.cherryperry.amiami.data.repository.CurrencyRepositoryImpl
@@ -18,7 +19,7 @@ import ru.cherryperry.amiami.domain.repository.ItemRepository
 import ru.cherryperry.amiami.domain.repository.PushNotificationService
 import ru.cherryperry.amiami.domain.repository.UpdateRepository
 
-@Module(includes = [NetworkModule::class])
+@Module(includes = [NetworkModule::class, DatabaseModule::class])
 abstract class DataModule {
 
     @Binds

@@ -1,5 +1,6 @@
 package ru.cherryperry.amiami.presentation.highlight.adapter
 
+import android.app.Activity
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
@@ -7,10 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.CheckBox
 import android.widget.EditText
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.presentation.highlight.model.HighlightHeaderItem
 import ru.cherryperry.amiami.presentation.util.ViewDelegate
+
 
 class HighlightHeaderViewHolder(
     viewGroup: ViewGroup
@@ -19,6 +23,7 @@ class HighlightHeaderViewHolder(
 ) {
 
     private val addButton by ViewDelegate<View>(R.id.add)
+    private val regexBox by ViewDelegate<CheckBox>(R.id.regex)
     private val editView by ViewDelegate<EditText>(R.id.edit)
 
     init {
@@ -36,8 +41,10 @@ class HighlightHeaderViewHolder(
 
     fun bind(item: HighlightHeaderItem) {
         addButton.setOnClickListener {
-            item.addItemAction(editView.text.toString())
+            item.addItemAction(editView.text.toString(), regexBox.isChecked)
             editView.text = null
+            regexBox.isChecked = false
+            hideKeyboard()
         }
         addButton.isEnabled = item.validateInputAction(editView.text)
         editView.addTextChangedListener(object : TextWatcher {
@@ -50,5 +57,12 @@ class HighlightHeaderViewHolder(
 
             override fun onTextChanged(sequence: CharSequence, start: Int, before: Int, count: Int) {}
         })
+    }
+
+    private fun hideKeyboard() {
+        itemView.findFocus()?.also {
+            val imm = it.context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(it.windowToken, 0)
+        }
     }
 }

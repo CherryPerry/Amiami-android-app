@@ -1,8 +1,8 @@
 package ru.cherryperry.amiami.data.network.server
 
+import io.reactivex.Single
 import retrofit2.http.GET
 import ru.cherryperry.amiami.domain.model.ExchangeRates
-import rx.Single
 
 interface ServerApi {
 

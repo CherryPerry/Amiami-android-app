@@ -2,9 +2,9 @@ package ru.cherryperry.amiami.data.prefs
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import rx.Emitter
-import rx.Observable
-import rx.schedulers.Schedulers
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
+import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.Executors
 
 private val scheduler = Schedulers.from(Executors.newSingleThreadExecutor())
@@ -17,7 +17,7 @@ abstract class BasePreference<Type>(
 
     abstract var value: Type
 
-    val observer: Observable<Type> = Observable.create<Type>(
+    val observer: Flowable<Type> = Flowable.create<Type>(
         { emitter ->
             val callback = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
                 if (key == this.key) {
@@ -25,9 +25,9 @@ abstract class BasePreference<Type>(
                 }
             }
             sharedPreferences.registerOnSharedPreferenceChangeListener(callback)
-            emitter.setCancellation { sharedPreferences.unregisterOnSharedPreferenceChangeListener(callback) }
+            emitter.setCancellable { sharedPreferences.unregisterOnSharedPreferenceChangeListener(callback) }
             emitter.onNext(value)
-        }, Emitter.BackpressureMode.LATEST)
+        }, BackpressureStrategy.LATEST)
         .observeOn(scheduler)
         .replay(1)
         .refCount()
