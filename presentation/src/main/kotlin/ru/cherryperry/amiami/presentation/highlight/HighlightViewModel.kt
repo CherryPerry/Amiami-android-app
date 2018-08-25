@@ -2,6 +2,7 @@ package ru.cherryperry.amiami.presentation.highlight
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import io.reactivex.android.schedulers.AndroidSchedulers
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.domain.export.ExportHighlightUseCase
 import ru.cherryperry.amiami.domain.export.ImportHighlightUseCase
@@ -14,7 +15,6 @@ import ru.cherryperry.amiami.presentation.base.BaseViewModel
 import ru.cherryperry.amiami.presentation.base.SingleLiveEvent
 import ru.cherryperry.amiami.presentation.highlight.model.HighlightHeaderItem
 import ru.cherryperry.amiami.presentation.highlight.model.HighlightItem
-import rx.android.schedulers.AndroidSchedulers
 import java.io.InputStream
 import java.io.OutputStream
 import javax.inject.Inject
@@ -52,14 +52,14 @@ class HighlightViewModel @Inject constructor(
 
     fun validateItem(item: CharSequence) = item.length >= RULE_MIN_LENGTH
 
-    fun addItem(item: CharSequence) {
-        this += highlightListAddUseCase.run(item.toString())
+    fun addItem(item: CharSequence, regexp: Boolean) {
+        this += highlightListAddUseCase.run(HighlightRule(rule = item.toString(), regex = regexp))
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({}, { it.printStackTrace() })
     }
 
     fun deleteItem(item: HighlightRule) {
-        this += highlightListRemoveUseCase.run(item.rule)
+        this += highlightListRemoveUseCase.run(item.id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({}, { it.printStackTrace() })
     }

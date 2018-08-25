@@ -1,6 +1,6 @@
 package ru.cherryperry.amiami.domain
 
-import rx.Completable
+import io.reactivex.Completable
 
 abstract class CompletableUseCase<in Params> {
 

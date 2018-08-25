@@ -2,14 +2,14 @@ package ru.cherryperry.amiami.presentation.base
 
 import android.arch.lifecycle.ViewModel
 import android.support.annotation.CallSuper
-import rx.Subscription
-import rx.subscriptions.CompositeSubscription
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 
 abstract class BaseViewModel : ViewModel() {
 
-    private val subscriptions = CompositeSubscription()
+    private val subscriptions = CompositeDisposable()
 
-    operator fun plusAssign(subscription: Subscription) {
+    operator fun plusAssign(subscription: Disposable) {
         subscriptions.add(subscription)
     }
 

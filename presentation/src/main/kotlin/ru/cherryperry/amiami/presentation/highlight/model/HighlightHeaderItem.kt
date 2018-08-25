@@ -3,7 +3,7 @@ package ru.cherryperry.amiami.presentation.highlight.model
 import ru.cherryperry.amiami.domain.model.Model
 
 class HighlightHeaderItem(
-    val addItemAction: (CharSequence) -> Unit,
+    val addItemAction: (CharSequence, Boolean) -> Unit,
     val validateInputAction: (CharSequence) -> Boolean
 ) : Model {
 

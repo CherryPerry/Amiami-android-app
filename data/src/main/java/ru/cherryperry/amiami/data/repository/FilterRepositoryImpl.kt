@@ -1,10 +1,11 @@
 package ru.cherryperry.amiami.data.repository
 
+import io.reactivex.Completable
+import io.reactivex.Flowable
+import io.reactivex.functions.Function3
 import ru.cherryperry.amiami.data.prefs.AppPrefs
 import ru.cherryperry.amiami.domain.model.Filter
 import ru.cherryperry.amiami.domain.repository.FilterRepository
-import rx.Completable
-import rx.Observable
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,11 +14,11 @@ class FilterRepositoryImpl @Inject constructor(
     private val appPrefs: AppPrefs
 ) : FilterRepository {
 
-    override fun filter(): Observable<Filter> = Observable.combineLatest(
+    override fun filter(): Flowable<Filter> = Flowable.combineLatest(
         appPrefs.priceMin.observer,
         appPrefs.priceMax.observer,
-        appPrefs.searchTerm.observer
-    ) { min, max, term -> Filter(min, max, term) }
+        appPrefs.searchTerm.observer,
+        Function3 { min, max, term -> Filter(min, max, term) })
 
     override fun setMin(value: Int): Completable = Completable.fromAction {
         if (appPrefs.priceMax.value < value) {

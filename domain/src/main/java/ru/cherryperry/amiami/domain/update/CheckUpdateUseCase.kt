@@ -1,17 +1,17 @@
 package ru.cherryperry.amiami.domain.update
 
-import ru.cherryperry.amiami.domain.ObservableUseCase
+import io.reactivex.Flowable
+import ru.cherryperry.amiami.domain.FlowableUseCase
 import ru.cherryperry.amiami.domain.di.ApplicationVersion
 import ru.cherryperry.amiami.domain.model.UpdateInfo
 import ru.cherryperry.amiami.domain.model.Version
 import ru.cherryperry.amiami.domain.repository.UpdateRepository
-import rx.Observable
 import javax.inject.Inject
 
 class CheckUpdateUseCase @Inject constructor(
     private val updateRepository: UpdateRepository,
     @ApplicationVersion currentVersion: String
-) : ObservableUseCase<Unit, UpdateInfo>() {
+) : FlowableUseCase<Unit, UpdateInfo>() {
 
     private val version = try {
         Version.fromString(currentVersion)
@@ -19,6 +19,7 @@ class CheckUpdateUseCase @Inject constructor(
         Version(Int.MAX_VALUE)
     }
 
-    override fun run(param: Unit): Observable<UpdateInfo> = updateRepository.latestRelease()
-        .filter { it.version > version }
+    // TODO Maybe
+    override fun run(param: Unit): Flowable<UpdateInfo> =
+        updateRepository.latestRelease().filter { it.version > version }.toFlowable()
 }

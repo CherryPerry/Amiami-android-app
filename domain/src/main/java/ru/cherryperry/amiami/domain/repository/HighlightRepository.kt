@@ -1,19 +1,17 @@
 package ru.cherryperry.amiami.domain.repository
 
+import io.reactivex.Completable
+import io.reactivex.Flowable
 import ru.cherryperry.amiami.domain.model.HighlightConfiguration
 import ru.cherryperry.amiami.domain.model.HighlightRule
-import rx.Completable
-import rx.Observable
 
 interface HighlightRepository {
 
-    fun list(): Observable<List<String>>
+    fun configuration(): Flowable<HighlightConfiguration>
 
-    fun configuration(): Observable<HighlightConfiguration>
+    fun add(value: HighlightRule): Completable
 
-    fun add(value: String): Completable
-
-    fun remove(value: String): Completable
+    fun remove(id: Long): Completable
 
     fun replace(list: List<HighlightRule>): Completable
 }

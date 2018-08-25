@@ -3,11 +3,11 @@ package ru.cherryperry.amiami.presentation.main
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.crashlytics.android.Crashlytics
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposables
 import ru.cherryperry.amiami.domain.items.ItemListResult
 import ru.cherryperry.amiami.domain.items.ItemListUseCase
 import ru.cherryperry.amiami.presentation.base.BaseViewModel
-import rx.android.schedulers.AndroidSchedulers
-import rx.subscriptions.Subscriptions
 import java.io.IOException
 import javax.inject.Inject
 
@@ -17,7 +17,7 @@ class MainViewModel @Inject constructor(
 
     private lateinit var screenLiveData: MutableLiveData<ScreenState>
     private val filterEnabledLiveData = MutableLiveData<Boolean>()
-    private var itemSubscription = Subscriptions.unsubscribed()
+    private var itemSubscription = Disposables.disposed()
 
     val screenState: LiveData<ScreenState>
         get() {
@@ -31,7 +31,7 @@ class MainViewModel @Inject constructor(
     val filterEnabled: LiveData<Boolean> = filterEnabledLiveData
 
     fun load() {
-        itemSubscription.unsubscribe()
+        itemSubscription.dispose()
         itemSubscription = itemListUseCase.run(Unit)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { screenLiveData.value = ScreenState(ScreenState.STATE_LOADING, emptyList()) }

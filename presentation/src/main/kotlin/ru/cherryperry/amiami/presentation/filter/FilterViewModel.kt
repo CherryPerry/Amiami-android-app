@@ -2,11 +2,11 @@ package ru.cherryperry.amiami.presentation.filter
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import io.reactivex.android.schedulers.AndroidSchedulers
 import ru.cherryperry.amiami.domain.filter.FilterGetUseCase
 import ru.cherryperry.amiami.domain.filter.FilterUpdateParams
 import ru.cherryperry.amiami.domain.filter.FilterUpdateUseCase
 import ru.cherryperry.amiami.presentation.base.BaseViewModel
-import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 class FilterViewModel @Inject constructor(

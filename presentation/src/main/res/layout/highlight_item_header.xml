@@ -10,41 +10,57 @@
         android:id="@+id/edit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="14dp"
         android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
         android:layout_marginStart="14dp"
         android:layout_marginTop="8dp"
         android:hint="@string/rule"
         android:imeOptions="actionDone"
         android:inputType="text"
         android:lines="1"
-        app:layout_constraintEnd_toStartOf="@+id/add"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
+    <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/regex"
+        style="@style/TextAppearance.AppCompat.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:text="@string/highlight_regexp"
+        app:layout_constraintBottom_toBottomOf="@+id/add"
+        app:layout_constraintEnd_toStartOf="@+id/add"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/add"/>
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/add"
         style="@style/AccentButtonOverlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="14dp"
         android:text="@string/add"
-        app:layout_constraintBottom_toBottomOf="@+id/edit"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/edit"/>
+        app:layout_constraintTop_toBottomOf="@+id/edit"/>
 
     <TextView
         android:id="@+id/hint"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/highlight_hint"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/add"
-        app:layout_constraintStart_toStartOf="@+id/edit"
-        app:layout_constraintTop_toBottomOf="@+id/edit"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add"/>
 
 </android.support.constraint.ConstraintLayout>

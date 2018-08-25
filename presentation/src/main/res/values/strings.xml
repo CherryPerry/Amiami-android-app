@@ -39,6 +39,12 @@
     <string name="export_error">Failed to export rules</string>
     <string name="import_error">Failed to import rules</string>
 
+    <!-- Highlight -->
+    <string name="highlight_regexp">Regexp</string>
+    <string name="highlight_type_text">Type: text</string>
+    <string name="highlight_type_regex_ok">Type: regexp</string>
+    <string name="highlight_type_regex_error">Type: regexp (error)</string>
+
     <!-- Settings -->
     <string name="settings_show_names">Show names</string>
     <string name="settings_show_names_enabled">Name will be shown in item\'s card</string>
@@ -53,4 +59,5 @@
     <!-- Notification channel -->
     <string name="notification_channel_id">channel.updates</string>
     <string name="notification_channel_title">Updates</string>
+
 </resources>

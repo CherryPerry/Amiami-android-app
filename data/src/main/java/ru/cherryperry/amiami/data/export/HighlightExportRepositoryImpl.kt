@@ -1,11 +1,11 @@
 package ru.cherryperry.amiami.data.export
 
 import com.google.gson.Gson
+import io.reactivex.Completable
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import ru.cherryperry.amiami.domain.model.HighlightRule
 import ru.cherryperry.amiami.domain.repository.HighlightExportRepository
-import rx.Completable
-import rx.Single
-import rx.schedulers.Schedulers
 import java.io.InputStream
 import java.io.OutputStream
 import javax.inject.Inject
@@ -20,7 +20,7 @@ class HighlightExportRepositoryImpl @Inject constructor() : HighlightExportRepos
         Completable
             .fromAction {
                 outputStream.bufferedWriter().use { writer ->
-                    val settings = ExportedData(rules.map { it.rule })
+                    val settings = ExportedData(rules.map { ExportedItem(it.rule, it.regex) })
                     gson.toJson(settings, writer)
                 }
             }
@@ -31,7 +31,7 @@ class HighlightExportRepositoryImpl @Inject constructor() : HighlightExportRepos
             .fromCallable {
                 inputStream.reader().use { reader ->
                     val settings = gson.fromJson(reader, ExportedData::class.java)
-                    settings.highlight.map { HighlightRule(it) }
+                    settings.highlight.map { HighlightRule(0, it.value, it.regex) }
                 }
             }
             .subscribeOn(Schedulers.io())

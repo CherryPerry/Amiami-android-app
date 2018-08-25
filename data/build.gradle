@@ -26,14 +26,9 @@ android {
 dependencies {
     implementation project(':domain')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-
-    implementation "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 
     implementation 'androidx.core:core-ktx:0.3'
-
-    implementation "io.reactivex:rxjava:$rxVersion"
 
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
@@ -41,11 +36,17 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retoriftVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retoriftVersion"
     implementation "com.squareup.retrofit2:converter-scalars:$retoriftVersion"
-    implementation "com.squareup.retrofit2:adapter-rxjava:$retoriftVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retoriftVersion"
 
     implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
     implementation "com.google.firebase:firebase-messaging:$firebaseMessagingVersion"
     implementation "com.android.support:support-v4:$compatVersion"
 
+    // TODO Why??
+    api 'android.arch.persistence.room:runtime:1.1.1'
+    implementation 'android.arch.persistence.room:rxjava2:1.1.1'
+    kapt 'android.arch.persistence.room:compiler:1.1.1'
+
     testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
 }
