@@ -52,8 +52,8 @@ class HighlightViewModel @Inject constructor(
 
     fun validateItem(item: CharSequence) = item.length >= RULE_MIN_LENGTH
 
-    fun addItem(item: CharSequence) {
-        this += highlightListAddUseCase.run(HighlightRule(rule = item.toString(), regex = false))
+    fun addItem(item: CharSequence, regexp: Boolean) {
+        this += highlightListAddUseCase.run(HighlightRule(rule = item.toString(), regex = regexp))
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({}, { it.printStackTrace() })
     }

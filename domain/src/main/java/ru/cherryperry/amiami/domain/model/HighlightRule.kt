@@ -17,7 +17,7 @@ data class HighlightRule(
     } else {
         null
     }
-    private val invalidRegex: Boolean = regexValue == null && regex
+    val invalidRegex: Boolean = regexValue == null && regex
 
     fun isItemHighlighted(item: Item) = isItemHighlighted(item.name)
 
