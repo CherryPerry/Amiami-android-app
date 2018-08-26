@@ -24,7 +24,7 @@ class HighlightItemViewHolder(
     private val originalColor: ColorStateList
     @ColorInt
     private val errorColor = TypedValue().let {
-        typeView.context.theme.resolveAttribute(R.attr.textColorError, it, true)
+        typeView.context.theme.resolveAttribute(R.attr.colorError, it, true)
         it.data
     }
 

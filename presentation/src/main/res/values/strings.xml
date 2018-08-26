@@ -43,7 +43,7 @@
     <string name="highlight_regexp">Regexp</string>
     <string name="highlight_type_text">Type: text</string>
     <string name="highlight_type_regex_ok">Type: regexp</string>
-    <string name="highlight_type_regex_error">Type: regexp (error)</string>
+    <string name="highlight_type_regex_error">Type: invalid regexp</string>
 
     <!-- Settings -->
     <string name="settings_show_names">Show names</string>
