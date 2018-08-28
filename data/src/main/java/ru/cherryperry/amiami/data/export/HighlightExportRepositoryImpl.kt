@@ -1,6 +1,7 @@
 package ru.cherryperry.amiami.data.export
 
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonIOException
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
@@ -14,7 +15,9 @@ import javax.inject.Singleton
 @Singleton
 class HighlightExportRepositoryImpl @Inject constructor() : HighlightExportRepository {
 
-    private val gson = Gson()
+    private val gson = GsonBuilder()
+        .registerTypeAdapter(ExportedData::class.java, ExportedDataGsonTypeAdapter())
+        .create()
 
     override fun export(rules: List<HighlightRule>, outputStream: OutputStream): Completable =
         Completable
@@ -31,6 +34,7 @@ class HighlightExportRepositoryImpl @Inject constructor() : HighlightExportRepos
             .fromCallable {
                 inputStream.reader().use { reader ->
                     val settings = gson.fromJson(reader, ExportedData::class.java)
+                        ?: throw JsonIOException("Empty file")
                     settings.highlight.map { HighlightRule(0, it.value, it.regex) }
                 }
             }

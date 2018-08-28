@@ -1,5 +1,7 @@
 package ru.cherryperry.amiami.data.export
 
+import com.google.gson.JsonIOException
+import com.google.gson.JsonParseException
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -17,21 +19,51 @@ class HighlightExportRepositoryImplTest {
     @Test
     fun testExport() {
         val file = temporaryFolder.newFile()
-        repository.export(listOf(HighlightRule(0, "test", true)), file.outputStream())
+        repository.export(
+            listOf(
+                HighlightRule(0, "test1", true),
+                HighlightRule(0, "test2", false)),
+            file.outputStream())
             .test()
             .await()
             .assertComplete()
-        Assert.assertEquals("""{"highlight":[{"value":"test","regex":true}]}""", file.readText())
+        Assert.assertEquals(
+            """{"highlight":[{"value":"test1","regex":true},{"value":"test2","regex":false}]}""",
+            file.readText())
     }
 
     @Test
-    fun testImport() {
+    fun testImportCurrentVersion() {
         val file = temporaryFolder.newFile()
-        file.writeText("""{"highlight":[{"value":"test","regex":true}]}""")
+        file.writeText("""{"highlight":[{"value":"test1","regex":true},{"value":"test2","regex":false}]}""")
         repository.import(file.inputStream())
             .test()
             .await()
-            .assertValue(listOf(HighlightRule(0, "test", true)))
+            .assertValue(listOf(
+                HighlightRule(0, "test1", true),
+                HighlightRule(0, "test2", false)))
+    }
+
+    @Test
+    fun testImportOldVersion() {
+        val file = temporaryFolder.newFile()
+        file.writeText("""{"highlight":["test1","test2"]}""")
+        repository.import(file.inputStream())
+            .test()
+            .await()
+            .assertValue(listOf(
+                HighlightRule(0, "test1", false),
+                HighlightRule(0, "test2", false)))
+    }
+
+    @Test
+    fun testEmptyJson() {
+        val file = temporaryFolder.newFile()
+        file.writeText("""{"highlight":[]}""")
+        repository.import(file.inputStream())
+            .test()
+            .await()
+            .assertValue(emptyList())
     }
 
     @Test
@@ -41,6 +73,17 @@ class HighlightExportRepositoryImplTest {
         repository.import(inputStream)
             .test()
             .await()
-            .assertError(NullPointerException::class.java)
+            .assertError(JsonIOException::class.java)
+    }
+
+    @Test
+    fun testNotJson() {
+        val file = temporaryFolder.newFile()
+        file.writeText("text")
+        val inputStream = file.inputStream()
+        repository.import(inputStream)
+            .test()
+            .await()
+            .assertError(JsonParseException::class.java)
     }
 }
