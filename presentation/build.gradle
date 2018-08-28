@@ -13,8 +13,8 @@ android {
         applicationId 'ru.cherryperry.amiami'
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
-        versionCode 3_01_01
-        versionName '3.1.0'
+        versionCode 3_01_10
+        versionName '3.1.1'
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
 
