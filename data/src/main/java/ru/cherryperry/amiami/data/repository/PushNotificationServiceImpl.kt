@@ -2,6 +2,7 @@ package ru.cherryperry.amiami.data.repository
 
 import com.google.firebase.messaging.FirebaseMessaging
 import io.reactivex.Completable
+import io.reactivex.Single
 import ru.cherryperry.amiami.data.prefs.AppPrefs
 import ru.cherryperry.amiami.domain.repository.PushNotificationService
 import javax.inject.Inject
@@ -35,4 +36,9 @@ class PushNotificationServiceImpl @Inject constructor(
             task.addOnFailureListener { emitter.onError(it) }
         }
         .onErrorResumeNext { Completable.fromAction { appPrefs.push.value = !param } }
+
+    override fun counter(): Single<Int> = Single.just(appPrefs.pushCounter.value)
+
+    override fun setCounter(value: Int): Completable = Completable
+        .fromAction { appPrefs.pushCounter.value = value }
 }
