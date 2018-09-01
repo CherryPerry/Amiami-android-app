@@ -2,6 +2,7 @@ package ru.cherryperry.amiami.data.mapping
 
 import ru.cherryperry.amiami.domain.model.Price
 import ru.cherryperry.amiami.mapping.Mapping
+import java.lang.NumberFormatException
 import java.text.NumberFormat
 import java.text.ParseException
 import java.util.Locale
@@ -19,6 +20,8 @@ class JsonPriceToPriceMapping : Mapping<String, Price> {
                 }
             }
         } catch (parseException: ParseException) {
+            // ignored
+        } catch (numberFormatException: NumberFormatException) {
             // ignored
         }
         return Price(0.0)
