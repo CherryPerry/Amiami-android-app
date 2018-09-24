@@ -23,6 +23,7 @@ import ru.cherryperry.amiami.presentation.util.ViewDelegate
 import ru.cherryperry.amiami.presentation.util.ViewDelegateReset
 import ru.cherryperry.amiami.presentation.util.addPaddingBottomToFitBottomSystemInset
 import javax.inject.Inject
+import kotlin.math.min
 
 class FilterFragment : DaggerFragment(), SeekBar.OnSeekBarChangeListener {
 
@@ -85,7 +86,7 @@ class FilterFragment : DaggerFragment(), SeekBar.OnSeekBarChangeListener {
                 val selectionStart = searchEdit.selectionStart
                 val selectionEnd = searchEdit.selectionEnd
                 searchEdit.setText(it)
-                searchEdit.setSelection(selectionStart, selectionEnd)
+                searchEdit.setSelection(min(selectionStart, it.length), min(selectionEnd, it.length))
             }
         })
         searchEdit.addTextChangedListener(object : TextWatcher {
