@@ -4,8 +4,10 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import ru.cherryperry.amiami.domain.filter.FilterGetUseCase
-import ru.cherryperry.amiami.domain.filter.FilterUpdateParams
 import ru.cherryperry.amiami.domain.filter.FilterUpdateUseCase
+import ru.cherryperry.amiami.domain.filter.MaxFilterUpdateParams
+import ru.cherryperry.amiami.domain.filter.MinFilterUpdateParams
+import ru.cherryperry.amiami.domain.filter.TermFilterUpdateParams
 import ru.cherryperry.amiami.presentation.base.BaseViewModel
 import javax.inject.Inject
 
@@ -43,14 +45,14 @@ class FilterViewModel @Inject constructor(
     }
 
     fun setTerm(value: String) {
-        this += filterUpdateUseCase.run(FilterUpdateParams(term = value)).subscribe()
+        this += filterUpdateUseCase.run(TermFilterUpdateParams(value)).subscribe()
     }
 
     fun setMin(value: Int) {
-        this += filterUpdateUseCase.run(FilterUpdateParams(min = value)).subscribe()
+        this += filterUpdateUseCase.run(MinFilterUpdateParams(value)).subscribe()
     }
 
     fun setMax(value: Int) {
-        this += filterUpdateUseCase.run(FilterUpdateParams(max = value)).subscribe()
+        this += filterUpdateUseCase.run(MaxFilterUpdateParams(value)).subscribe()
     }
 }

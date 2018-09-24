@@ -4,8 +4,7 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.Executors
+import ru.cherryperry.amiami.core.createBackgroundThreadScheduler
 import javax.inject.Singleton
 
 @Module
@@ -28,6 +27,7 @@ class DatabaseModule {
     fun highlightDao(appDatabase: AppDatabase) = appDatabase.highlightRuleDao()
 
     @Provides
+    @Singleton
     @DatabaseScheduler
-    fun scheduler() = Schedulers.from(Executors.newSingleThreadExecutor())
+    fun scheduler() = createBackgroundThreadScheduler("DatabaseThread")
 }

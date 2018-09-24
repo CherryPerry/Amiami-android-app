@@ -1,31 +1,15 @@
 package ru.cherryperry.amiami.domain.filter
 
-import io.reactivex.Completable
+sealed class FilterUpdateParams
 
-// TODO Make different classes!
-data class FilterUpdateParams(
-    val min: Int? = null,
-    val max: Int? = null,
-    val term: String? = null
-) {
+data class MinFilterUpdateParams(
+    val min: Int
+) : FilterUpdateParams()
 
-    init {
-        if (min == null && max == null && term == null) {
-            throw IllegalArgumentException("This update is meaningless")
-        }
-        if (min != null && max != null && min > max) {
-            throw IllegalArgumentException("Min can't be higher than max")
-        }
-    }
+data class MaxFilterUpdateParams(
+    val max: Int
+) : FilterUpdateParams()
 
-    fun resolve(
-        minAction: (Int) -> Completable,
-        maxAction: (Int) -> Completable,
-        termAction: (String) -> Completable
-    ) = when {
-        min != null -> minAction(min)
-        max != null -> maxAction(max)
-        term != null -> termAction(term)
-        else -> throw IllegalStateException()
-    }
-}
+data class TermFilterUpdateParams(
+    val term: String
+) : FilterUpdateParams()

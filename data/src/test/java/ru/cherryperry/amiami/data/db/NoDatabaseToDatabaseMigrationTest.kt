@@ -22,15 +22,23 @@ class NoDatabaseToDatabaseMigrationTest {
         val appDatabase = Room.inMemoryDatabaseBuilder(RuntimeEnvironment.application, AppDatabase::class.java)
             .addCallback(migration)
             .build()
-        val migrationTest = migration.migrateCompletable(appDatabase).test()
+        val migrationTest = migration
+            .migrateCompletable(appDatabase)
+            .test()
         // onCreate called on first db call
-        appDatabase.highlightRuleDao().get()
+        appDatabase
+            .highlightRuleDao()
+            .get()
             .firstElement()
             .subscribeOn(scheduler)
             .test()
             .await()
             .assertValue(emptyList())
-        migrationTest.await().assertComplete()
+            .dispose()
+        migrationTest
+            .await()
+            .assertComplete()
+            .dispose()
         appDatabase.close()
     }
 
@@ -44,15 +52,24 @@ class NoDatabaseToDatabaseMigrationTest {
         val appDatabase = Room.inMemoryDatabaseBuilder(RuntimeEnvironment.application, AppDatabase::class.java)
             .addCallback(migration)
             .build()
-        val migrationTest = migration.migrateCompletable(appDatabase).test()
+        val migrationTest = migration
+            .migrateCompletable(appDatabase)
+            .test()
         // onCreate called on first db call
         appDatabase.highlightRuleDao().get()
             .firstElement()
             .subscribeOn(scheduler)
             .test()
             .await()
-            .assertValue(listOf(DbHighlightRule(1, "test2", false), DbHighlightRule(2, "test1", false)))
-        migrationTest.await().assertComplete()
+            .assertValue(
+                listOf(
+                    DbHighlightRule(1, "test2", false),
+                    DbHighlightRule(2, "test1", false)))
+            .dispose()
+        migrationTest
+            .await()
+            .assertComplete()
+            .dispose()
         appDatabase.close()
     }
 }

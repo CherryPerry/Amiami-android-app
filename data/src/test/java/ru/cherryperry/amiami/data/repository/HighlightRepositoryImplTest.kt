@@ -40,6 +40,7 @@ class HighlightRepositoryImplTest {
             .test()
             .awaitCount(1)
             .assertValue(HighlightConfiguration(emptyList()))
+            .dispose()
     }
 
     @Test
@@ -50,6 +51,7 @@ class HighlightRepositoryImplTest {
             .test()
             .awaitCount(1)
             .assertValue(HighlightConfiguration(emptyList(), true))
+            .dispose()
     }
 
     @Test
@@ -67,14 +69,23 @@ class HighlightRepositoryImplTest {
                 HighlightConfiguration(asFilter = true))
             .assertNotComplete()
             .assertNoErrors()
+            .dispose()
     }
 
     @Test
     fun testInsertItem() {
         appPrefs.favoritesOnly.value = false
         val item1 = HighlightRule(1, "test1", true)
-        val subscriber = highlightRepositoryImpl.configuration().test().awaitCount(1)
-        highlightRepositoryImpl.add(item1).test().await().assertComplete()
+        val subscriber = highlightRepositoryImpl
+            .configuration()
+            .test()
+            .awaitCount(1)
+        highlightRepositoryImpl
+            .add(item1)
+            .test()
+            .await()
+            .assertComplete()
+            .dispose()
         // item insertion should notify subscriber
         subscriber
             .awaitCount(2)
@@ -83,6 +94,7 @@ class HighlightRepositoryImplTest {
                 HighlightConfiguration(listOf(item1)))
             .assertNotComplete()
             .assertNoErrors()
+            .dispose()
     }
 
     @Test
@@ -91,8 +103,18 @@ class HighlightRepositoryImplTest {
         val item1 = HighlightRule(1, "test1", true)
         val item2 = HighlightRule(2, "test2", false)
         // insert data
-        highlightRepositoryImpl.add(item1).test().await().assertComplete()
-        highlightRepositoryImpl.add(item2).test().await().assertComplete()
+        highlightRepositoryImpl
+            .add(item1)
+            .test()
+            .await()
+            .assertComplete()
+            .dispose()
+        highlightRepositoryImpl
+            .add(item2)
+            .test()
+            .await()
+            .assertComplete()
+            .dispose()
         val subscriber = highlightRepositoryImpl.configuration().test().awaitCount(1)
         // remove one
         highlightRepositoryImpl.remove(1).test().await().assertComplete()
@@ -104,6 +126,7 @@ class HighlightRepositoryImplTest {
                 HighlightConfiguration(listOf(item2)))
             .assertNotComplete()
             .assertNoErrors()
+            .dispose()
     }
 
     @Test
@@ -111,12 +134,22 @@ class HighlightRepositoryImplTest {
         appPrefs.favoritesOnly.value = false
         val item1 = HighlightRule(1, "test1", true)
         val item2 = HighlightRule(2, "test2", false)
-        highlightRepositoryImpl.add(item1).test().await().assertComplete()
+        highlightRepositoryImpl
+            .add(item1)
+            .test()
+            .await()
+            .assertComplete()
+            .dispose()
         val subscriber = highlightRepositoryImpl.configuration()
             .test()
             .awaitCount(1)
         // item insertions should not drop table
-        highlightRepositoryImpl.add(item2).test().await().assertComplete()
+        highlightRepositoryImpl
+            .add(item2)
+            .test()
+            .await()
+            .assertComplete()
+            .dispose()
         subscriber
             .awaitCount(2)
             .assertValues(
@@ -124,18 +157,30 @@ class HighlightRepositoryImplTest {
                 HighlightConfiguration(listOf(item1, item2)))
             .assertNotComplete()
             .assertNoErrors()
+            .dispose()
     }
 
     @Test
     fun testReplace() {
         appPrefs.favoritesOnly.value = false
         val item1 = HighlightRule(1, "test1", true)
-        highlightRepositoryImpl.add(item1).test().await().assertComplete()
-        val subscriber = highlightRepositoryImpl.configuration()
+        highlightRepositoryImpl
+            .add(item1)
+            .test()
+            .await()
+            .assertComplete()
+            .dispose()
+        val subscriber = highlightRepositoryImpl
+            .configuration()
             .test()
             .awaitCount(1)
         val item2 = HighlightRule(2, "test2", false)
-        highlightRepositoryImpl.replace(listOf(item2)).test().await().assertComplete()
+        highlightRepositoryImpl
+            .replace(listOf(item2))
+            .test()
+            .await()
+            .assertComplete()
+            .dispose()
         subscriber
             .awaitCount(2)
             .assertValues(
@@ -143,5 +188,6 @@ class HighlightRepositoryImplTest {
                 HighlightConfiguration(listOf(item2)))
             .assertNotComplete()
             .assertNoErrors()
+            .dispose()
     }
 }

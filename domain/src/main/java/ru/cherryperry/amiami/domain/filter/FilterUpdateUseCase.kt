@@ -10,25 +10,9 @@ class FilterUpdateUseCase @Inject constructor(
 ) : CompletableUseCase<FilterUpdateParams>() {
 
     override fun run(param: FilterUpdateParams): Completable =
-        filterRepository.filter()
-            .take(1)
-            .flatMapCompletable { filter ->
-                param.resolve({
-                    // if current max is lower, update it first
-                    if (filter.maxPrice < it) {
-                        Completable.concatArray(filterRepository.setMax(it), filterRepository.setMin(it))
-                    } else {
-                        filterRepository.setMin(it)
-                    }
-                }, {
-                    // if current min is higher, update it first
-                    if (filter.minPrice > it) {
-                        Completable.concatArray(filterRepository.setMin(it), filterRepository.setMax(it))
-                    } else {
-                        filterRepository.setMax(it)
-                    }
-                }, {
-                    filterRepository.setTerm(it)
-                })
-            }
+        when (param) {
+            is MinFilterUpdateParams -> filterRepository.setMin(param.min)
+            is MaxFilterUpdateParams -> filterRepository.setMax(param.max)
+            is TermFilterUpdateParams -> filterRepository.setTerm(param.term)
+        }
 }

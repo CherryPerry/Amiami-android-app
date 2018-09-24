@@ -9,21 +9,12 @@ import ru.cherryperry.amiami.domain.repository.FilterRepository
 
 class FilterUpdateUseCaseTest {
 
-    @Test(expected = IllegalArgumentException::class)
-    fun testUpdateNothing() {
-        val repository = Mockito.mock(FilterRepository::class.java)
-        FilterUpdateUseCase(repository).run(FilterUpdateParams())
-            .test()
-            .await()
-            .assertComplete()
-    }
-
     @Test
     fun testUpdateMin() {
         val repository = Mockito.mock(FilterRepository::class.java)
         Mockito.`when`(repository.filter()).thenReturn(Flowable.just(Filter(0, 2, "text")))
         Mockito.`when`(repository.setMin(1)).thenReturn(Completable.complete())
-        FilterUpdateUseCase(repository).run(FilterUpdateParams(min = 1))
+        FilterUpdateUseCase(repository).run(MinFilterUpdateParams(1))
             .test()
             .await()
             .assertComplete()
@@ -33,26 +24,11 @@ class FilterUpdateUseCaseTest {
     }
 
     @Test
-    fun testUpdateMinHigherThanMax() {
-        val repository = Mockito.mock(FilterRepository::class.java)
-        Mockito.`when`(repository.filter()).thenReturn(Flowable.just(Filter(0, 2, "text")))
-        Mockito.`when`(repository.setMin(3)).thenReturn(Completable.complete())
-        Mockito.`when`(repository.setMax(3)).thenReturn(Completable.complete())
-        FilterUpdateUseCase(repository).run(FilterUpdateParams(min = 3))
-            .test()
-            .await()
-            .assertComplete()
-        Mockito.verify(repository).setMin(3)
-        Mockito.verify(repository).setMin(3)
-        Mockito.verify(repository, Mockito.never()).setTerm(Mockito.anyString())
-    }
-
-    @Test
     fun testUpdateMax() {
         val repository = Mockito.mock(FilterRepository::class.java)
         Mockito.`when`(repository.filter()).thenReturn(Flowable.just(Filter(0, 2, "text")))
         Mockito.`when`(repository.setMax(3)).thenReturn(Completable.complete())
-        FilterUpdateUseCase(repository).run(FilterUpdateParams(max = 3))
+        FilterUpdateUseCase(repository).run(MaxFilterUpdateParams(3))
             .test()
             .await()
             .assertComplete()
@@ -62,26 +38,11 @@ class FilterUpdateUseCaseTest {
     }
 
     @Test
-    fun testUpdateMaxLowerThanMin() {
-        val repository = Mockito.mock(FilterRepository::class.java)
-        Mockito.`when`(repository.filter()).thenReturn(Flowable.just(Filter(3, 4, "text")))
-        Mockito.`when`(repository.setMin(2)).thenReturn(Completable.complete())
-        Mockito.`when`(repository.setMax(2)).thenReturn(Completable.complete())
-        FilterUpdateUseCase(repository).run(FilterUpdateParams(max = 2))
-            .test()
-            .await()
-            .assertComplete()
-        Mockito.verify(repository).setMin(2)
-        Mockito.verify(repository).setMax(2)
-        Mockito.verify(repository, Mockito.never()).setTerm(Mockito.anyString())
-    }
-
-    @Test
     fun testUpdateText() {
         val repository = Mockito.mock(FilterRepository::class.java)
         Mockito.`when`(repository.filter()).thenReturn(Flowable.just(Filter(3, 4, "text")))
         Mockito.`when`(repository.setTerm("term")).thenReturn(Completable.complete())
-        FilterUpdateUseCase(repository).run(FilterUpdateParams(term = "term"))
+        FilterUpdateUseCase(repository).run(TermFilterUpdateParams("term"))
             .test()
             .await()
             .assertComplete()
@@ -97,7 +58,7 @@ class FilterUpdateUseCaseTest {
         Mockito.`when`(repository.filter()).thenReturn(Flowable.just(Filter(0, 2, "text")))
         Mockito.`when`(repository.setMin(3)).thenReturn(error)
         Mockito.`when`(repository.setMax(3)).thenReturn(error)
-        FilterUpdateUseCase(repository).run(FilterUpdateParams(min = 3))
+        FilterUpdateUseCase(repository).run(MinFilterUpdateParams(3))
             .test()
             .await()
             .assertError(IllegalArgumentException::class.java)
