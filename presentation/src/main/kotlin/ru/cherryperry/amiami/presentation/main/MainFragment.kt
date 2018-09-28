@@ -20,13 +20,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isGone
-import dagger.android.support.DaggerFragment
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.data.prefs.AppPrefs
 import ru.cherryperry.amiami.domain.model.Item
 import ru.cherryperry.amiami.domain.model.Model
 import ru.cherryperry.amiami.presentation.activity.Navigator
 import ru.cherryperry.amiami.presentation.activity.OnBackKeyPressedListener
+import ru.cherryperry.amiami.presentation.base.BaseFragment
 import ru.cherryperry.amiami.presentation.base.NotNullObserver
 import ru.cherryperry.amiami.presentation.main.adapter.ItemAdapter
 import ru.cherryperry.amiami.presentation.main.adapter.ItemSpanSizeLookup
@@ -38,7 +38,7 @@ import ru.cherryperry.amiami.presentation.util.ViewDelegateReset
 import ru.cherryperry.amiami.presentation.util.addPaddingBottomToFitBottomSystemInset
 import javax.inject.Inject
 
-class MainFragment : DaggerFragment(), OnBackKeyPressedListener {
+class MainFragment : BaseFragment(), OnBackKeyPressedListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -84,11 +84,11 @@ class MainFragment : DaggerFragment(), OnBackKeyPressedListener {
         toolbar.inflateMenu(R.menu.main_menu)
         toolbar.setOnMenuItemClickListener { onToolbarMenuItemClick(it) }
 
-        mainViewModel.screenState.observe(this,
+        mainViewModel.screenState.observe(viewLifecycleOwner,
             NotNullObserver { showData(it.state, it.list) })
-        mainViewModel.filterEnabled.observe(this,
+        mainViewModel.filterEnabled.observe(viewLifecycleOwner,
             NotNullObserver { showFilterEnabled(it) })
-        updateDialogViewModel.showDialogEvent.observe(this,
+        updateDialogViewModel.showDialogEvent.observe(viewLifecycleOwner,
             NotNullObserver { navigator.openUpdateDialog(it) })
 
         // default behavior - add bottom padding

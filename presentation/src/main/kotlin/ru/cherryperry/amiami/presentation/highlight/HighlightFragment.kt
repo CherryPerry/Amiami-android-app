@@ -11,16 +11,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import dagger.android.support.DaggerFragment
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.presentation.activity.Navigator
+import ru.cherryperry.amiami.presentation.base.BaseFragment
 import ru.cherryperry.amiami.presentation.base.NotNullObserver
 import ru.cherryperry.amiami.presentation.highlight.adapter.HighlightAdapter
 import ru.cherryperry.amiami.presentation.util.ViewDelegate
 import ru.cherryperry.amiami.presentation.util.addPaddingBottomToFitBottomSystemInset
 import javax.inject.Inject
 
-class HighlightFragment : DaggerFragment() {
+class HighlightFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -60,8 +60,8 @@ class HighlightFragment : DaggerFragment() {
             }
         }
 
-        highlightViewModel.list.observe(this, NotNullObserver { adapter.submitList(it) })
-        highlightViewModel.toastError.observe(this, NotNullObserver {
+        highlightViewModel.list.observe(viewLifecycleOwner, NotNullObserver { adapter.submitList(it) })
+        highlightViewModel.toastError.observe(viewLifecycleOwner, NotNullObserver {
             Toast.makeText(context!!, it, Toast.LENGTH_SHORT).show()
         })
 

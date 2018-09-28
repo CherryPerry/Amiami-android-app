@@ -15,9 +15,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.SeekBar
 import android.widget.TextView
-import dagger.android.support.DaggerFragment
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.domain.model.Filter
+import ru.cherryperry.amiami.presentation.base.BaseFragment
 import ru.cherryperry.amiami.presentation.base.NotNullObserver
 import ru.cherryperry.amiami.presentation.util.ViewDelegate
 import ru.cherryperry.amiami.presentation.util.ViewDelegateReset
@@ -25,7 +25,7 @@ import ru.cherryperry.amiami.presentation.util.addPaddingBottomToFitBottomSystem
 import javax.inject.Inject
 import kotlin.math.min
 
-class FilterFragment : DaggerFragment(), SeekBar.OnSeekBarChangeListener {
+class FilterFragment : BaseFragment(), SeekBar.OnSeekBarChangeListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -69,10 +69,10 @@ class FilterFragment : DaggerFragment(), SeekBar.OnSeekBarChangeListener {
         minSeekBar.max = Filter.LIMIT
         maxSeekBar.max = Filter.LIMIT + 1
 
-        viewModel.searchMin.observe(this, NotNullObserver {
+        viewModel.searchMin.observe(viewLifecycleOwner, NotNullObserver {
             minValue.text = context?.run { getString(R.string.yen_price_format, it) }
         })
-        viewModel.searchMax.observe(this, NotNullObserver {
+        viewModel.searchMax.observe(viewLifecycleOwner, NotNullObserver {
             maxValue.text = context?.run {
                 if (it == Integer.MAX_VALUE) {
                     getString(R.string.no_limit)
@@ -81,7 +81,7 @@ class FilterFragment : DaggerFragment(), SeekBar.OnSeekBarChangeListener {
                 }
             }
         })
-        viewModel.searchTerm.observe(this, NotNullObserver {
+        viewModel.searchTerm.observe(viewLifecycleOwner, NotNullObserver {
             if (searchEdit.text.toString() != it) {
                 val selectionStart = searchEdit.selectionStart
                 val selectionEnd = searchEdit.selectionEnd
@@ -150,8 +150,8 @@ class FilterFragment : DaggerFragment(), SeekBar.OnSeekBarChangeListener {
 
     private fun observeSeekBar(seekBar: SeekBar) {
         when (seekBar) {
-            minSeekBar -> viewModel.searchMin.observe(this, minValueObserver)
-            maxSeekBar -> viewModel.searchMax.observe(this, maxValueObserver)
+            minSeekBar -> viewModel.searchMin.observe(viewLifecycleOwner, minValueObserver)
+            maxSeekBar -> viewModel.searchMax.observe(viewLifecycleOwner, maxValueObserver)
         }
     }
 
