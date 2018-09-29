@@ -80,6 +80,7 @@ detekt {
 }
 
 tasks.register(LifecycleBasePlugin.CHECK_TASK_NAME, DefaultTask) {
+    group LifecycleBasePlugin.VERIFICATION_GROUP
     dependsOn subprojects.collect { it.tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME) }
     dependsOn tasks.named('detekt')
 }
