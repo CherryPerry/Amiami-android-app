@@ -2,8 +2,6 @@ package ru.cherryperry.amiami.presentation.main
 
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.annotation.DimenRes
 import android.support.design.widget.BottomSheetBehavior
@@ -123,8 +121,8 @@ class MainFragment : BaseFragment(), OnBackKeyPressedListener {
                 navigator.openHighlight()
                 true
             }
-            R.id.action_feedback -> {
-                openFeedback()
+            R.id.action_github -> {
+                openGitHub()
                 true
             }
             R.id.action_filter_remove, R.id.action_filter_apply -> {
@@ -150,18 +148,10 @@ class MainFragment : BaseFragment(), OnBackKeyPressedListener {
         return false
     }
 
-    private fun openFeedback() {
+    private fun openGitHub() {
         firebaseAnalytics.logFeedback()
-        val emailIntent = Intent(Intent.ACTION_SENDTO)
-        emailIntent.data = Uri.parse("mailto:" + getString(R.string.developer_email))
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, getString(R.string.developer_email))
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback))
-        emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.feedback_text))
-        if (emailIntent.resolveActivity(activity!!.packageManager) != null) {
-            startActivity(Intent.createChooser(emailIntent, getString(R.string.send_feedback)))
-        } else {
-            Toast.makeText(activity!!, R.string.error_no_email_app, Toast.LENGTH_LONG).show()
-        }
+        Toast.makeText(context, R.string.github_description, Toast.LENGTH_LONG).show()
+        navigator.openUrl(getString(R.string.github_link))
     }
 
     private fun setAdapter() {

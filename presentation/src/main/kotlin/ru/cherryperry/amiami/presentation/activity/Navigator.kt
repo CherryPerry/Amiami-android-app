@@ -60,6 +60,16 @@ class Navigator(
             .show(fragmentManager, UpdateDialogFragment::class.java.simpleName)
     }
 
+    fun openUrl(url: String) {
+        if (!URLUtil.isNetworkUrl(url)) {
+            return
+        }
+        val uri = Uri.parse(url)
+        if (!(appPrefs.chromeCustomTabs.value && singleActivity.tryOpenCustomTabs(uri))) {
+            singleActivity.openDefault(uri)
+        }
+    }
+
     fun canGoBack() = fragmentManager.backStackEntryCount > 0
 
     fun back() {
