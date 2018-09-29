@@ -18,7 +18,7 @@ buildscript {
         classpath 'gradle.plugin.org.jmailen.gradle:kotlinter-gradle:1.15.1'
         classpath 'gradle.plugin.com.cherryperry.gfe:gradle-file-encrypt:1.2.0'
         classpath 'gradle.plugin.io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.0.0.RC8'
-        classpath 'io.fabric.tools:gradle:1.25.4'
+        classpath 'io.fabric.tools:gradle:1.26.0'
     }
 }
 
