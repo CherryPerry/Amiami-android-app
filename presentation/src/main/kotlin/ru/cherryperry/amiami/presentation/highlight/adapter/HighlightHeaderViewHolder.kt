@@ -25,6 +25,7 @@ class HighlightHeaderViewHolder(
     private val addButton by ViewDelegate<View>(R.id.add)
     private val regexBox by ViewDelegate<CheckBox>(R.id.regex)
     private val editView by ViewDelegate<EditText>(R.id.edit)
+    private var bindFor: Int = 0
 
     init {
         editView.setOnEditorActionListener { _, actionId, _ ->
@@ -57,6 +58,13 @@ class HighlightHeaderViewHolder(
 
             override fun onTextChanged(sequence: CharSequence, start: Int, before: Int, count: Int) {}
         })
+        if (bindFor != item.hashCode() && item.initialData != null) {
+            editView.setText(item.initialData.rule)
+            editView.setSelection(editView.text.length)
+            regexBox.isChecked = item.initialData.regex
+            // input is reset on scroll because of rebind, keep it as is
+            bindFor = item.hashCode()
+        }
     }
 
     private fun hideKeyboard() {

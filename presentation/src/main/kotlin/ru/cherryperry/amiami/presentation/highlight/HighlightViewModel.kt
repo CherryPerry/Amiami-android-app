@@ -2,7 +2,10 @@ package ru.cherryperry.amiami.presentation.highlight
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.BiFunction
+import io.reactivex.processors.BehaviorProcessor
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.domain.export.ExportHighlightUseCase
 import ru.cherryperry.amiami.domain.export.ImportHighlightUseCase
@@ -31,26 +34,43 @@ class HighlightViewModel @Inject constructor(
         private const val RULE_MIN_LENGTH = 3
     }
 
+    private val headerProcessor = BehaviorProcessor.createDefault(
+        HighlightHeaderItem(this::addItem, this::validateItem))
+
     val list: LiveData<List<Model>> by lazy {
         val data = MutableLiveData<List<Model>>()
-        this += highlightListUseCase.run(Unit)
+        this += Flowable.combineLatest(
+            headerProcessor,
+            highlightListUseCase.run(Unit)
+                .map {
+                    it
+                        .asSequence()
+                        .map { highlightRule ->
+                            HighlightItem(
+                                highlightRule,
+                                { setInputFromItem(it.highlightRule) },
+                                { deleteItem(it.highlightRule) })
+                        }
+                        .toList()
+                },
+            BiFunction<HighlightHeaderItem, List<HighlightItem>, List<Model>> { header, items ->
+                val result = ArrayList<Model>(items.size + 1)
+                result += header
+                result += items
+                result
+            })
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ result ->
-                data.value = result
-                    .asSequence()
-                    .map { highlightRule -> HighlightItem(highlightRule, this::deleteItem) }
-                    .toMutableList<Model>()
-                    .let {
-                        it.add(0, HighlightHeaderItem(this::addItem, this::validateItem))
-                        it
-                    }
-            }, { it.printStackTrace() })
+            .subscribe({ data.value = it }, { it.printStackTrace() })
         data
     }
 
     val toastError = SingleLiveEvent<Int>()
 
     fun validateItem(item: CharSequence) = item.length >= RULE_MIN_LENGTH
+
+    fun setInputFromItem(item: HighlightRule) {
+        headerProcessor.offer(HighlightHeaderItem(this::addItem, this::validateItem, item))
+    }
 
     fun addItem(item: CharSequence, regexp: Boolean) {
         this += highlightListAddUseCase.run(HighlightRule(rule = item.toString(), regex = regexp))

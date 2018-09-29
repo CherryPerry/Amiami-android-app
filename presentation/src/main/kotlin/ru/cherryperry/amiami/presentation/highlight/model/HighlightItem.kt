@@ -5,11 +5,11 @@ import ru.cherryperry.amiami.domain.model.Model
 
 class HighlightItem(
     val highlightRule: HighlightRule,
-    val removeItemAction: (HighlightRule) -> Unit
+    val clickItemAction: (HighlightItem) -> Unit,
+    val removeItemAction: (HighlightItem) -> Unit
 ) : Model {
 
-    override val id: Long
-        get() = highlightRule.id
+    override val id: Long = highlightRule.id
 
     override fun equals(other: Any?) = other is HighlightItem &&
         highlightRule == other.highlightRule

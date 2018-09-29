@@ -45,6 +45,7 @@ class HighlightItemViewHolder(
         } else {
             typeView.setText(R.string.highlight_type_text)
         }
-        deleteButton.setOnClickListener { item.removeItemAction(item.highlightRule) }
+        deleteButton.setOnClickListener { item.removeItemAction(item) }
+        itemView.setOnClickListener { item.clickItemAction(item) }
     }
 }
