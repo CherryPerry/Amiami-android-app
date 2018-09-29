@@ -49,7 +49,6 @@ allprojects {
 
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'com.cherryperry.gradle-file-encrypt'
-apply plugin: 'io.gitlab.arturbosch.detekt'
 
 gradleFileEncrypt {
     files 'keystore.properties', 'presentation/google-services.json', 'presentation/fabric.properties'
@@ -72,19 +71,17 @@ dependencyUpdates.resolutionStrategy {
     }
 }
 
-detekt {
-    toolVersion = detektVersion
-    config = files('detekt.yml')
-    input = files('domain/src', 'data/src', 'presentation/src')
-    filters = 'do-not-use-it'
-}
-
-tasks.register(LifecycleBasePlugin.CHECK_TASK_NAME, DefaultTask) {
-    group LifecycleBasePlugin.VERIFICATION_GROUP
-    dependsOn subprojects.collect { it.tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME) }
-    dependsOn tasks.named('detekt')
-}
-
 subprojects {
     apply plugin: 'org.jmailen.kotlinter'
+    tasks.whenTaskAdded { task ->
+        if (task.name == LifecycleBasePlugin.CHECK_TASK_NAME) {
+            apply plugin: 'io.gitlab.arturbosch.detekt'
+            detekt {
+                toolVersion = detektVersion
+                config = files('detekt.yml')
+                input = files('src')
+                filters = 'do-not-use-it'
+            }
+        }
+    }
 }
