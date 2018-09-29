@@ -11,5 +11,11 @@ class HighlightListUseCase @Inject constructor(
 ) : FlowableUseCase<Unit, List<HighlightRule>>() {
 
     override fun run(param: Unit): Flowable<List<HighlightRule>> =
-        highlightRepository.configuration().map { it.rules.sortedBy { it.rule } }
+        highlightRepository
+            .configuration()
+            .map {
+                it.rules.toMutableList().apply {
+                    sortWith(Comparator { a, b -> a.rule.compareTo(b.rule, true) })
+                }
+            }
 }

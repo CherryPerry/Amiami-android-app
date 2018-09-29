@@ -10,13 +10,13 @@ import ru.cherryperry.amiami.domain.repository.HighlightRepository
 class HighlightListUseCaseTest {
 
     @Test
-    fun testAlphabeticalOrder() {
+    fun testAlphabeticalOrderIgnoreCase() {
         // list should be in alphabetical order
         val repository = Mockito.mock(HighlightRepository::class.java)
         Mockito.`when`(repository.configuration()).thenReturn(
             Flowable.just(
                 HighlightConfiguration(listOf(
-                    HighlightRule(rule = "bbb"),
+                    HighlightRule(rule = "Bbb"),
                     HighlightRule(rule = "aaa"),
                     HighlightRule(rule = "ccc")
                 ))))
@@ -25,7 +25,7 @@ class HighlightListUseCaseTest {
             .test()
             .await()
             .assertValue {
-                it.map { it.rule } == listOf("aaa", "bbb", "ccc")
+                it.map { it.rule } == listOf("aaa", "Bbb", "ccc")
             }
             .dispose()
     }
