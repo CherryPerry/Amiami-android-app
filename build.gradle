@@ -37,7 +37,7 @@ allprojects {
         junitVersion = '4.12'
         rxVersion = '2.2.1'
         firebaseCoreVersion = '16.0.3'
-        firebaseMessagingVersion = '17.3.0'
+        firebaseMessagingVersion = '17.3.2'
         robolectricVersion = '3.8'
         compileSdkVersion = 27
         targetSdkVersion = 27
