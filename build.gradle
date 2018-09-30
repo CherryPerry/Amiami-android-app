@@ -40,6 +40,7 @@ allprojects {
         firebaseCoreVersion = '16.0.3'
         firebaseMessagingVersion = '17.3.2'
         robolectricVersion = '3.8'
+        mockitoVersion = '2.22.0'
         compileSdkVersion = 28
         targetSdkVersion = 28
         minSdkVersion = 14

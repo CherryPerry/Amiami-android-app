@@ -8,7 +8,7 @@ class ExchangeRates(
         const val DEFAULT = "JPY"
     }
 
-    private val rates: Map<String, Double>
+    val rates: Map<String, Double>
 
     val currencies
         get() = rates.keys

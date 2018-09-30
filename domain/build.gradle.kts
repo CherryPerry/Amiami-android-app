@@ -28,5 +28,5 @@ dependencies {
     kapt("com.google.dagger:dagger-compiler:${ext["daggerVersion"]}")
 
     testImplementation("junit:junit:${ext["junitVersion"]}")
-    testImplementation("org.mockito:mockito-core:2.21.0")
+    testImplementation("org.mockito:mockito-core:${ext["mockitoVersion"]}")
 }
