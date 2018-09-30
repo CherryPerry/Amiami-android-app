@@ -43,6 +43,7 @@ allprojects {
         compileSdkVersion = 28
         targetSdkVersion = 28
         minSdkVersion = 14
+        buildToolsVersion = '28.0.3'
         kotlinVersion = kotlinVersion
     }
 }
