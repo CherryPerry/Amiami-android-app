@@ -3,7 +3,6 @@ package ru.cherryperry.amiami.presentation.highlight.adapter
 import android.app.Activity
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.presentation.highlight.model.HighlightHeaderItem
+import ru.cherryperry.amiami.presentation.util.DefaultTextWatcher
 import ru.cherryperry.amiami.presentation.util.ViewDelegate
 
 
@@ -25,7 +25,6 @@ class HighlightHeaderViewHolder(
     private val addButton by ViewDelegate<View>(R.id.add)
     private val regexBox by ViewDelegate<CheckBox>(R.id.regex)
     private val editView by ViewDelegate<EditText>(R.id.edit)
-    private var bindFor: Int = 0
 
     init {
         editView.setOnEditorActionListener { _, actionId, _ ->
@@ -48,23 +47,15 @@ class HighlightHeaderViewHolder(
             hideKeyboard()
         }
         addButton.isEnabled = item.validateInputAction(editView.text)
-        editView.addTextChangedListener(object : TextWatcher {
-
+        editView.addTextChangedListener(object : DefaultTextWatcher() {
             override fun afterTextChanged(editable: Editable) {
                 addButton.isEnabled = item.validateInputAction(editable)
+                item.input = editable.toString()
             }
-
-            override fun beforeTextChanged(sequence: CharSequence, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(sequence: CharSequence, start: Int, before: Int, count: Int) {}
         })
-        if (bindFor != item.hashCode() && item.initialData != null) {
-            editView.setText(item.initialData.rule)
-            editView.setSelection(editView.text.length)
-            regexBox.isChecked = item.initialData.regex
-            // input is reset on scroll because of rebind, keep it as is
-            bindFor = item.hashCode()
-        }
+        regexBox.setOnCheckedChangeListener { _, isChecked -> item.regex = isChecked }
+        editView.setText(item.input)
+        regexBox.isChecked = item.regex
     }
 
     private fun hideKeyboard() {

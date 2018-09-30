@@ -35,7 +35,7 @@ class HighlightViewModel @Inject constructor(
     }
 
     private val headerProcessor = BehaviorProcessor.createDefault(
-        HighlightHeaderItem(this::addItem, this::validateItem))
+        HighlightHeaderItem(addItemAction = this::addItem, validateInputAction = this::validateItem))
 
     val list: LiveData<List<Model>> by lazy {
         val data = MutableLiveData<List<Model>>()
@@ -65,11 +65,13 @@ class HighlightViewModel @Inject constructor(
     }
 
     val toastError = SingleLiveEvent<Int>()
+    val scrollUpEvent = SingleLiveEvent<Unit>()
 
     fun validateItem(item: CharSequence) = item.length >= RULE_MIN_LENGTH
 
     fun setInputFromItem(item: HighlightRule) {
-        headerProcessor.offer(HighlightHeaderItem(this::addItem, this::validateItem, item))
+        scrollUpEvent.value = Unit
+        headerProcessor.offer(HighlightHeaderItem(item.rule, item.regex, this::addItem, this::validateItem))
     }
 
     fun addItem(item: CharSequence, regexp: Boolean) {

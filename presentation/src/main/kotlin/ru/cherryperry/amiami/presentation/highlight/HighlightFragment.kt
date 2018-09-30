@@ -64,6 +64,9 @@ class HighlightFragment : BaseFragment() {
         highlightViewModel.toastError.observe(viewLifecycleOwner, NotNullObserver {
             Toast.makeText(context!!, it, Toast.LENGTH_SHORT).show()
         })
+        highlightViewModel.scrollUpEvent.observe(viewLifecycleOwner, NotNullObserver {
+            recyclerView.smoothScrollToPosition(0)
+        })
 
         addPaddingBottomToFitBottomSystemInset(recyclerView)
         ViewCompat.requestApplyInsets(view)
