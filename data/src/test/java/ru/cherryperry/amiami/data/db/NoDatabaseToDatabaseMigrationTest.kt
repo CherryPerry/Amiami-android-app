@@ -2,6 +2,7 @@ package ru.cherryperry.amiami.data.db
 
 import android.arch.persistence.room.Room
 import android.content.SharedPreferences
+import android.os.Build
 import android.preference.PreferenceManager
 import androidx.core.content.edit
 import io.reactivex.schedulers.Schedulers
@@ -9,9 +10,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
+import org.robolectric.annotation.Config
 import ru.cherryperry.amiami.data.R
 
 @RunWith(RobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.O_MR1])
 class NoDatabaseToDatabaseMigrationTest {
 
     private val scheduler = Schedulers.single()

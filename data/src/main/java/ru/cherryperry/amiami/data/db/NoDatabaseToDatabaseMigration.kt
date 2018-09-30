@@ -47,7 +47,7 @@ class NoDatabaseToDatabaseMigration @Inject constructor(
             .observeOn(scheduler)
             .flatMapCompletable { db ->
                 val oldData = preferences.getStringSet(key, emptySet())
-                if (oldData.isNotEmpty()) {
+                if (oldData != null && oldData.isNotEmpty()) {
                     db.highlightRuleDao().insert(oldData.map { DbHighlightRule(null, it, false) })
                     preferences.edit { remove(key) }
                 }

@@ -1,13 +1,16 @@
 package ru.cherryperry.amiami.data.repository
 
+import android.os.Build
 import io.reactivex.schedulers.Schedulers
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
+import org.robolectric.annotation.Config
 import ru.cherryperry.amiami.domain.model.Filter
 
 @RunWith(RobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.O_MR1])
 class FilterRepositoryImplTest {
 
     private val filterRepositoryImpl = FilterRepositoryImpl(RuntimeEnvironment.application, Schedulers.trampoline())
