@@ -32,7 +32,7 @@ class HighlightSeparatorItemDecoration(context: Context) : RecyclerView.ItemDeco
         for (i in 0 until childCount) {
             val child = parent.getChildAt(i)
             val position = parent.getChildAdapterPosition(child)
-            if (position >= parent.adapter.itemCount - 1 || position == RecyclerView.NO_POSITION) {
+            if (position >= parent.adapter!!.itemCount - 1 || position == RecyclerView.NO_POSITION) {
                 continue
             }
             parent.getDecoratedBoundsWithMargins(child, bounds)
