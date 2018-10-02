@@ -46,15 +46,15 @@ class ItemListUseCase @Inject constructor(
                 .asSequence()
                 .filter { item -> data.filter.isItemValid(item) }
                 .applyHighlightConfiguration(data.highlight)
-                .applyCurrencyChange(data.exchangeRate, ExchangeRates.DEFAULT)
+                .applyCurrencyChange(data.exchangeRate, data.selectedCurrency)
                 .sortAndInsertGroups()
                 .toList()
-            ItemListResult(filteredList, data.filter)
+            ItemListResult(filteredList, !data.filter.skipAll)
         }
 
     private data class Data(
         val list: List<Item>,
-        val exchangeRate: ru.cherryperry.amiami.domain.model.ExchangeRates,
+        val exchangeRate: ExchangeRates,
         val selectedCurrency: String,
         val filter: Filter,
         val highlight: HighlightConfiguration

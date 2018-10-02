@@ -1,7 +1,7 @@
 package ru.cherryperry.amiami.domain.model
 
 class ExchangeRates(
-    rates: Map<String, Double>
+    rates: Map<String, Double> = emptyMap()
 ) {
 
     companion object {

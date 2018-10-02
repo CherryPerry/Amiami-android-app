@@ -41,7 +41,7 @@ class MainViewModel @Inject constructor(
 
     private fun showItems(items: ItemListResult) {
         screenLiveData.value = ScreenState(ScreenState.STATE_DONE, items.flatList)
-        filterEnabledLiveData.value = !items.filter.skipAll
+        filterEnabledLiveData.value = items.filterEnabled
     }
 
     private fun showError(throwable: Throwable) {
