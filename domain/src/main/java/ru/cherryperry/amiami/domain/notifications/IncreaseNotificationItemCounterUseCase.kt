@@ -17,9 +17,5 @@ class IncreaseNotificationItemCounterUseCase @Inject constructor(
         pushNotificationService.enabled()
             .firstElement()
             .filter { it }
-            .flatMapSingleElement { pushNotificationService.counter() }
-            .flatMapSingleElement {
-                val newValue = it + param
-                pushNotificationService.setCounter(newValue).toSingleDefault(newValue)
-            }
+            .flatMap { pushNotificationService.increaseCounterAndReturnIfValid(param) }
 }

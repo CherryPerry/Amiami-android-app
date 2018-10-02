@@ -10,12 +10,12 @@ class ResetNotificationItemCounterUseCaseTest {
     @Test
     fun testSetCounterIsZero() {
         val service = Mockito.mock(PushNotificationService::class.java)
-        Mockito.`when`(service.setCounter(0)).thenReturn(Completable.complete())
-        val useCase = ResetNotificationItemCounterUseCase(service)
-        useCase.run(Unit)
+        Mockito.`when`(service.resetCounter()).thenReturn(Completable.complete())
+        ResetNotificationItemCounterUseCase(service).run(Unit)
             .test()
             .await()
             .assertComplete()
-        Mockito.verify(service).setCounter(0)
+            .dispose()
+        Mockito.verify(service).resetCounter()
     }
 }

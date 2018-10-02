@@ -14,8 +14,6 @@ class AppPrefs @Inject constructor(
 
     private val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-    val push = BooleanPreference(key(R.string.key_push), false, preferences)
-    val pushCounter = IntPreference(key(R.string.key_push_counter), 0, preferences)
     val chromeCustomTabs = BooleanPreference(key(R.string.key_chromeCustomTabs), true, preferences)
     val gridView = BooleanPreference(key(R.string.key_gridView), true, preferences)
     val favoritesOnly = BooleanPreference(key(R.string.key_favorites_only), false, preferences)

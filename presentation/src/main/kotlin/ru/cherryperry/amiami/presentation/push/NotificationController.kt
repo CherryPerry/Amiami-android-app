@@ -38,16 +38,15 @@ class NotificationController @Inject constructor(
         resetNotificationItemCounterUseCase.run(Unit).subscribe()
     }
 
-    fun show(value: Int, context: Context) {
-        increaseNotificationItemCounterUseCase.run(value)
+    fun show(newItemsValue: Int, context: Context) {
+        increaseNotificationItemCounterUseCase.run(newItemsValue)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
+            .subscribe { value ->
                 val notifyIntent = Intent(context, SingleActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 }
                 val pendingIntent = PendingIntent.getActivity(context, 0, notifyIntent,
                     PendingIntent.FLAG_UPDATE_CURRENT)
-                createOrUpdateNotificationChannel()
                 val builder = NotificationCompat.Builder(context, notificationChannelId)
                     .setSmallIcon(R.drawable.icon_notification)
                     .setContentTitle(context.getString(R.string.app_name))

@@ -19,7 +19,7 @@ import ru.cherryperry.amiami.domain.repository.ItemRepository
 import ru.cherryperry.amiami.domain.repository.PushNotificationService
 import ru.cherryperry.amiami.domain.repository.UpdateRepository
 
-@Module(includes = [NetworkModule::class, DatabaseModule::class])
+@Module(includes = [NetworkModule::class, DatabaseModule::class, FirebaseModule::class])
 abstract class DataModule {
 
     @Binds

@@ -105,7 +105,7 @@ class MainFragment : BaseFragment(), OnBackKeyPressedListener {
 
         firebaseAnalytics.setUserPropertyChromeTabs(prefs.chromeCustomTabs.value)
         firebaseAnalytics.setUserPropertyGridView(prefs.gridView.value)
-        firebaseAnalytics.setUserPropertyPushEnabled(prefs.push.value)
+        // firebaseAnalytics.setUserPropertyPushEnabled(prefs.push.value)
         firebaseAnalytics.setUserPropertyCurrencyValue(prefs.exchangeCurrency.value)
 
         notificationController.reset()

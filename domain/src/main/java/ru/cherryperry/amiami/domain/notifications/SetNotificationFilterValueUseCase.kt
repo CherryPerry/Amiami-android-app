@@ -5,9 +5,9 @@ import ru.cherryperry.amiami.domain.CompletableUseCase
 import ru.cherryperry.amiami.domain.repository.PushNotificationService
 import javax.inject.Inject
 
-class ResetNotificationItemCounterUseCase @Inject constructor(
+class SetNotificationFilterValueUseCase @Inject constructor(
     private val pushNotificationService: PushNotificationService
-) : CompletableUseCase<Unit>() {
+) : CompletableUseCase<Int>() {
 
-    override fun run(param: Unit): Completable = pushNotificationService.resetCounter()
+    override fun run(param: Int): Completable = pushNotificationService.setPushCounterFilter(param)
 }

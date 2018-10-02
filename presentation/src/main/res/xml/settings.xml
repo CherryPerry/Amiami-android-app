@@ -15,6 +15,14 @@
         android:summaryOn="You will be notified when new items appear"
         android:title="@string/setting_push"/>
 
+    <ListPreference
+        android:defaultValue="0"
+        android:entries="@array/push_filter_titles"
+        android:entryValues="@array/push_filter_values"
+        android:key="@string/key_push_counter_filter_string"
+        android:summary="@string/settings_push_filter_description"
+        android:title="@string/settings_push_filter"/>
+
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="@string/key_favorites_only"
@@ -23,7 +31,7 @@
         android:title="@string/setting_highlight_only"/>
 
     <ListPreference
-        android:defaultValue="Loading..."
+        android:defaultValue="JPY"
         android:dialogTitle="Exchange currency"
         android:key="@string/key_exchange_currency"
         android:summary="JPY prices will be converted to selected currency"

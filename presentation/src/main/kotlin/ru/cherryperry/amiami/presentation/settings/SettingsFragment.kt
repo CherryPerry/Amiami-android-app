@@ -1,6 +1,5 @@
 package ru.cherryperry.amiami.presentation.settings
 
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -14,6 +13,7 @@ import android.view.ViewGroup
 import dagger.android.support.AndroidSupportInjection
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.presentation.activity.Navigator
+import ru.cherryperry.amiami.presentation.base.NotNullObserver
 import javax.inject.Inject
 
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -30,19 +30,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(SettingsViewModel::class.java)
         addPreferencesFromResource(R.xml.settings)
-        val listPreference = findPreference(getString(R.string.key_exchange_currency)) as ListPreference
-        viewModel.currencySetting.observe(this, Observer {
-            it?.apply {
-                listPreference.isEnabled = enabled
-                listPreference.entries = entries
-                listPreference.entryValues = values
-            }
-        })
-        lifecycle.addObserver(viewModel)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val parentView = view as ViewGroup
         val toolbarLayout = LayoutInflater.from(parentView.context).inflate(
             R.layout.settings_toolbar, parentView, false)
@@ -50,5 +42,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
         navigator.configureToolbar(toolbar)
         parentView.addView(toolbarLayout, 0)
         ViewCompat.requestApplyInsets(toolbar)
+
+        val currencyListPreference = findPreference(getString(R.string.key_exchange_currency)) as ListPreference
+        viewModel.currencySetting.observe(viewLifecycleOwner, NotNullObserver {
+            currencyListPreference.isEnabled = it.enabled
+            currencyListPreference.entries = it.entries
+            currencyListPreference.entryValues = it.values
+        })
+        val pushListPreference = findPreference(getString(R.string.key_push_counter_filter_string)) as ListPreference
+        viewModel.notificationsEnabled.observe(viewLifecycleOwner, NotNullObserver {
+            pushListPreference.isEnabled = it
+        })
     }
 }

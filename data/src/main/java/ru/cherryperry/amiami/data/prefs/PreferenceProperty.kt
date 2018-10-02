@@ -18,6 +18,8 @@ abstract class BasePreference<Type>(
 
     abstract var value: Type
 
+    abstract val nullableValue: Type?
+
     private val internalObserver: Flowable<Type> by lazy {
         Flowable.create<Type>(
             { emitter ->
@@ -50,10 +52,17 @@ class IntPreference(
 
     override var value: Int
         get() = sharedPreferences.getInt(key, defaultValue)
-        @SuppressWarnings("CommitPrefEdits")
-        // it is false positive
         set(value) {
             sharedPreferences.edit { putInt(key, value) }
+        }
+
+    override val nullableValue: Int?
+        get() = sharedPreferences.run {
+            if (contains(key)) {
+                getInt(key, defaultValue)
+            } else {
+                null
+            }
         }
 }
 
@@ -65,12 +74,13 @@ class StringPreference(
 ) : BasePreference<String>(key, defaultValue, sharedPreferences, scheduler) {
 
     override var value: String
-        get() = sharedPreferences.getString(key, defaultValue)
-        @SuppressWarnings("CommitPrefEdits")
-        // it is false positive
+        get() = sharedPreferences.getString(key, defaultValue)!!
         set(value) {
             sharedPreferences.edit { putString(key, value) }
         }
+
+    override val nullableValue: String?
+        get() = sharedPreferences.getString(key, null)
 }
 
 class BooleanPreference(
@@ -82,9 +92,16 @@ class BooleanPreference(
 
     override var value: Boolean
         get() = sharedPreferences.getBoolean(key, defaultValue)
-        @SuppressWarnings("CommitPrefEdits")
-        // it is false positive
         set(value) {
             sharedPreferences.edit { putBoolean(key, value) }
+        }
+
+    override val nullableValue: Boolean?
+        get() = sharedPreferences.run {
+            if (contains(key)) {
+                getBoolean(key, defaultValue)
+            } else {
+                null
+            }
         }
 }

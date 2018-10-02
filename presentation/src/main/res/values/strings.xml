@@ -48,6 +48,8 @@
     <string name="settings_show_names">Show names</string>
     <string name="settings_show_names_enabled">Name will be shown in item\'s card</string>
     <string name="settings_show_names_disabled">Name will be hidden in item\'s card</string>
+    <string name="settings_push_filter">Notification filter by count</string>
+    <string name="settings_push_filter_description">Notifications should be hidden until selected total count of updates appears</string>
 
     <!-- Updates -->
     <string name="update_dialog_title">Update available</string>

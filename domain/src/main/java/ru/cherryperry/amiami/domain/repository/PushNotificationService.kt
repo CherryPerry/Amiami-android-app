@@ -2,6 +2,7 @@ package ru.cherryperry.amiami.domain.repository
 
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Maybe
 import io.reactivex.Single
 
 interface PushNotificationService {
@@ -13,11 +14,13 @@ interface PushNotificationService {
 
     /**
      * Enable notifications.
+     * Changing this setting must call [resetCounter].
      */
     fun enable(): Completable
 
     /**
      * Disable notifications.
+     * Changing this setting must call [resetCounter].
      */
     fun disable(): Completable
 
@@ -29,7 +32,18 @@ interface PushNotificationService {
     fun counter(): Single<Int>
 
     /**
-     * After showing notification counter should be increased.
+     * Increase counter by value amd return new value.
+     * Value can be filtered by minimum notification count setting.
      */
-    fun setCounter(value: Int): Completable
+    fun increaseCounterAndReturnIfValid(value: Int): Maybe<Int>
+
+    /**
+     * Set counter to ```0```.
+     */
+    fun resetCounter(): Completable
+
+    /**
+     * Set minimum notification count setting.
+     */
+    fun setPushCounterFilter(value: Int): Completable
 }

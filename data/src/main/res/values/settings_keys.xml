@@ -3,9 +3,10 @@
     <string name="key_chromeCustomTabs">ChromeCustomTabs</string>
     <string name="key_gridView">GridView</string>
     <string name="key_push">PushNotifications</string>
+    <string name="key_push_counter">PushCounter</string>
+    <string name="key_push_counter_filter">PushCounterFilter</string>
     <string name="key_favorites">Favorites</string>
     <string name="key_favorites_only">FavoritesOnly</string>
-    <string name="key_push_counter">PushCounter</string>
     <string name="key_price_min">PriceMinFilter</string>
     <string name="key_price_max">PriceMaxFilter</string>
     <string name="key_search_filter">TermSearchFilter</string>
