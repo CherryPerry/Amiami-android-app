@@ -23,7 +23,7 @@ class SettingsViewModel @Inject constructor(
         val liveData = MutableLiveData<CurrencySetting>()
         liveData.value = CurrencySetting(false, emptyArray(), emptyArray())
         this += getCurrentRatesUseCase.run(Unit)
-            .map { it.currencies.toTypedArray<CharSequence>() }
+            .map { it.currencies.asSequence().sorted().map { it as CharSequence }.toList().toTypedArray() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ liveData.value = CurrencySetting(true, it, it) }, { it.printStackTrace() })
         liveData
