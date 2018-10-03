@@ -1,6 +1,5 @@
 package ru.cherryperry.amiami.presentation.main.adapter
 
-import android.support.annotation.DrawableRes
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.TooltipCompat
 import android.view.LayoutInflater
@@ -37,8 +36,7 @@ class ItemHolder(
     }
 
     fun bind(item: Item) {
-        setBackgroundAndKeepPadding(itemView,
-            if (item.highlight) R.drawable.background_card_highlight else R.drawable.background_card)
+        itemView.isActivated = item.highlight
         GlideApp.with(itemView)
             .load(item.image)
             .placeholder(R.drawable.placeholder_image)
@@ -47,6 +45,7 @@ class ItemHolder(
         val nameView = this.nameView
         if (nameView != null) {
             nameView.text = item.name
+            nameView.isActivated = item.highlight
         } else {
             TooltipCompat.setTooltipText(itemView, item.name)
         }
@@ -57,14 +56,5 @@ class ItemHolder(
         if (adapterPosition >= 0) {
             onItemClick(adapterPosition)
         }
-    }
-
-    private fun setBackgroundAndKeepPadding(view: View, @DrawableRes background: Int) {
-        val top = view.paddingTop
-        val left = view.paddingLeft
-        val right = view.paddingRight
-        val bottom = view.paddingBottom
-        view.setBackgroundResource(background)
-        view.setPadding(left, top, right, bottom)
     }
 }

@@ -11,7 +11,7 @@
     <color name="colorPrimaryDark">#946D75</color>
     <color name="colorAccent">#F38029</color>
 
-    <color name="colorAccentLight">#fce2cf</color>
+    <color name="colorAccentLight">#F8BA8A</color>
     <color name="colorAccentAlpha">#33F38029</color>
 
     <color name="icon_launcher_background">@color/white</color>
