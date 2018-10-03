@@ -11,6 +11,7 @@ import ru.cherryperry.amiami.domain.model.HighlightConfiguration
 import ru.cherryperry.amiami.domain.model.HighlightRule
 import ru.cherryperry.amiami.domain.model.Item
 import ru.cherryperry.amiami.domain.model.Price
+import ru.cherryperry.amiami.domain.performance.EmptyPerformanceTracer
 import ru.cherryperry.amiami.domain.repository.CurrencyRepository
 import ru.cherryperry.amiami.domain.repository.FilterRepository
 import ru.cherryperry.amiami.domain.repository.HighlightRepository
@@ -29,7 +30,8 @@ class ItemListUseCaseTest {
         Mockito.`when`(filterRepository.filter()).thenReturn(Flowable.just(Filter()))
         val highlightRepository = Mockito.mock(HighlightRepository::class.java)
         Mockito.`when`(highlightRepository.configuration()).thenReturn(Flowable.just(HighlightConfiguration()))
-        ItemListUseCase(itemRepository, currencyRepository, filterRepository, highlightRepository)
+        ItemListUseCase(itemRepository, currencyRepository, filterRepository, highlightRepository,
+            EmptyPerformanceTracer())
             .run(Unit)
             .test()
             .awaitCount(1)
@@ -50,7 +52,8 @@ class ItemListUseCaseTest {
         Mockito.`when`(filterRepository.filter()).thenReturn(Flowable.just(Filter()))
         val highlightRepository = Mockito.mock(HighlightRepository::class.java)
         Mockito.`when`(highlightRepository.configuration()).thenReturn(Flowable.just(HighlightConfiguration()))
-        ItemListUseCase(itemRepository, currencyRepository, filterRepository, highlightRepository)
+        ItemListUseCase(itemRepository, currencyRepository, filterRepository, highlightRepository,
+            EmptyPerformanceTracer())
             .run(Unit)
             .test()
             .awaitCount(1)
@@ -89,7 +92,8 @@ class ItemListUseCaseTest {
             }
             .toList()
         // check it
-        ItemListUseCase(itemRepository, currencyRepository, filterRepository, highlightRepository)
+        ItemListUseCase(itemRepository, currencyRepository, filterRepository, highlightRepository,
+            EmptyPerformanceTracer())
             .run(Unit)
             .test()
             .awaitCount(1)

@@ -11,6 +11,8 @@ import ru.cherryperry.amiami.domain.model.Item
 import ru.cherryperry.amiami.domain.model.applyCurrencyChange
 import ru.cherryperry.amiami.domain.model.applyHighlightConfiguration
 import ru.cherryperry.amiami.domain.model.sortAndInsertGroups
+import ru.cherryperry.amiami.domain.performance.DomainPerformanceUtils
+import ru.cherryperry.amiami.domain.performance.PerformanceTracer
 import ru.cherryperry.amiami.domain.repository.CurrencyRepository
 import ru.cherryperry.amiami.domain.repository.FilterRepository
 import ru.cherryperry.amiami.domain.repository.HighlightRepository
@@ -22,7 +24,8 @@ class ItemListUseCase @Inject constructor(
     private val itemRepository: ItemRepository,
     private val currencyRepository: CurrencyRepository,
     private val filterRepository: FilterRepository,
-    private val highlightRepository: HighlightRepository
+    private val highlightRepository: HighlightRepository,
+    private val performanceTracer: PerformanceTracer
 ) : FlowableUseCase<Unit, ItemListResult>() {
 
     companion object {
@@ -42,17 +45,20 @@ class ItemListUseCase @Inject constructor(
             })
         .debounce(DEBOUNCE_TIME, TimeUnit.MILLISECONDS, Schedulers.computation())
         .map { data ->
-            val filteredList = data.list
-                .asSequence()
-                .filter { item -> data.filter.isItemValid(item) }
-                .applyHighlightConfiguration(data.highlight)
-                .applyCurrencyChange(data.exchangeRate, data.selectedCurrency)
-                .sortAndInsertGroups()
-                .toList()
-            ItemListResult(filteredList, !data.filter.skipAll)
+            performanceTracer.startTrace(DomainPerformanceUtils.ITEM_LIST_FILTER_TRACE,
+                DomainPerformanceUtils.attributesItemListUseCase(data)).use {
+                val filteredList = data.list
+                    .asSequence()
+                    .filter { item -> data.filter.isItemValid(item) }
+                    .applyHighlightConfiguration(data.highlight)
+                    .applyCurrencyChange(data.exchangeRate, data.selectedCurrency)
+                    .sortAndInsertGroups()
+                    .toList()
+                ItemListResult(filteredList, !data.filter.skipAll)
+            }
         }
 
-    private data class Data(
+    class Data(
         val list: List<Item>,
         val exchangeRate: ExchangeRates,
         val selectedCurrency: String,

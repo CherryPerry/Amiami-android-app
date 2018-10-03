@@ -20,6 +20,7 @@ buildscript {
         classpath 'gradle.plugin.com.cherryperry.gfe:gradle-file-encrypt:1.2.0'
         classpath "gradle.plugin.io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektVersion"
         classpath 'io.fabric.tools:gradle:1.26.1'
+        classpath 'com.google.firebase:firebase-plugins:1.1.5'
     }
 }
 
@@ -37,8 +38,9 @@ allprojects {
         daggerVersion = '2.17'
         junitVersion = '4.12'
         rxVersion = '2.2.1'
-        firebaseCoreVersion = '16.0.3'
-        firebaseMessagingVersion = '17.3.2'
+        firebaseCoreVersion = '16.0.4'
+        firebaseMessagingVersion = '17.3.3'
+        firebasePerformanceVersion = '16.1.2'
         robolectricVersion = '3.8'
         mockitoVersion = '2.22.0'
         compileSdkVersion = 28

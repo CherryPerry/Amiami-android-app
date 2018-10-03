@@ -4,6 +4,7 @@ apply plugin: 'kotlin-kapt'
 apply from: '../chrome-tabs.gradle'
 apply from: '../signing.gradle'
 apply plugin: 'io.fabric'
+apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
     compileSdkVersion project.ext.compileSdkVersion
@@ -74,6 +75,7 @@ dependencies {
 
     implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
     implementation "com.google.firebase:firebase-messaging:$firebaseMessagingVersion"
+    implementation "com.google.firebase:firebase-perf:$firebasePerformanceVersion"
 
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
         transitive = true
