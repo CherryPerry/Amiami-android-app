@@ -7,6 +7,7 @@ import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import dagger.android.support.DaggerApplication
 import io.fabric.sdk.android.Fabric
+import io.reactivex.plugins.RxJavaPlugins
 
 class AmiamiApplication : DaggerApplication() {
 
@@ -29,6 +30,9 @@ class AmiamiApplication : DaggerApplication() {
             .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
             .build()
         Fabric.with(this, crashKit)
+        RxJavaPlugins.setErrorHandler {
+            // TODO Log it
+        }
     }
 
     override fun applicationInjector() = injector
