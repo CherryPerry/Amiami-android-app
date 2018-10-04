@@ -38,6 +38,9 @@
     <string name="export_error">Failed to export rules</string>
     <string name="import_error">Failed to import rules</string>
 
+    <!-- Filter -->
+    <string name="filter_reset">Reset</string>
+
     <!-- Highlight -->
     <string name="highlight_regexp">Regexp</string>
     <string name="highlight_type_text">Type: text</string>

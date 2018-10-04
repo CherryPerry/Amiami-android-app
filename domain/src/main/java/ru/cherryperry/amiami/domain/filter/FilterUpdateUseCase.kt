@@ -14,5 +14,6 @@ class FilterUpdateUseCase @Inject constructor(
             is MinFilterUpdateParams -> filterRepository.setMin(param.min)
             is MaxFilterUpdateParams -> filterRepository.setMax(param.max)
             is TermFilterUpdateParams -> filterRepository.setTerm(param.term)
+            is ResetFilterUpdateParams -> filterRepository.reset()
         }
 }

@@ -33,6 +33,7 @@ class FilterFragment : BaseFragment(), SeekBar.OnSeekBarChangeListener {
     private lateinit var viewModel: FilterViewModel
 
     private val viewDelegateReset = ViewDelegateReset()
+    private val resetButton by ViewDelegate<View>(R.id.reset, viewDelegateReset)
     private val searchEdit by ViewDelegate<EditText>(R.id.search, viewDelegateReset)
     private val minSeekBar by ViewDelegate<SeekBar>(R.id.min, viewDelegateReset)
     private val maxSeekBar by ViewDelegate<SeekBar>(R.id.max, viewDelegateReset)
@@ -106,11 +107,14 @@ class FilterFragment : BaseFragment(), SeekBar.OnSeekBarChangeListener {
         observeSeekBar(maxSeekBar)
 
         // click on header must expand filter view
-        view.findViewById<View>(R.id.header).setOnClickListener { _ ->
+        view.findViewById<View>(R.id.header).setOnClickListener {
             if (view.layoutParams is CoordinatorLayout.LayoutParams) {
                 BottomSheetBehavior.from(view).state = BottomSheetBehavior.STATE_EXPANDED
             }
         }
+
+        // reset filter
+        resetButton.setOnClickListener { viewModel.reset() }
 
         addPaddingBottomToFitBottomSystemInset(view)
     }

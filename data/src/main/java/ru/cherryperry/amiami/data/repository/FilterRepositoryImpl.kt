@@ -78,4 +78,12 @@ class FilterRepositoryImpl constructor(
             }
         }
         .subscribeOn(scheduler)
+
+    override fun reset(): Completable = Completable
+        .fromAction {
+            priceMin.value = 0
+            priceMax.value = Int.MAX_VALUE
+            searchTerm.value = ""
+        }
+        .subscribeOn(scheduler)
 }

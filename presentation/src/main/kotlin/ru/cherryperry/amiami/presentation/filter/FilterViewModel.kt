@@ -7,6 +7,7 @@ import ru.cherryperry.amiami.domain.filter.FilterGetUseCase
 import ru.cherryperry.amiami.domain.filter.FilterUpdateUseCase
 import ru.cherryperry.amiami.domain.filter.MaxFilterUpdateParams
 import ru.cherryperry.amiami.domain.filter.MinFilterUpdateParams
+import ru.cherryperry.amiami.domain.filter.ResetFilterUpdateParams
 import ru.cherryperry.amiami.domain.filter.TermFilterUpdateParams
 import ru.cherryperry.amiami.presentation.base.BaseViewModel
 import javax.inject.Inject
@@ -54,5 +55,9 @@ class FilterViewModel @Inject constructor(
 
     fun setMax(value: Int) {
         this += filterUpdateUseCase.run(MaxFilterUpdateParams(value)).subscribe()
+    }
+
+    fun reset() {
+        this += filterUpdateUseCase.run(ResetFilterUpdateParams).subscribe()
     }
 }

@@ -13,3 +13,5 @@ data class MaxFilterUpdateParams(
 data class TermFilterUpdateParams(
     val term: String
 ) : FilterUpdateParams()
+
+object ResetFilterUpdateParams : FilterUpdateParams()

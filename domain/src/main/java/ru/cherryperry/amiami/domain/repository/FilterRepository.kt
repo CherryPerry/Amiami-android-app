@@ -13,4 +13,6 @@ interface FilterRepository {
     fun setMax(value: Int): Completable
 
     fun setTerm(value: String): Completable
+
+    fun reset(): Completable
 }

@@ -1,39 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_filter"
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
     android:paddingBottom="16dp"
     tools:ignore="Overdraw">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/colorAccent"/>
-
     <TextView
         android:id="@+id/header"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
         android:paddingBottom="8dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="8dp"
         android:text="@string/filters"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintEnd_toStartOf="@+id/reset"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <Button
+        android:id="@+id/reset"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/filter_reset"
+        app:layout_constraintBaseline_toBaselineOf="@+id/header"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
+        android:id="@+id/searchHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:text="@string/search_by_name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header"/>
 
     <EditText
         android:id="@+id/search"
@@ -43,15 +56,22 @@
         android:layout_marginRight="14dp"
         android:hint="@string/search"
         android:inputType="text"
-        android:lines="1"/>
+        android:lines="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchHeader"/>
 
     <TextView
+        android:id="@+id/minHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:text="@string/minimum_price"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search"/>
 
     <TextView
         android:id="@+id/minValue"
@@ -60,6 +80,9 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/minHeader"
         tools:text="100"/>
 
     <SeekBar
@@ -68,16 +91,23 @@
         android:layout_height="wrap_content"
         android:max="10000"
         android:paddingLeft="22dp"
-        android:paddingRight="22dp"/>
+        android:paddingRight="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/minValue"/>
 
     <TextView
+        android:id="@+id/maxHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/maximum_price"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/min"/>
 
     <TextView
         android:id="@+id/maxValue"
@@ -86,6 +116,9 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/maxHeader"
         tools:text="1000"/>
 
     <SeekBar
@@ -94,6 +127,9 @@
         android:layout_height="wrap_content"
         android:max="10001"
         android:paddingLeft="22dp"
-        android:paddingRight="22dp"/>
+        android:paddingRight="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/maxValue"/>
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

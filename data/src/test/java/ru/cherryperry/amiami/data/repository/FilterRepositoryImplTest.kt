@@ -21,7 +21,7 @@ class FilterRepositoryImplTest {
             .filter()
             .test()
             .awaitCount(1)
-            .assertValue(Filter(0, Int.MAX_VALUE, ""))
+            .assertValue(Filter())
             .dispose()
     }
 
@@ -40,8 +40,8 @@ class FilterRepositoryImplTest {
         subscriber
             .awaitCount(2)
             .assertValues(
-                Filter(0, Int.MAX_VALUE, ""),
-                Filter(100, Int.MAX_VALUE, ""))
+                Filter(),
+                Filter(minPrice = 100))
             .dispose()
     }
 
@@ -60,8 +60,8 @@ class FilterRepositoryImplTest {
         subscriber
             .awaitCount(2)
             .assertValues(
-                Filter(0, Int.MAX_VALUE, ""),
-                Filter(0, 100, ""))
+                Filter(),
+                Filter(maxPrice = 100))
             .dispose()
     }
 
@@ -80,8 +80,8 @@ class FilterRepositoryImplTest {
         subscriber
             .awaitCount(2)
             .assertValues(
-                Filter(0, Int.MAX_VALUE, ""),
-                Filter(0, Int.MAX_VALUE, "test"))
+                Filter(),
+                Filter(textFilter = "test"))
             .dispose()
     }
 
@@ -130,6 +130,40 @@ class FilterRepositoryImplTest {
         subscriber
             .awaitCount(3)
             .assertValueAt(subscriber.valueCount() - 1, Filter(10, 10, ""))
+            .dispose()
+    }
+
+    @Test
+    fun testReset() {
+        filterRepositoryImpl
+            .setMin(1)
+            .test()
+            .await()
+            .assertComplete()
+            .dispose()
+        filterRepositoryImpl
+            .setMax(2)
+            .test()
+            .await()
+            .assertComplete()
+            .dispose()
+        filterRepositoryImpl
+            .setTerm("test")
+            .test()
+            .await()
+            .assertComplete()
+            .dispose()
+        filterRepositoryImpl
+            .reset()
+            .test()
+            .await()
+            .assertComplete()
+            .dispose()
+        filterRepositoryImpl
+            .filter()
+            .test()
+            .awaitCount(1)
+            .assertValue(Filter())
             .dispose()
     }
 }
