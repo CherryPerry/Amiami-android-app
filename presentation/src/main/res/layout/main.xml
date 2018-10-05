@@ -23,10 +23,9 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
-                style="@style/Toolbar.Default"
+                style="@style/Toolbar.Main"
                 android:layout_height="?actionBarSize"
-                android:paddingLeft="@dimen/padding_list_item_side"
-                app:navigationIcon="@drawable/main_logo"/>
+                android:paddingLeft="@dimen/padding_list_item_side"/>
 
         </android.support.design.widget.ValidFitCollapsingToolbarLayout>
 

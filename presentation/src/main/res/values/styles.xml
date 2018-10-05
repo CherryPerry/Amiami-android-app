@@ -22,4 +22,18 @@
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
+    <!-- No ripple effect on navigation button with logo -->
+    <style name="Toolbar.Main" parent="Toolbar.Default">
+        <item name="navigationIcon">@drawable/main_logo</item>
+        <item name="android:theme">@style/Toolbar.Main.Theme</item>
+    </style>
+
+    <style name="Toolbar.Main.Theme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="toolbarNavigationButtonStyle">@style/Toolbar.Main.Navigation</item>
+    </style>
+
+    <style name="Toolbar.Main.Navigation" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="android:background">@null</item>
+    </style>
+
 </resources>
