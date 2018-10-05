@@ -23,8 +23,8 @@ class CardTopImageView @JvmOverloads constructor(
     private val radii = floatArrayOf(radius, radius, radius, radius, 0f, 0f, 0f, 0f)
 
     override fun onDraw(canvas: Canvas) {
-        if (clipRect.width().toInt() != canvas.width || clipRect.height().toInt() != canvas.height) {
-            clipRect.set(0f, 0f, this.width.toFloat(), this.height.toFloat())
+        if (clipRect.width().toInt() != width || clipRect.height().toInt() != height) {
+            clipRect.set(0f, 0f, width.toFloat(), height.toFloat())
             clipPath.reset()
             clipPath.addRoundRect(clipRect, radii, Path.Direction.CW)
         }

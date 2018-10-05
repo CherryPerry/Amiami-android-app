@@ -19,7 +19,10 @@ class DatabaseModule {
         val database = Room.databaseBuilder(context, AppDatabase::class.java, "app")
             .addCallback(noDatabaseToDatabaseMigration)
             .build()
-        noDatabaseToDatabaseMigration.migrate(database)
+        //noinspection CheckResult
+        noDatabaseToDatabaseMigration
+            .migrateCompletable(database)
+            .subscribe({}, {})
         return database
     }
 

@@ -39,6 +39,7 @@ class NotificationController @Inject constructor(
     }
 
     fun show(newItemsValue: Int, context: Context) {
+        //noinspection CheckResult
         increaseNotificationItemCounterUseCase.run(newItemsValue)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { value ->

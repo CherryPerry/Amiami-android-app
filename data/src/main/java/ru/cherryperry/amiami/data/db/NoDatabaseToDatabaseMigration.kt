@@ -5,7 +5,6 @@ import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import android.support.annotation.VisibleForTesting
 import androidx.core.content.edit
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -34,12 +33,7 @@ class NoDatabaseToDatabaseMigration @Inject constructor(
         createdProcessor.onNext(true)
     }
 
-    fun migrate(appDatabase: AppDatabase) {
-        migrateCompletable(appDatabase).subscribe({}, {})
-    }
-
-    @VisibleForTesting
-    internal fun migrateCompletable(appDatabase: AppDatabase): Completable {
+    fun migrateCompletable(appDatabase: AppDatabase): Completable {
         appDatabaseProcessor.onNext(appDatabase)
         return Flowable.zip(createdProcessor, appDatabaseProcessor,
             BiFunction<Boolean, AppDatabase, AppDatabase> { _, db -> db })
