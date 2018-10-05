@@ -2,7 +2,6 @@ package ru.cherryperry.amiami.presentation.highlight.adapter
 
 import android.app.Activity
 import android.support.v7.widget.RecyclerView
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +11,8 @@ import android.widget.CheckBox
 import android.widget.EditText
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.presentation.highlight.model.HighlightHeaderItem
-import ru.cherryperry.amiami.presentation.util.DefaultTextWatcher
 import ru.cherryperry.amiami.presentation.util.ViewDelegate
+import ru.cherryperry.amiami.presentation.util.afterTextChanged
 
 
 class HighlightHeaderViewHolder(
@@ -47,12 +46,10 @@ class HighlightHeaderViewHolder(
             hideKeyboard()
         }
         addButton.isEnabled = item.validateInputAction(editView.text)
-        editView.addTextChangedListener(object : DefaultTextWatcher() {
-            override fun afterTextChanged(editable: Editable) {
-                addButton.isEnabled = item.validateInputAction(editable)
-                item.input = editable.toString()
-            }
-        })
+        editView.afterTextChanged { editable ->
+            addButton.isEnabled = item.validateInputAction(editable)
+            item.input = editable.toString()
+        }
         regexBox.setOnCheckedChangeListener { _, isChecked -> item.regex = isChecked }
         editView.setText(item.input)
         regexBox.isChecked = item.regex
