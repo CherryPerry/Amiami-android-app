@@ -14,6 +14,7 @@ import dagger.android.support.AndroidSupportInjection
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.presentation.activity.Navigator
 import ru.cherryperry.amiami.presentation.base.NotNullObserver
+import ru.cherryperry.amiami.presentation.util.addPaddingBottomToFitBottomSystemInset
 import javax.inject.Inject
 
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -53,5 +54,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
         viewModel.notificationsEnabled.observe(viewLifecycleOwner, NotNullObserver {
             pushListPreference.isEnabled = it
         })
+
+        val recyclerView = (parentView.getChildAt(1) as ViewGroup).getChildAt(0)
+        addPaddingBottomToFitBottomSystemInset(recyclerView)
+        ViewCompat.requestApplyInsets(recyclerView)
     }
 }
