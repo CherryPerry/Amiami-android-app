@@ -1,5 +1,6 @@
 # Amiami pre-owned section browser for Android
 [![Build Status](https://travis-ci.com/CherryPerry/Amiami-android-app.svg?branch=master)](https://travis-ci.com/CherryPerry/Amiami-android-app)
+[![Version](https://img.shields.io/github/release/CherryPerry/Amiami-android-app.svg)](https://github.com/CherryPerry/Amiami-android-app/releases)
 
 Application for observing pre-owned items of [amiami.com](http://www.amiami.com/)
 
