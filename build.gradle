@@ -35,7 +35,7 @@ allprojects {
         compatVersion = '28.0.0'
         retoriftVersion = '2.4.0'
         okhttpVersion = '3.11.0'
-        daggerVersion = '2.17'
+        daggerVersion = '2.19'
         junitVersion = '4.12'
         rxVersion = '2.2.1'
         firebaseCoreVersion = '16.0.4'

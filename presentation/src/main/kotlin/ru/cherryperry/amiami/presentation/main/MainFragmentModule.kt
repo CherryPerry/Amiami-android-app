@@ -1,11 +1,10 @@
 package ru.cherryperry.amiami.presentation.main
 
 import android.arch.lifecycle.ViewModel
-import android.support.v4.app.Fragment
 import dagger.Binds
 import dagger.Module
 import dagger.android.AndroidInjector
-import dagger.android.support.FragmentKey
+import dagger.multibindings.ClassKey
 import dagger.multibindings.IntoMap
 import ru.cherryperry.amiami.presentation.base.ViewModelKey
 
@@ -14,8 +13,8 @@ abstract class MainFragmentModule {
 
     @Binds
     @IntoMap
-    @FragmentKey(MainFragment::class)
-    internal abstract fun bindFactory(builder: MainFragmentSubcomponent.Builder): AndroidInjector.Factory<out Fragment>
+    @ClassKey(MainFragment::class)
+    internal abstract fun bindFactory(builder: MainFragmentSubcomponent.Builder): AndroidInjector.Factory<*>
 
     @Binds
     @IntoMap
