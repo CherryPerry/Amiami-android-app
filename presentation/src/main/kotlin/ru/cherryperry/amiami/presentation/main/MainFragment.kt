@@ -38,6 +38,10 @@ import javax.inject.Inject
 
 class MainFragment : BaseFragment(), OnBackKeyPressedListener {
 
+    companion object {
+        private const val SCROLL_RESET_THRESHOLD = 10
+    }
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject
@@ -179,6 +183,11 @@ class MainFragment : BaseFragment(), OnBackKeyPressedListener {
             ScreenState.STATE_DONE -> {
                 recyclerView.isGone = false
                 errorView.isGone = true
+                // check if number of items greatly increases
+                val lastCount = itemAdapter.itemCount
+                if (list.size - lastCount > SCROLL_RESET_THRESHOLD) {
+                    recyclerView.scrollToPosition(0)
+                }
                 itemAdapter.submitList(list)
             }
             ScreenState.STATE_ERROR_INTERNAL -> {
