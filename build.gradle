@@ -14,7 +14,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.20.0'
-        classpath 'com.google.gms:google-services:4.1.0'
+        classpath 'com.google.gms:google-services:4.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath 'gradle.plugin.org.jmailen.gradle:kotlinter-gradle:1.15.1'
         classpath 'gradle.plugin.com.cherryperry.gfe:gradle-file-encrypt:1.2.0'
