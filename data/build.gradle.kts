@@ -25,6 +25,8 @@ dependencies {
 
     kapt("com.google.dagger:dagger-compiler:${property("daggerVersion")}")
 
+    implementation("androidx.core:core-ktx:0.3")
+
     implementation("com.squareup.okhttp3:okhttp:${property("okhttpVersion")}")
     implementation("com.squareup.okhttp3:logging-interceptor:${property("okhttpVersion")}")
 
