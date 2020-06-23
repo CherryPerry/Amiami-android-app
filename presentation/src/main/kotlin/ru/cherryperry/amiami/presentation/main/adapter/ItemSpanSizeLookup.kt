@@ -1,6 +1,6 @@
 package ru.cherryperry.amiami.presentation.main.adapter
 
-import android.support.v7.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 
 class ItemSpanSizeLookup(
     private val itemAdapter: ItemAdapter,

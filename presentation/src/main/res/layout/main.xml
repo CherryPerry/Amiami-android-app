@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.activity.SingleActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:fitsSystemWindows="true">
 
-        <android.support.design.widget.ValidFitCollapsingToolbarLayout
+        <com.google.android.material.appbar.ValidFitCollapsingToolbarLayout
             android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,17 +20,17 @@
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:statusBarScrim="@color/white">
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 style="@style/Toolbar.Main"
                 android:layout_height="?actionBarSize"
-                android:paddingLeft="@dimen/padding_list_item_side"/>
+                android:paddingLeft="@dimen/padding_list_item_side" />
 
-        </android.support.design.widget.ValidFitCollapsingToolbarLayout>
+        </com.google.android.material.appbar.ValidFitCollapsingToolbarLayout>
 
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -41,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -49,9 +48,9 @@
                 android:paddingBottom="@dimen/padding_list_item_side"
                 android:paddingLeft="@dimen/padding_list_side"
                 android:paddingRight="@dimen/padding_list_side"
-                app:layoutManager="android.support.v7.widget.GridLayoutManager"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="4"
-                tools:listitem="@layout/main_item_card_big"/>
+                tools:listitem="@layout/main_item_card_big" />
 
             <LinearLayout
                 android:id="@+id/errorLayout"
@@ -78,13 +77,13 @@
                     android:gravity="center"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
-                    tools:text="@string/error_internal"/>
+                    tools:text="@string/error_internal" />
 
             </LinearLayout>
 
         </FrameLayout>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <fragment
         android:id="@+id/filterView"
@@ -94,6 +93,6 @@
         app:behavior_hideable="true"
         app:behavior_peekHeight="0dp"
         app:layout_behavior="@string/bottom_sheet_behavior"
-        tools:layout="@layout/filter"/>
+        tools:layout="@layout/filter" />
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

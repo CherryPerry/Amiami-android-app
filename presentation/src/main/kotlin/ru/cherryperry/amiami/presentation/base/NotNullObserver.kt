@@ -1,6 +1,6 @@
 package ru.cherryperry.amiami.presentation.base
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 
 class NotNullObserver<T>(
     private val action: (T) -> Unit

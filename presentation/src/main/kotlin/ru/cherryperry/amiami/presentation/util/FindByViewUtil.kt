@@ -1,9 +1,9 @@
 package ru.cherryperry.amiami.presentation.util
 
 import android.app.Activity
-import android.support.v4.app.Fragment
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import kotlin.reflect.KProperty
 
 class ViewDelegateReset {

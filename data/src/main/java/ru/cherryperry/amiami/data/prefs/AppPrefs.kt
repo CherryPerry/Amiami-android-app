@@ -3,7 +3,7 @@ package ru.cherryperry.amiami.data.prefs
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import ru.cherryperry.amiami.data.R
 import ru.cherryperry.amiami.domain.model.ExchangeRates
 import javax.inject.Inject

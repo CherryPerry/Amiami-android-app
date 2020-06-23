@@ -1,6 +1,6 @@
 package ru.cherryperry.amiami.presentation.main
 
-import android.support.annotation.IntDef
+import androidx.annotation.IntDef
 import ru.cherryperry.amiami.domain.model.Model
 
 data class ScreenState(

@@ -1,7 +1,7 @@
 package ru.cherryperry.amiami.presentation.settings
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import ru.cherryperry.amiami.domain.currency.GetCurrentRatesUseCase

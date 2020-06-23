@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.AppBarLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
@@ -9,6 +8,6 @@
     <ru.cherryperry.amiami.presentation.util.FitWindowToolbar
         android:id="@+id/toolbar"
         style="@style/Toolbar.Default"
-        app:title="@string/settings"/>
+        app:title="@string/settings" />
 
-</android.support.design.widget.AppBarLayout>
+</com.google.android.material.appbar.AppBarLayout>

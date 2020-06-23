@@ -1,11 +1,11 @@
 package ru.cherryperry.amiami.data.db
 
-import android.arch.persistence.db.SupportSQLiteDatabase
-import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.core.content.edit
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Scheduler

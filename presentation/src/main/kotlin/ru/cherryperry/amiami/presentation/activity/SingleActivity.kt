@@ -1,14 +1,13 @@
 package ru.cherryperry.amiami.presentation.activity
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.customtabs.CustomTabsIntent
-import android.support.v4.content.ContextCompat
 import android.widget.Toast
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
 import dagger.android.support.DaggerAppCompatActivity
-import org.chromium.customtabsclient.shared.CustomTabsHelper
-import org.chromium.customtabsdemos.CustomTabActivityHelper
 import ru.cherryperry.amiami.R
 import javax.inject.Inject
 
@@ -21,7 +20,6 @@ class SingleActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var navigator: Navigator
 
-    private val customTabActivityHelper = CustomTabActivityHelper()
     private var backButtonWasPressed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,17 +27,6 @@ class SingleActivity : DaggerAppCompatActivity() {
         if (savedInstanceState == null) {
             navigator.openList()
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        customTabActivityHelper.session
-        customTabActivityHelper.bindCustomTabsService(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        customTabActivityHelper.unbindCustomTabsService(this)
     }
 
     override fun onBackPressed() {
@@ -66,16 +53,15 @@ class SingleActivity : DaggerAppCompatActivity() {
     }
 
     internal fun tryOpenCustomTabs(uri: Uri): Boolean {
-        if (customTabActivityHelper.mayLaunchUrl(uri, null, null)) {
-            val intent = CustomTabsIntent.Builder()
+        try {
+            CustomTabsIntent.Builder()
                 .setToolbarColor(ContextCompat.getColor(this, R.color.white))
                 .build()
-            CustomTabsHelper.addKeepAliveExtra(this, intent.intent)
-            CustomTabActivityHelper.openCustomTab(this, intent, uri)
-            { _, failedUri -> openDefault(failedUri) }
-            return true
+                .launchUrl(this, uri)
+        } catch (e: ActivityNotFoundException) {
+            openDefault(uri)
         }
-        return false
+        return true
     }
 
     internal fun openDefault(uri: Uri) {

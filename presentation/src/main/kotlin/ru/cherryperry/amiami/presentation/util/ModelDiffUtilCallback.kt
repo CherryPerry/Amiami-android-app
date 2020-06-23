@@ -1,6 +1,6 @@
 package ru.cherryperry.amiami.presentation.util
 
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.DiffUtil
 import ru.cherryperry.amiami.domain.model.Model
 
 class ModelDiffUtilCallback<TItem : Model> : DiffUtil.ItemCallback<TItem>() {

@@ -1,11 +1,11 @@
 package ru.cherryperry.amiami.presentation.activity
 
 import android.net.Uri
-import android.support.annotation.IdRes
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
-import android.support.v7.widget.Toolbar
 import android.webkit.URLUtil
+import androidx.annotation.IdRes
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.data.prefs.AppPrefs
 import ru.cherryperry.amiami.domain.model.Item

@@ -1,8 +1,8 @@
 package ru.cherryperry.amiami.presentation.highlight.adapter
 
-import android.support.v7.recyclerview.extensions.ListAdapter
-import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import ru.cherryperry.amiami.domain.model.Model
 import ru.cherryperry.amiami.presentation.highlight.model.HighlightHeaderItem
 import ru.cherryperry.amiami.presentation.highlight.model.HighlightItem
