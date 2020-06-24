@@ -1,6 +1,6 @@
 package ru.cherryperry.amiami.presentation.settings
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.android.AndroidInjector

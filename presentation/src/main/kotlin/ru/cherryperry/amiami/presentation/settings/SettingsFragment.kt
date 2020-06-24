@@ -1,15 +1,15 @@
 package ru.cherryperry.amiami.presentation.settings
 
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.view.ViewCompat
-import android.support.v7.preference.ListPreference
-import android.support.v7.preference.PreferenceFragmentCompat
-import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.ViewCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import androidx.preference.ListPreference
+import androidx.preference.PreferenceFragmentCompat
 import dagger.android.support.AndroidSupportInjection
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.presentation.activity.Navigator
@@ -21,6 +21,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     @Inject
     lateinit var navigator: Navigator
 

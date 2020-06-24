@@ -1,13 +1,13 @@
 package ru.cherryperry.amiami.presentation.highlight.adapter
 
 import android.content.res.ColorStateList
-import android.support.annotation.ColorInt
-import android.support.v7.widget.RecyclerView
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.ColorInt
+import androidx.recyclerview.widget.RecyclerView
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.presentation.highlight.model.HighlightItem
 import ru.cherryperry.amiami.presentation.util.ViewDelegate

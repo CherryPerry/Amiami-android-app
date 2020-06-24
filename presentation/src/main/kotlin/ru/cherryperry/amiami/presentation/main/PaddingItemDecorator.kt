@@ -2,9 +2,9 @@ package ru.cherryperry.amiami.presentation.main
 
 import android.content.Context
 import android.graphics.Rect
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ru.cherryperry.amiami.R
 
 class PaddingItemDecorator(

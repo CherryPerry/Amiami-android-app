@@ -1,8 +1,8 @@
-package android.support.design.widget
+package com.google.android.material.appbar
 
 import android.content.Context
-import android.support.v4.view.ViewCompat
 import android.util.AttributeSet
+import androidx.core.view.ViewCompat
 
 /**
  * [CollapsingToolbarLayout] consumes all insets, this is wrong!

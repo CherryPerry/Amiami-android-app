@@ -18,6 +18,11 @@ android {
     buildTypes.getByName("release").consumerProguardFile("proguard-rules.pro")
 
     testOptions.unitTests.isIncludeAndroidResources = true
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -25,7 +30,7 @@ dependencies {
 
     kapt("com.google.dagger:dagger-compiler:${property("daggerVersion")}")
 
-    implementation("androidx.core:core-ktx:0.3")
+    implementation("androidx.core:core-ktx:1.0.0")
 
     implementation("com.squareup.okhttp3:okhttp:${property("okhttpVersion")}")
     implementation("com.squareup.okhttp3:logging-interceptor:${property("okhttpVersion")}")

@@ -1,10 +1,10 @@
 package ru.cherryperry.amiami.presentation.util
 
-import android.support.v4.view.ViewCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
+import androidx.core.view.ViewCompat
 import androidx.core.view.updatePadding
 
 /**

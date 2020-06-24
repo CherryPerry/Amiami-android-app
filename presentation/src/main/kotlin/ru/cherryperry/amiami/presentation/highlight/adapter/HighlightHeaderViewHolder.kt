@@ -1,7 +1,6 @@
 package ru.cherryperry.amiami.presentation.highlight.adapter
 
 import android.app.Activity
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +8,11 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
+import androidx.recyclerview.widget.RecyclerView
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.presentation.highlight.model.HighlightHeaderItem
 import ru.cherryperry.amiami.presentation.util.ViewDelegate
 import ru.cherryperry.amiami.presentation.util.afterTextChanged
-
 
 class HighlightHeaderViewHolder(
     viewGroup: ViewGroup

@@ -1,9 +1,9 @@
 package ru.cherryperry.amiami.presentation.main.adapter
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import ru.cherryperry.amiami.R
 import ru.cherryperry.amiami.presentation.util.ViewDelegate
 import java.text.DateFormat

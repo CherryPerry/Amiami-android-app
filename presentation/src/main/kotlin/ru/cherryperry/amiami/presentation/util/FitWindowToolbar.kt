@@ -1,9 +1,9 @@
 package ru.cherryperry.amiami.presentation.util
 
 import android.content.Context
-import android.support.v4.view.ViewCompat
-import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.ViewCompat
 import androidx.core.view.updatePadding
 
 /**
