@@ -1,20 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <SmellBaseline>
-    <Blacklist />
-    <Whitelist>
-        <ID>
-            ChainWrapping:ru.cherryperry.amiami.presentation.highlight.model.HighlightHeaderItem.kt:18
-        </ID>
-        <ID>
-            ChainWrapping:ru.cherryperry.amiami.presentation.highlight.model.HighlightHeaderItem.kt:19
-        </ID>
-        <ID>EmptyFunctionBlock:FilterFragment.kt$FilterFragment.&lt;no name provided>${}</ID>
-        <ID>
-            NoBlankLineBeforeRbrace:ru.cherryperry.amiami.presentation.highlight.SafRuleExport.kt:69
-        </ID>
-        <ID>ParameterListWrapping:ru.cherryperry.amiami.presentation.util.CardTopImageView.kt:17
-        </ID>
-        <ID>TooManyFunctions:FilterFragment.kt$FilterFragment$FilterFragment</ID>
-        <ID>TooManyFunctions:MainFragment.kt$MainFragment$MainFragment</ID>
-    </Whitelist>
+  <Blacklist/>
+  <Whitelist>
+    <ID>ChainWrapping:ru.cherryperry.amiami.presentation.highlight.model.HighlightHeaderItem.kt:18</ID>
+    <ID>ChainWrapping:ru.cherryperry.amiami.presentation.highlight.model.HighlightHeaderItem.kt:19</ID>
+    <ID>EmptyFunctionBlock:FilterFragment.kt$FilterFragment.&lt;no name provided>${}</ID>
+    <ID>NoBlankLineBeforeRbrace:ru.cherryperry.amiami.presentation.highlight.SafRuleExport.kt:69</ID>
+    <ID>ParameterListWrapping:ru.cherryperry.amiami.presentation.util.CardTopImageView.kt:17</ID>
+    <ID>TooManyFunctions:FilterFragment.kt$FilterFragment$FilterFragment</ID>
+    <ID>TooManyFunctions:MainFragment.kt$MainFragment$MainFragment</ID>
+  </Whitelist>
 </SmellBaseline>
