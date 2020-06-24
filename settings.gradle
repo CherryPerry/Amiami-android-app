@@ -1,1 +1,6 @@
-include ':core', ':domain', ':data', ':presentation'
+includeBuild 'detekt'
+
+include ':core'
+include ':domain'
+include ':data'
+include ':presentation'

@@ -1,0 +1,17 @@
+plugins {
+    id 'groovy'
+    id 'java-gradle-plugin'
+}
+
+repositories {
+    gradlePluginPortal()
+}
+
+gradlePlugin.plugins.register('detekt') { declaration ->
+    declaration.id = 'detekt'
+    declaration.implementationClass = 'ru.cherryperry.detekt.DetektPlugin'
+}
+
+dependencies {
+    implementation 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.9.1'
+}

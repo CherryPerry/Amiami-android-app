@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <Blacklist/>
+  <Whitelist>
+    <ID>UnnecessaryAbstractClass:CompletableUseCase.kt$CompletableUseCase&lt;in Params></ID>
+    <ID>UnnecessaryAbstractClass:FlowableUseCase.kt$FlowableUseCase&lt;in Params, Result></ID>
+    <ID>UnnecessaryAbstractClass:MaybeUseCase.kt$MaybeUseCase&lt;in Params, Result></ID>
+    <ID>UnnecessaryAbstractClass:SingleUseCase.kt$SingleUseCase&lt;in Params, Result></ID>
+  </Whitelist>
+</SmellBaseline>
