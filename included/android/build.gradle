@@ -1,0 +1,24 @@
+plugins {
+    id 'groovy'
+    id 'java-gradle-plugin'
+}
+
+repositories {
+    google()
+    jcenter()
+}
+
+gradlePlugin.plugins {
+    it.register('app') {
+        it.id = 'app'
+        it.implementationClass = 'ru.cherryperry.android.AndroidProjectPlugin'
+    }
+    it.register('library') {
+        it.id = 'library'
+        it.implementationClass = 'ru.cherryperry.android.AndroidLibraryPlugin'
+    }
+}
+
+dependencies {
+    implementation 'com.android.tools.build:gradle:4.0.0'
+}

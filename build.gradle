@@ -12,14 +12,16 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.0'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.20.0'
         classpath 'com.google.gms:google-services:4.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath 'gradle.plugin.org.jmailen.gradle:kotlinter-gradle:1.15.1'
-        classpath 'gradle.plugin.com.cherryperry.gfe:gradle-file-encrypt:1.3.0'
         classpath 'io.fabric.tools:gradle:1.28.0'
         classpath 'com.google.firebase:firebase-plugins:1.1.5'
     }
+}
+
+plugins {
+    id 'com.github.ben-manes.versions' version '0.20.0'
+    id 'com.cherryperry.gradle-file-encrypt' version '1.3.0'
 }
 
 allprojects {
@@ -41,19 +43,12 @@ allprojects {
         firebasePerformanceVersion = '16.1.2'
         robolectricVersion = '3.8'
         mockitoVersion = '2.22.0'
-        compileSdkVersion = 28
-        targetSdkVersion = 28
-        minSdkVersion = 16
-        buildToolsVersion = '28.0.3'
         kotlinVersion = kotlinVersion
     }
 }
 
-apply plugin: 'com.github.ben-manes.versions'
-apply plugin: 'com.cherryperry.gradle-file-encrypt'
-
 gradleFileEncrypt {
-    files 'keystore.properties', 'presentation/google-services.json', 'presentation/fabric.properties'
+    files 'presentation/keystore.properties', 'presentation/google-services.json', 'presentation/fabric.properties'
 }
 
 task clean(type: Delete) {

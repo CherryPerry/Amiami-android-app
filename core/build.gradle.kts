@@ -1,30 +1,9 @@
 /** Core */
 
 plugins {
-    id("com.android.library")
+    id("library")
     id("kotlin-android")
     id("detekt")
-}
-
-android {
-    compileSdkVersion(project.ext["compileSdkVersion"] as Int)
-    buildToolsVersion(project.ext["buildToolsVersion"] as String)
-
-    defaultConfig {
-        minSdkVersion(project.ext["minSdkVersion"] as Int)
-        targetSdkVersion(project.ext["targetSdkVersion"] as Int)
-    }
-
-    buildTypes {
-        getByName("release") {
-            consumerProguardFile("proguard-rules.pro")
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
 }
 
 dependencies {

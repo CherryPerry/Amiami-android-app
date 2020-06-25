@@ -1,22 +1,15 @@
 plugins {
+    id 'app'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'io.fabric'
+    id 'com.google.firebase.firebase-perf'
     id 'detekt'
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply from: '../signing.gradle'
-apply plugin: 'io.fabric'
-apply plugin: 'com.google.firebase.firebase-perf'
-
 android {
-    compileSdkVersion project.ext.compileSdkVersion
-    buildToolsVersion project.ext.buildToolsVersion
-
     defaultConfig {
         applicationId 'ru.cherryperry.amiami'
-        minSdkVersion project.ext.minSdkVersion
-        targetSdkVersion project.ext.targetSdkVersion
         versionCode 3_02_01
         versionName '3.2.1'
         vectorDrawables.useSupportLibrary = true
@@ -34,26 +27,8 @@ android {
 
     buildTypes {
         debug {
-            signingConfig signingConfigs.release
-            versionNameSuffix '.debug'
             ext.enableCrashlytics = false
         }
-        release {
-            signingConfig signingConfigs.release
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
 

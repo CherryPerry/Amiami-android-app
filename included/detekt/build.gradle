@@ -7,9 +7,9 @@ repositories {
     gradlePluginPortal()
 }
 
-gradlePlugin.plugins.register('detekt') { declaration ->
-    declaration.id = 'detekt'
-    declaration.implementationClass = 'ru.cherryperry.detekt.DetektPlugin'
+gradlePlugin.plugins.register('detekt') {
+    it.id = 'detekt'
+    it.implementationClass = 'ru.cherryperry.detekt.DetektPlugin'
 }
 
 dependencies {
