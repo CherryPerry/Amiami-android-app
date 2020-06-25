@@ -1,4 +1,13 @@
-includeBuild 'detekt'
+pluginManagement {
+    repositories {
+        google()
+        jcenter()
+        gradlePluginPortal()
+    }
+}
+
+includeBuild 'included/detekt'
+includeBuild 'included/android'
 
 include ':core'
 include ':domain'

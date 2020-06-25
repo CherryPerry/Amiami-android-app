@@ -14,7 +14,7 @@ class DetektPlugin implements Plugin<Project> {
     void apply(@Nonnull Project target) {
         target.apply plugin: 'io.gitlab.arturbosch.detekt'
         target.extensions.configure(DetektExtension) {
-            it.config.from(target.rootProject.file('detekt/detekt.yml'))
+            it.config.from(target.rootProject.file('included/detekt/detekt.yml'))
             it.baseline = target.file('detekt-baseline.xml')
         }
         target.tasks.withType(Detekt).configureEach {
