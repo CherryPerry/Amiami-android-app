@@ -5,9 +5,9 @@ android:
     - build-tools-29.0.2
     - android-28
 before_install:
-  - ./gradlew decryptFiles --info --stacktrace
+  - ./gradlew decryptFiles --stacktrace
 script:
-  - ./gradlew check --info --stacktrace
+  - ./gradlew check --stacktrace
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -17,7 +17,7 @@ cache:
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-cache
 before_deploy:
-  - ./gradlew assembleRelease --info --stacktrace
+  - ./gradlew assembleRelease --stacktrace
   - mv presentation/build/outputs/apk/release/presentation-release.apk presentation/build/outputs/apk/release/amiami.apk
 deploy:
   provider: releases
