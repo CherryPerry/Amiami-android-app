@@ -23,7 +23,7 @@ class AndroidProjectPlugin extends BasePlugin implements Plugin<Project> {
         extension.signingConfigs.register('release') { config ->
             File keystorePropertiesFile = project.file('keystore.properties')
             if (!keystorePropertiesFile.exists() || !keystorePropertiesFile.canRead()) {
-                logger.error('No keystore.properties file')
+                project.logger.error('No keystore.properties file')
                 return
             }
             Properties keystoreProperties = new Properties()
