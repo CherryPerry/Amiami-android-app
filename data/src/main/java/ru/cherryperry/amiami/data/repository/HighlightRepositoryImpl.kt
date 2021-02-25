@@ -28,7 +28,7 @@ class HighlightRepositoryImpl @Inject constructor(
 
     override fun configuration(): Flowable<HighlightConfiguration> =
         Flowable.combineLatest(
-            highlightRuleDao.get().map { it.map { dbRuleToRuleMapping.map(it) } },
+            Flowable.fromCallable { highlightRuleDao.get().map { dbRuleToRuleMapping.map(it) } }, // TODO
             appPrefs.favoritesOnly.observer,
             BiFunction<List<HighlightRule>, Boolean, HighlightConfiguration>
             { list, only -> HighlightConfiguration(list, only) })

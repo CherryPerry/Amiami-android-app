@@ -1,10 +1,13 @@
+import ru.cherryperry.dependencies.Deps
+
 plugins {
     id 'app'
-    id 'kotlin-android'
+    id 'kotlin-android-setup'
     id 'kotlin-kapt'
     id 'io.fabric'
     id 'com.google.firebase.firebase-perf'
     id 'detekt'
+    id 'dependencies'
 }
 
 android {
@@ -45,35 +48,34 @@ dependencies {
     implementation "com.android.support:support-media-compat:$compatVersion"
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support:multidex:1.0.3'
-    implementation 'androidx.browser:browser:1.2.0'
+    implementation Deps.androidx.browser
 
-    implementation 'androidx.core:core-ktx:1.0.0'
+    implementation Deps.androidx.core
 
-    implementation('com.github.bumptech.glide:glide:4.8.0') {
-        transitive = true
-    }
-    kapt 'com.github.bumptech.glide:compiler:4.8.0'
-    compileOnly "com.squareup.retrofit2:retrofit:$retoriftVersion"
-    compileOnly "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    implementation Deps.glide.library
+    kapt Deps.glide.compiler
 
-    implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
-    implementation "com.google.firebase:firebase-messaging:$firebaseMessagingVersion"
-    implementation "com.google.firebase:firebase-perf:$firebasePerformanceVersion"
+    compileOnly Deps.retrofit.library
+    compileOnly Deps.okhttp.library
+
+    implementation Deps.firebase.core
+    implementation Deps.firebase.messaging
+    implementation Deps.firebase.perf
 
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
         transitive = true
     }
 
-    implementation "com.google.dagger:dagger-android:$daggerVersion"
-    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
-    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
-    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+    implementation Deps.dagger.android
+    implementation Deps.dagger.androidSupport
+    kapt Deps.dagger.compiler
+    kapt Deps.dagger.androidAnnotationProcessor
 
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
-    kapt 'android.arch.lifecycle:compiler:1.1.1'
+    implementation Deps.androidx.lifecycle.extensions
+    kapt Deps.androidx.lifecycle.compiler
 
-    testImplementation "junit:junit:$junitVersion"
-    testImplementation "org.robolectric:robolectric:$robolectricVersion"
+    testImplementation Deps.junit.library
+    testImplementation Deps.robolectric.library
 }
 
 apply plugin: 'com.google.gms.google-services'

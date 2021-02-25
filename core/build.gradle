@@ -1,0 +1,15 @@
+import ru.cherryperry.dependencies.Deps
+
+plugins {
+    id 'library'
+    id 'kotlin-android-setup'
+    id 'detekt'
+    id 'dependencies'
+}
+
+dependencies {
+    api Deps.dagger.library
+    api Deps.rxjava2.library
+    api Deps.rxjava2.android
+    api Deps.rxjava2.kotlin
+}

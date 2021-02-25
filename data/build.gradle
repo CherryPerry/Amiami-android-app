@@ -1,0 +1,38 @@
+import ru.cherryperry.dependencies.Deps
+
+plugins {
+    id 'library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'detekt'
+    id 'dependencies'
+}
+
+dependencies {
+    implementation project(':domain')
+
+    kapt Deps.dagger.compiler
+
+    implementation Deps.androidx.core
+
+    implementation Deps.okhttp.library
+    implementation Deps.okhttp.logging
+
+    implementation Deps.retrofit.library
+    implementation Deps.retrofit.converterGson
+    implementation Deps.retrofit.converterScalars
+    implementation Deps.retrofit.adapterRxjava2
+
+    implementation Deps.firebase.core
+    implementation Deps.firebase.messaging
+    implementation "com.android.support:support-v4:${property("compatVersion")}"
+
+    // TODO Why??
+    api Deps.room.runtime
+    // implementation Deps.room.rxjava2
+    // kapt Deps.room.compiler
+
+    testImplementation Deps.junit.library
+    testImplementation Deps.robolectric.library
+    testImplementation Deps.mockito.library
+}

@@ -73,13 +73,14 @@ class HighlightFragment : BaseFragment() {
         ViewCompat.requestApplyInsets(view)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (safRuleExport.isAvailable()) {
-            safRuleExport.onRequestCreateDocumentComplete(context!!, requestCode, resultCode, data,
+            safRuleExport.onRequestCreateDocumentComplete(context!!, requestCode, resultCode, data!!,
                 highlightViewModel::exportRules)
-            safRuleExport.onRequestOpenDocumentComplete(context!!, requestCode, resultCode, data,
+            safRuleExport.onRequestOpenDocumentComplete(context!!, requestCode, resultCode, data!!,
                 highlightViewModel::importRules)
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
+
 }

@@ -1,0 +1,24 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.30'
+}
+
+repositories {
+    google()
+    jcenter()
+}
+
+gradlePlugin.plugins {
+    it.register('kotlin-setup') {
+        it.id = 'kotlin-setup'
+        it.implementationClass = 'ru.cherryperry.kotlin.KotlinPlugin'
+    }
+    it.register('kotlin-android-setup') {
+        it.id = 'kotlin-android-setup'
+        it.implementationClass = 'ru.cherryperry.kotlin.KotlinAndroidPlugin'
+    }
+}
+
+dependencies {
+    implementation 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.30'
+}

@@ -5,13 +5,12 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
-import io.reactivex.Flowable
 
 @Dao
 interface HighlightRuleDao {
 
     @Query("select * from highlight")
-    fun get(): Flowable<List<DbHighlightRule>>
+    fun get(): List<DbHighlightRule>
 
     @Insert
     fun insert(highlightRule: DbHighlightRule)

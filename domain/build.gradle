@@ -1,0 +1,18 @@
+import ru.cherryperry.dependencies.Deps
+
+plugins {
+    id 'library'
+    id 'kotlin-android-setup'
+    id 'kotlin-kapt'
+    id 'detekt'
+    id 'dependencies'
+}
+
+dependencies {
+    api project(':core')
+
+    kapt Deps.dagger.compiler
+
+    testImplementation Deps.junit.library
+    testImplementation Deps.mockito.library
+}

@@ -8,6 +8,8 @@ pluginManagement {
 
 includeBuild 'included/detekt'
 includeBuild 'included/android'
+includeBuild 'included/kotlin'
+includeBuild 'included/dependencies'
 
 include ':core'
 include ':domain'
